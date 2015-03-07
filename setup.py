@@ -18,7 +18,7 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'docutils',
+    'pyramid_redis_sessions',
     ]
 
 setup(name='startupdex',

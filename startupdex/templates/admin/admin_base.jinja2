@@ -30,7 +30,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
 					<!--TODO: add active classes and hide items depending on if logged_in-->
-					<li><a href="{{ gibs.application_url }}browse">Browse Startups</a></li>
+					<li><a href="{{ gibs.static_url }}browse">Browse Startups</a></li>
 					<li>
 						<a href="about" data-target="#" data-toggle="dropdown">About <span class="caret"></span></a>
 						<ul class="dropdown-menu">
@@ -63,12 +63,9 @@
 				</ul>
 			</div>
 
-
 		</div>
 
 	</div>
-
-
 
 
 	<div class="container">
@@ -77,75 +74,15 @@
 				{% block left_focus %}{% endblock left_focus %}
 			</div>
 
-			<div class="hidden-xs hidden-sm col-md-3">
+			<div class="col-md-3">
 				{% block right_focus %}
-					<div class="row">
-						<div class="col-md-12">
-							<h5 class="right-focus-heading">
-								Related listings (recent queries?)
-							</h5>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">
-						<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded right-focus" width="80px" height="70px">
-						</div>
-						<div class="col-md-8">
-							<h5 class="right-focus-subheading">
-								Startup listing
-							</h5>
-							<p class="right-focus">
-								short_info from the database goes here. Possibly quick_info
-							</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-						<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded right-focus" width="80px" height="70px">
-						</div>
-						<div class="col-md-8">
-							<h5 class="right-focus-subheading">
-								Startup listing
-							</h5>
-							<p class="right-focus">
-								short_info from the database goes here. Possibly quick_info
-							</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-						<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded right-focus" width="80px" height="70px">
-						</div>
-						<div class="col-md-8">
-							<h5 class="right-focus-subheading">
-								Startup listing
-							</h5>
-							<p class="right-focus">
-								short_info from the database goes here. Possibly quick_info
-							</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-						<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded" width="80px" height="70px">
-						</div>
-						<div class="col-md-8">
-							<h5 class="right-focus-subheading">
-								Startup listing
-							</h5>
-							<p class="right-focus">
-								short_info from the database goes here. Possibly quick_info
-							</p>
-						</div>
-					</div>
+				admin toolbar
 				
 				
 				{% endblock right_focus %}
 			</div>
 		</div>
 	</div>
-
 
 	<br />
 	<br />
@@ -159,6 +96,7 @@
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="{{ gibs.static_url }}js/admin.js"></script>
 	<script src="{{ gibs.static_url }}js/bootstrap.js"></script>
 </body>
 

@@ -1,3 +1,30 @@
 .main-search {
 	width: 800px;
 }
+
+h5.right-focus-heading {
+	padding-top: 0;
+	margin-top: 4px;
+}
+h5.right-focus-subheading {
+	padding: 0;
+	margin: 0;
+}
+p.right-focus {
+	padding: 0;
+	padding-bottom: 12px;
+	margin: 0;
+	font-size: 12px;
+}
+
+img.right-focus {
+	padding-right: 4px;
+}
+
+img.browse-thumb {
+	//padding-bottom: 10px;
+}
+
+.bottom-buffer-12px {
+	padding-bottom: 12px;
+}

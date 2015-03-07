@@ -1,0 +1,52 @@
+{% extends "admin_base.jinja2" %}
+{% block title %}
+Database - angel.co administration at
+{% endblock %}
+
+{% block left_focus %}
+<div class="well well-sm">
+	<div class="row bottom-buffer-12px">
+		<div class="col-md-12">
+				<h3>
+					Database management for angel.co interfacing
+				</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" id="angelco-rangestart" name="angelco-rangestart" placeholder="rangestart" value="16" />
+			<br />
+			<input type="text" id="angelco-rangei" name="angelco-rangei" placeholder="rangei" value="50" />
+			<br />
+			<br />
+		</div>
+		<div class="col-md-8">
+			<button type="button" class="btn btn-success" id="angelco-get-some">Collect data from angel.co</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div id="angelco-results">
+				<p>
+					Results from angelco appear here
+				</p>
+
+			</div>
+		</div>
+	</div>
+
+	{#<div class="row">#}
+		{#<div class="col-md-12">#}
+			{#<button type="button" class="btn btn-default"></button>#}
+			{#<button type="button" class="btn btn-primary"></button>#}
+			{#<button type="button" class="btn btn-info"></button>#}
+			{#<button type="button" class="btn btn-warning"></button>#}
+			{#<button type="button" class="btn btn-danger"></button>#}
+		{#</div>#}
+	{#</div>#}
+
+</div>
+
+{% endblock left_focus %}

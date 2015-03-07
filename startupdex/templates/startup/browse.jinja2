@@ -1,0 +1,61 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Browsing startups at
+{% endblock %}
+
+{% block left_focus %}
+<div class="well well-sm">
+			<div class="row">
+				<div class="col-md-12">
+						<h4>
+							Browsing all listed startups at StartupDex
+						</h4>
+				</div>
+			</div>
+
+
+
+
+
+		{% for startup in startups %}
+			<div class="row bottom-buffer-12px">
+						<a href="{{ gibs.request_url }}startup/{{ startup.name }}">
+							<div class="col-md-3">
+								<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+							</div>
+							<div class="col-md-9">
+								<h5 class="browse-startup-heading">
+									{{ startup.name }}
+								</h5>
+						</a>
+
+					<p>
+						short_info from the database goes here. 
+					</p>
+				</div>
+			</div>
+
+		{% endfor %}
+
+
+
+
+	
+	<div class="row">
+		<div class="col-md-6">
+
+
+		</div>
+
+		<div class="col-md-6">
+
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+{% endblock left_focus %}

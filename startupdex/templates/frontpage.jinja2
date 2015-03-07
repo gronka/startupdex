@@ -11,7 +11,7 @@
 {% block left_focus %}
 <div class="well well-sm">
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-6 col-sm-5">
 
 			<div id="startup-carousel" class="carousel slide">
 				<ol class="carousel-indicators">
@@ -41,13 +41,51 @@
 
 		</div>
 
-		<div class="col-md-6">
-			<h1>Startup company title</h1>
+		<div class="col-md-6 col-sm-7">
+			<h3>Startup company title</h3>
+			<p>paragraph about the startup</p>
+			<p>founders</p>
+			<p>home url</p>
+
+			<p>social links</p>
 
 		</div>
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-3">
+		<a href="#">
+			<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
+			<h4 class="text-center">Featured company</h4>
+		</a>
+
+	</div>
+	<div class="col-md-3">
+		<a href="#">
+			<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
+			<h4 class="text-center">Featured company</h4>
+		</a>
+		
+
+	</div>
+	<div class="col-md-3">
+		<a href="#">
+			<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
+			<h4 class="text-center">Featured company</h4>
+		</a>
+		
+
+	</div>
+	<div class="col-md-3">
+		<a href="#">
+			<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
+			<h4 class="text-center">Featured company</h4>
+		</a>
+		
+
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-md-12">
@@ -72,4 +110,5 @@
 
 
 {% block right_focus %}
+{{ super() }}
 {% endblock right_focus %}

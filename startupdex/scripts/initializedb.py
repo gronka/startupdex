@@ -14,6 +14,7 @@ from pyramid.scripts.common import parse_vars
 from ..models import (
     DBSession,
     Startup,
+    User,
     Base,
     )
 
@@ -36,5 +37,29 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = Startup(name='Example startup', quick_info='This is an example startup')
+        model = Startup(name='startup5000',
+                        quick_info='This is an example startup',
+                        logo_url='https://www.google.com/images/srpr/logo11w.png',
+                        )
+        DBSession.add(model)
+        model = Startup(name='agile',
+                        quick_info='This is an example startup',
+                        logo_url='https://www.google.com/images/srpr/logo11w.png',
+                        )
+        DBSession.add(model)
+        model = Startup(name='30DaySkill',
+                        quick_info='This is an example startup',
+                        logo_url='https://www.google.com/images/srpr/logo11w.png',
+                        )
+        DBSession.add(model)
+        model = Startup(name='Passion',
+                        quick_info='This is an example startup',
+                        logo_url='http://www.elpassion.com/wp-content/themes/ELPassion/images/logo.png',
+                        )
+        DBSession.add(model)
+        model = User(name='admin',
+                     password='admin',
+                     status='active',
+                     city='Durham',
+                     )
         DBSession.add(model)
