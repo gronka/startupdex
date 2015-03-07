@@ -22,9 +22,9 @@ Database - angel.co administration at
 
 		{% for startup in startups %}
 			<div class="row bottom-buffer-12px">
-						<a href="{{ gibs.request_url }}startup/{{ startup.name }}">
+						<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
 							<div class="col-md-3">
-								<img src="{{ gibs.application_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+								<img src="{{ gibs.static_url }}images/apple0.jpg" alt="apple0.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
 							</div>
 							<div class="col-md-9">
 								<h5 class="browse-startup-heading">
