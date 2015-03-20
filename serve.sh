@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo pserve --daemon development.ini
+sudo pserve --daemon development.ini --user www-data
