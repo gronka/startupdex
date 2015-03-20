@@ -1,2 +1,2 @@
 #!/bin/bash
-pserve --daemon development.ini
+sudo pserve --daemon development.ini
