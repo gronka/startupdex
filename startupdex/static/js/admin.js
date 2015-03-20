@@ -10,17 +10,42 @@ $(function() {
 				document.getElementById('angelco-results').innerHTML = "sweet results";
 			}
 		});
-
-
 	}
-
 	$('#angelco-get-some').click(function() {
-		rangestart = $('#angelco-rangestart').val();
-		rangei = $('#angelco-rangei').val();
+		var txt;
+		var r = confirm("Are you sure you want to do this?");
+		if (r == true) {
+			rangestart = $('#angelco-rangestart').val();
+			rangei = $('#angelco-rangei').val();
+			pullFromAngelCo(rangestart, rangei);
+		} else {
+			alert("Action canceled");
+		}
 
-		pullFromAngelCo(rangestart, rangei);
+	});
 
+	function pushToStartupdex(rangestart, rangei) {
+		$.ajax({
+			url: '/db_angelco_push_to_startupdex.json',
+			data: JSON.stringify({rangestart: rangestart,
+														rangei: rangei}),
+			success: function(data) {
+				//$('#angelco-results').html("sweet results")";
+				document.getElementById('angelco-results').innerHTML = "sweet results";
+			}
 		});
+	}
+	$('#angelco-push-to-startupdex').click(function() {
+		var txt;
+		var r = confirm("Are you sure you want to do this?");
+		if (r == true) {
+			rangestart = $('#angelco-rangestart').val();
+			rangei = $('#angelco-rangei').val();
+			pushToStartupdex(rangestart, rangei);
+		} else {
+			alert("Action canceled");
+		}
+	});
 
 
 	function debounce(func, wait, immediate) {

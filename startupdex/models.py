@@ -1,9 +1,9 @@
 from sqlalchemy import (
     Column,
-    Index,
+    #Index,
     Integer,
     Text,
-    Boolean,
+    #Boolean,
     )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -50,7 +50,9 @@ class Startup(Base):
     angelco_follower_count = Column(Integer)
     created_at = Column(Text)
     updated_at = Column(Text)
-    angelco_status = Column(Integer)
+    angelco_status = Column(Text)
+    company_size = Column(Integer)
+    company_status = Column(Integer)
 
 
 class AngelCoMirror(Base):
@@ -68,7 +70,7 @@ class AngelCoMirror(Base):
     high_concept = Column(Text)
     follower_count = Column(Integer)
     company_url = Column(Text)
-    company_size = Column(Integer)
+    company_size = Column(Text)
     company_type = Column(Text)  # json list
     created_at = Column(Text)
     updated_at = Column(Text)
@@ -101,6 +103,23 @@ class User(Base):
     twitter_url = Column(Text)
     blog_url = Column(Text)
     facebook_url = Column(Text)
+
+
+class Article(Base):
+    __tablename__ = "articles"
+    id = Column(Integer, primary_key=True)
+    startupdex_id = Column(Integer)
+    author_name = Column(Text)
+    author_id = Column(Integer)
+    title = Column(Text)
+    subtitle = Column(Text)
+    lead_text = Column(Text)
+    story = Column(Text)
+    date_published = Column(Text)
+    date_edited = Column(Text)
+    thumb_url = Column(Text)
+    header_image = Column(Text)
+    other_images = Column(Text)
 
 
 #Index('my_index', MyModel.name, unique=True, mysql_length=255)

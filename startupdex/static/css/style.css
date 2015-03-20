@@ -28,3 +28,18 @@ img.browse-thumb {
 .bottom-buffer-12px {
 	padding-bottom: 12px;
 }
+
+.selected-articles h3 {
+	margin-top: 4px;
+}
+
+.feed h3 {
+	margin-top: 4px;
+}
+
+.feed div {
+	//padding-top: 14px;
+	//background-color: #EEE;
+}
+
+

@@ -15,14 +15,34 @@ Database - angel.co administration at
 
 	<div class="row">
 		<div class="col-md-4">
-			<input type="text" id="angelco-rangestart" name="angelco-rangestart" placeholder="rangestart" value="16" />
+			<p>
+				first angelco listing: {{ angelco_first_listing.id }}
+			</p>
+			<p>
+			last angelco listing: {{ angelco_last_listing.id }}
+			</p>
+			<p>
+				first Startupdex listing: {{ startupdex_first_listing.id }}
+			</p>
+			<p>
+			last Startupdex listing: {{ startupdex_last_listing.id }}
+			</p>
+			<label for="angelco-rangestart">input start range</label>
+			<input type="text" id="angelco-rangestart" name="angelco-rangestart" placeholder="rangestart" value="{{ angelco_last_listing.id + 1}}" />
 			<br />
+			<label for="angelco-rangestart">input range width</label>
 			<input type="text" id="angelco-rangei" name="angelco-rangei" placeholder="rangei" value="50" />
 			<br />
 			<br />
 		</div>
 		<div class="col-md-8">
+			<br />
+			<br />
+			<br />
 			<button type="button" class="btn btn-success" id="angelco-get-some">Collect data from angel.co</button>
+			<br />
+			<br />
+			<button type="button" class="btn btn-warning" id="angelco-push-to-startupdex">Push data to Startupdex</button>
 		</div>
 	</div>
 
