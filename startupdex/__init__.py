@@ -10,6 +10,7 @@ from .models import (
     )
 
 
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -24,6 +25,7 @@ def main(global_config, **settings):
                           authorization_policy=authorization_policy
                           )
     config = Configurator(settings=settings)
+
     config.include('pyramid_jinja2')
     config.include('pyramid_redis_sessions')
     config.add_static_view('static', 'static', cache_max_age=3600)
@@ -31,7 +33,8 @@ def main(global_config, **settings):
                      factory='startupdex.security.EntryFactory')
 
     config.add_route('frontpage', '/')
-    config.add_route('search', '/search/{query}')
+    config.add_route('search_redirect', '/search_redires')
+    config.add_route('search', '/search')
     config.add_route('startup_browse', '/browse/')
 
     # identifier => if int, search by id, if text, search by name
@@ -49,6 +52,10 @@ def main(global_config, **settings):
 
     config.add_route('admin_home', '/admin/')
     config.add_route('db_angelco', '/admin/db_angelco/')
+
+    config.add_route('test', '/test/')
+    config.add_route('test2', '/test2/')
+    config.add_route('test3', '/test3/')
 
     config.scan()
     return config.make_wsgi_app()

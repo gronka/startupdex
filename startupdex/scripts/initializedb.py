@@ -14,6 +14,7 @@ from pyramid.scripts.common import parse_vars
 from ..models import (
     DBSession,
     Startup,
+    AngelCoMirror,
     Article,
     User,
     Base,
@@ -41,7 +42,7 @@ def main(argv=sys.argv):
         startup = Startup(name='Startup5000',
                           quick_info='Startup5000 delivers feature rich content to your apps',
                           logo_url='images/startups/1.jpg',
-                          logo_thumb_url='images/startups/1_thumb.jpg',
+                          thumb_url='images/startups/1_thumb.jpg',
                           headquarters="115 Lee Rd, Springfield, Illinois, USA",
                           country="USA",
                           state_province="Illinois",
@@ -116,7 +117,7 @@ def main(argv=sys.argv):
         startup = Startup(name='Startup6000',
                           quick_info="Tired of other companies that just don't cut it?",
                           logo_url='https://www.google.com/images/srpr/logo11w.png',
-                          logo_thumb_url='images/startups/1_thumb.jpg',
+                          thumb_url='images/startups/1_thumb.jpg',
                           headquarters="115 Lee Rd, Springfield, Illinois, USA",
                           country="USA",
                           state_province="Illinois",
@@ -127,7 +128,7 @@ def main(argv=sys.argv):
         startup = Startup(name='30DaySkill',
                           quick_info='Learn a new skill every 30 days with 30DaySkill! Neat!',
                           logo_url='https://www.google.com/images/srpr/logo11w.png',
-                          logo_thumb_url='images/startups/1_thumb.jpg',
+                          thumb_url='images/startups/1_thumb.jpg',
                           headquarters="115 Lee Rd, Springfield, Illinois, USA",
                           country="USA",
                           state_province="Illinois",
@@ -138,7 +139,7 @@ def main(argv=sys.argv):
         startup = Startup(name='Passion',
                           quick_info='This is an example startup',
                           logo_url='http://www.elpassion.com/wp-content/themes/ELPassion/images/logo.png',
-                          logo_thumb_url='images/startups/1_thumb.jpg',
+                          thumb_url='images/startups/1_thumb.jpg',
                           headquarters="115 Lee Rd, Springfield, Illinois, USA",
                           country="USA",
                           state_province="Illinois",
@@ -170,3 +171,8 @@ def main(argv=sys.argv):
                      city='Durham',
                      )
         DBSession.add(user)
+
+
+# in psql:
+# create table startup_search (
+# id serial

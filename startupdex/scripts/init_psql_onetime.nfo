@@ -1,0 +1,34 @@
+installing:
+copy config files (use mlocate)
+change to user postgres - make data directory
+create db cluster: gentoo: initdb -D /var/lib/posgresql/9.4/data
+or use pg_ctl: pg_ctl -D /var/lib/posgresql/9.4/data initdb
+set permissions, as on gentoo wiki in pg_hba.conf
+
+/etc/init.d/postgresql start
+
+open connection and set password:
+psql -U postgres
+\password
+\q
+change 'trust' to password for the local connection
+electronic service requested today
+
+reload configuration
+/etc/init.d/postgresql restart
+
+create user:
+createuser -U postgres taylor
+psql -U postgres
+=> alter role taylor with password 'password';
+=> \q
+to log into this account
+psql -d postgres -U taylor
+
+# createdb startupdex
+
+change database connection path at:
+sqlalchemy.url = postgresql://taylor:doit@localhost:5432/startupdex
+
+psql -U postgres -d startupdex -c "GRANT all ON articles TO taylor";
+psql -U postgres -d startupdex -c "TRUNCATE TABLE startups RESTART IDENTITY";

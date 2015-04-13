@@ -15,8 +15,105 @@ from sqlalchemy.orm import (
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
+import json
+
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
+
+DATETIME_FORMAT = '%Y%m%d%H%M%S'
+
+from peewee import *
+from playhouse.sqlite_ext import *
+
+ftsdb = SqliteExtDatabase('/home/taylor/projects/startupdex/startupdex_fts.sqlite', threadlocals=True)
+
+class Entry(Model):
+    title = CharField()
+    content = TextField()
+
+
+    class Meta:
+        database = ftsdb
+
+
+class FTSEntry(FTSModel):
+    entry = ForeignKeyField(Entry, primary_key=True)
+    content = TextField()
+
+
+    class Meta:
+        database = ftsdb
+
+
+class FTSStartup(FTSModel):
+    # id is implicit
+    startupdex_id = TextField()
+    angelco_id = TextField()
+    name = TextField()
+    content = TextField()
+    quick_info = TextField()
+    short_info = TextField()
+    thumb_url = TextField()
+    ranking = TextField()
+
+
+    class Meta:
+        database = ftsdb
+
+
+# this function is meant for correcting empty fields so they are properly
+# committed to the postgresql database
+def fix_integer_fields(db_dict):
+    integer_fields = ("id",
+                "hidden",
+                "community_profile",
+                "quality",
+                "follower_count",
+                "angelco_quality",
+                "angelco_follower_count",
+                "company_size",
+                "company_status",
+                )
+    for field in integer_fields:
+        if field in db_dict:
+            if db_dict[field] == "":
+                db_dict[field] = 0
+            elif db_dict[field] is True:
+                db_dict[field] = 1
+
+def get_images_from_angelco(index, thumb_url, logo_url):
+    import requests
+    import os
+    print(str(index))
+    folder_group = str(int(math.ceil(index / 10000.0) * 10000.0))
+    fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/thumbs/'+folder_group+'/'
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+    try:
+        print(str(thumb_url))
+        f = open(fpath+str(index)+'.jpg', 'wb')
+    except ValueError:
+        print("thumb_url is undefined for index " + str(index))
+    f.write(requests.get(thumb_url).content)
+    f.close()
+    fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/logos/'+folder_group+'/'
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+    try:
+        print(str(logo_url))
+        f = open(fpath+str(index)+'.jpg', 'wb')
+    except ValueError:
+        print("logo_url is undefined for index " + str(index))
+    f.write(requests.get(logo_url).content)
+    f.close()
+
+    #fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/logos/'+folder_group+'/'
+    #if not os.path.exists(fpath):
+        #os.makedirs(fpath)
+    #f = open(fpath+str(index)+'.jpg', 'wb')
+    #f.write(requests.get(logo_url).content)
+    #f.close()
+
 
 
 class Startup(Base):
@@ -36,7 +133,7 @@ class Startup(Base):
     blog_url = Column(Text)
     facebook_url = Column(Text)
     logo_url = Column(Text)
-    logo_thumb_url = Column(Text)
+    thumb_url = Column(Text)
     header_info = Column(Text)
     quick_info = Column(Text)
     short_info = Column(Text)
@@ -51,9 +148,14 @@ class Startup(Base):
     created_at = Column(Text)
     updated_at = Column(Text)
     angelco_status = Column(Text)
-    company_size = Column(Integer)
+    company_size = Column(Text)
     company_status = Column(Integer)
 
+
+
+#logo_url
+#thumb_url
+#screenshots
 
 class AngelCoMirror(Base):
     __tablename__ = 'angelcomirror'

@@ -50,12 +50,66 @@ Database - angel.co administration at
 		<div class="col-md-12">
 			<div id="angelco-results">
 				<p>
-					Results from angelco appear here
+					Last entries from Startupdex:
 				</p>
-
 			</div>
 		</div>
 	</div>
+
+	{% for startup in startupdex_update_point_list %}
+		<div class="row bottom-buffer-12px">
+						<div class="col-md-3">
+							<img src="{{ gibs.static_url }}images/apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+						</div>
+						<div class="col-md-9">
+							<h5 class="browse-startup-heading">
+								ID :: {{ startup.id }} ::
+								{{ startup.name }}
+								<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
+									>> link
+								</a>
+							</h5>
+				<p>
+					short_info from the database goes here. 
+					{{ startup.short_info }}
+				</p>
+			</div>
+		</div>
+	{% endfor %}
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<div id="angelco-results">
+				<p>
+					Last entries from AngelCoMirror:
+				</p>
+			</div>
+		</div>
+	</div>
+
+	{% for startup in angelcomirror_update_point_list %}
+		{% if startup.name %}
+		<div class="row bottom-buffer-12px">
+						<div class="col-md-3">
+							<img src="{{ gibs.static_url }}images/apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+						</div>
+						<div class="col-md-9">
+							<h5 class="browse-startup-heading">
+								ID :: {{ startup.id }} ::
+								{{ startup.name }}
+								<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
+									>> link
+								</a>
+							</h5>
+				<p>
+					short_info from the database goes here. 
+					{{ startup.short_info }}
+				</p>
+			</div>
+		</div>
+		{% endif %}
+	{% endfor %}
 
 	{#<div class="row">#}
 		{#<div class="col-md-12">#}

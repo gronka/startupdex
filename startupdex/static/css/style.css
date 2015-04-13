@@ -25,6 +25,12 @@ img.browse-thumb {
 	//padding-bottom: 10px;
 }
 
+browse-startup-heading {
+	/*display: inline;*/
+	/*margin: 0;*/
+	/*padding: 0;*/
+}
+
 .bottom-buffer-12px {
 	padding-bottom: 12px;
 }

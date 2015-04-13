@@ -13,10 +13,6 @@ Browsing startups at
 				</div>
 			</div>
 
-
-
-
-
 		{% for startup in startups %}
 			<div class="row bottom-buffer-12px">
 						<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
@@ -31,16 +27,13 @@ Browsing startups at
 
 					<p>
 						short_info from the database goes here. 
+						{{ startup.short_info }}
 					</p>
 				</div>
 			</div>
 
 		{% endfor %}
 
-
-
-
-	
 	<div class="row">
 		<div class="col-md-6">
 
@@ -52,8 +45,6 @@ Browsing startups at
 		</div>
 	</div>
 </div>
-
-
 
 
 
