@@ -2,6 +2,7 @@ startupdex.egg-info/
 startupdex.sqlite
 startupdex/__pycache__/
 scripts/__pycache__/
+startupdex/static/images/
 *.pyo
 *.pyc
 *.swp
