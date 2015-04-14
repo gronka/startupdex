@@ -25,7 +25,7 @@ DATETIME_FORMAT = '%Y%m%d%H%M%S'
 from peewee import *
 from playhouse.sqlite_ext import *
 
-ftsdb = SqliteExtDatabase('/home/taylor/projects/startupdex/startupdex_fts.sqlite', threadlocals=True)
+ftsdb = SqliteExtDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
 
 class Entry(Model):
     title = CharField()
@@ -86,7 +86,7 @@ def get_images_from_angelco(index, thumb_url, logo_url):
     import os
     print(str(index))
     folder_group = str(int(math.ceil(index / 10000.0) * 10000.0))
-    fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/thumbs/'+folder_group+'/'
+    fpath = '/var/www/startupdex/images/startups/thumbs/'+folder_group+'/'
     if not os.path.exists(fpath):
         os.makedirs(fpath)
     try:
@@ -96,7 +96,7 @@ def get_images_from_angelco(index, thumb_url, logo_url):
         print("thumb_url is undefined for index " + str(index))
     f.write(requests.get(thumb_url).content)
     f.close()
-    fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/logos/'+folder_group+'/'
+    fpath = '/var/www/startupdex/images/startups/logos/'+folder_group+'/'
     if not os.path.exists(fpath):
         os.makedirs(fpath)
     try:

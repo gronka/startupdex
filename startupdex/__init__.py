@@ -29,6 +29,7 @@ def main(global_config, **settings):
     config.include('pyramid_jinja2')
     config.include('pyramid_redis_sessions')
     config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_static_view(name='images', path='images', cache_max_age=3600)
     config.add_route('blog_action', '/blog/{action}',
                      factory='startupdex.security.EntryFactory')
 

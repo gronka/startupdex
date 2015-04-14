@@ -11,8 +11,10 @@ class ViewWarlock(object):
         self.context = context
         self.request = request
         self.static_url = request.static_url('startupdex:static/')
+        self.images_url = request.static_url('startupdex:images/')
 
         self.gibs = {'static_url': self.static_url,
+                     'images_url': self.images_url,
                      'application_url': self.request.route_url('frontpage'),
                      }
 
