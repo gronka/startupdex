@@ -60,9 +60,14 @@ def write_basic_image(image, image_dir, imagename):
         print("failed to determine image type")
 
 
-def update_startup_fts(startup):
-    doc = startup.name + " " + startup.quick_info + " " + startup.short_info + " " + startup.long_info
-    DBSession.execute("INSERT INTO fts_startups (id, doc) VALUES (?, ?)", startup.id, doc)
+def update_fts_startups(startup):
+    doc = startup.name + " " + startup.short_info + " " + startup.about
+    DBSession.execute("INSERT INTO fts_startups (startupdex_id, doc, name, short_info, photo_url) VALUES (?, ?, ?, ?, ?)",
+                      startup.id,
+                      doc,
+                      startup.name,
+                      startup.short_info,
+                      startup.photo_url)
     print("++++++++++++++++")
     print(doc)
 
@@ -286,27 +291,23 @@ class Startup(Base):
     userid_creator = Column(Integer)
     name = Column(Text)
     status = Column(Text)
-    headquarters = Column(Text)
     locations = Column(Text)
     country = Column(Text)
     state_province = Column(Text)
     city = Column(Text)
-    tags = Column(Text)
     street_address = Column(Text)
+    tags = Column(Text)
     contact_phone = Column(Text)
     contact_email = Column(Text)
-    startupdex_url = Column(Text)
-    home_url = Column(Text)
     local_url = Column(Text)
-    twitter_url = Column(Text)
+    home_url = Column(Text)
     blog_url = Column(Text)
     facebook_url = Column(Text)
+    twitter_url = Column(Text)
     logo_url = Column(Text)
     thumb_url = Column(Text)
     header_info = Column(Text)
-    quick_info = Column(Text)
     short_info = Column(Text)
-    long_info = Column(Text)
     primary_category = Column(Text)
     categories = Column(Text)
     founders = Column(Text)
@@ -377,6 +378,7 @@ class User(Base):
     tzoffset = Column(Text)
     status = Column(Text)
     about = Column(Text)
+    # replace location with search_locs?
     location = Column(Text)
     country = Column(Text)
     state_province = Column(Text)
@@ -386,9 +388,10 @@ class User(Base):
     photo_url = Column(Text)
     local_url = Column(Text)
     home_url = Column(Text)
-    twitter_url = Column(Text)
     blog_url = Column(Text)
+    linkedin_url = Column(Text)
     facebook_url = Column(Text)
+    twitter_url = Column(Text)
 
 
 #class UserToCompanies(Base):

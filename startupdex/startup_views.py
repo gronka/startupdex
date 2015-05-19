@@ -23,6 +23,7 @@ from .models import (
     Article,
     fix_integer_fields,
     name_to_local_url,
+    update_fts_startups,
     CreateStartupSchema,
     ModifyStartupSchema,
     ModifySocialSchema,
@@ -122,6 +123,7 @@ class StartupView(ViewWarlock):
                                                    startupid=startup.id
                                                    )
                 DBSession.add(user_has_startup)
+                update_fts_startups(startup)
                 request.session.flash(startup.name + " added to your startups.",
                                     queue='successes')
                 return HTTPFound(location=request.route_url("upload_logo", id=startup.id))

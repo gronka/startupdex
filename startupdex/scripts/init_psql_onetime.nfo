@@ -9,7 +9,7 @@ set permissions, as on gentoo wiki in pg_hba.conf
 
 open connection and set password:
 psql -U postgres
-\password
+\password - return service requested
 \q
 change 'trust' to password for the local connection
 electronic service requested today
@@ -27,8 +27,163 @@ psql -d postgres -U taylor
 
 # createdb startupdex
 
+
+###psql commands
+\du - list users
+\dt *.* - list tables
+
+
 change database connection path at:
 sqlalchemy.url = postgresql://taylor:doit@localhost:5432/startupdex
+
+template1=# CREATE USER tom WITH PASSWORD 'myPassword';
+template1=# CREATE DATABASE jerry;
+template1=# GRANT ALL PRIVILEGES ON DATABASE jerry to tom;
+
+CREATE TABLE user_has_articles (
+	userid integer REFERENCES users(id) ON DELETE CASCADE,
+	articleid integer REFERENCES articles(id) ON DELETE CASCADE,
+	PRIMARY KEY (userid, articleid)
+);
+CREATE TABLE startup_has_articles (
+	startupid integer REFERENCES startups(id) ON DELETE CASCADE,
+	articleid integer REFERENCES articles(id) ON DELETE CASCADE,
+	PRIMARY KEY (startupid, articleid)
+);
+CREATE TABLE user_has_startups (
+	userid integer REFERENCES users(id) ON DELETE CASCADE,
+	startupid integer REFERENCES startups(id) ON DELETE CASCADE,
+	PRIMARY KEY (userid, startupid)
+);
+
+CREATE TABLE startups (
+	id SERIAL NOT NULL,
+	userid_creator INTEGER NOT NULL,
+	name TEXT NOT NULL,
+	status TEXT,
+	country TEXT NOT NULL,
+	state_province TEXT NOT NULL,
+	city TEXT NOT NULL,
+	street_address TEXT,
+	tags TEXT ,
+	contact_phone TEXT ,
+	contact_email TEXT NOT NULL,
+	local_url TEXT NOT NULL,
+	home_url TEXT ,
+	blog_url TEXT ,
+	linkedin_url TEXT ,
+	facebook_url TEXT ,
+	twitter_url TEXT ,
+	logo_url TEXT NOT NULL,
+	thumb_url TEXT NOT NULL,
+	header_info TEXT ,
+	short_info TEXT NOT NULL,
+	primary_category TEXT NOT NULL,
+	categories TEXT NOT NULL,
+	about TEXT NOT NULL,
+	startupdex_ranking TEXT ,
+	angelco_quality INTEGER,
+	angelco_follower_count INTEGER ,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL,
+	angelco_status TEXT ,
+	company_size TEXT NOT NULL,
+	company_status INTEGER ,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE angelcomirror (
+	startupdexid INTEGER NOT NULL,
+	id INTEGER,
+	hidden INTEGER,
+	community_profile INTEGER,
+	name TEXT,
+	angellist_url TEXT,
+	logo_url TEXT,
+	thumb_url TEXT,
+	quality INTEGER,
+	product_desc TEXT,
+	high_concept TEXT,
+	follower_count TEXT,
+	company_url TEXT,
+	company_size TEXT,
+	company_type TEXT,
+	created_at TEXT,
+	updated_at TEXT,
+	twitter_url TEXT,
+	facebook_url TEXT,
+	linkedin_url TEXT,
+	blog_url TEXT,
+	crunchbase_url TEXT,
+	video_url TEXT,
+	markets TEXT,
+	status TEXT,
+	screenshots TEXT,
+	launch_date TEXT,
+	fundraising TEXT,
+	locations TEXT,
+	PRIMARY KEY (startupdexid)
+);
+
+CREATE TABLE passwords (
+	id SERIAL,
+	user_id INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	password TEXT NOT NULL,
+	salt1 TEXT NOT NULL,
+	salt2 TEXT NOT NULL,
+	version INTEGER,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE users (
+	id SERIAL NOT NULL,
+	email TEXT NOT NULL,
+	password TEXT,
+	fullname TEXT NOT NULL,
+	phone TEXT,
+	confirmed BOOLEAN,
+	join_date TIMESTAMP,
+	tz TEXT,
+	tzoffset TEXT,
+	status TEXT,
+	location TEXT,
+	country TEXT,
+	state_province TEXT
+	city TEXT,
+	street_address TEXT,
+	thumb_url TEXT,
+	photo_url TEXT,
+	local_url TEXT,
+	home_url TEXT,
+	blog_url TEXT,
+	linkedin_url TEXT,
+	facebook_url TEXT,
+	twitter_url TEXT,
+);
+
+CREATE TABLE articles (
+	id SERIAL NOT NULL,
+	startupdexid INTEGER,
+	authorid INTEGER NOT NULL,
+	author_name TEXT,
+	title TEXT,
+	subtitle TEXT,
+	lead_text TEXT,
+	story TEXT,
+	local_url TEXT,
+	tags TEXT,
+	date_published TIMESTAMP,
+	date_edited TIMESTAMP,
+	photo_url TEXT,
+	header_image TEXT,
+	other_images TEXT,
+);
+
+
+
+
+
+
 
 useful commands:
 (as user taylor)
@@ -89,7 +244,17 @@ DROP TABLE element
 +++++++++++
 
 
-CREATE TABLE fts_startups ( id SERIAL, doc TEXT, tsv TSVECTOR);
+CREATE TABLE fts_startups (
+	id SERIAL,
+	startupdex_id INTEGER UNIQUE,
+	angelco_id INTEGER UNIQUE,
+	name TEXT,
+	short_info TEXT,
+	photo_url TEXT,
+	ranking TEXT,
+	doc TEXT,
+	tsv TSVECTOR
+);
 
 CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
 FOR EACH ROW EXECUTE PROCEDURE startups_tsvector_update_trigger (
@@ -110,21 +275,7 @@ FROM ranked, q
 ORDER BY ranked DESC;
 
 +++++++++++++++++++++++++++++++
-CREATE TABLE user_has_articles (
-	userid integer REFERENCES users ON DELETE CASCADE,
-	articleid integer REFERENCES articles ON DELETE CASCADE,
-	PRIMARY KEY (userid, articleid)
-);
-CREATE TABLE startup_has_articles (
-	startupid integer REFERENCES startups ON DELETE CASCADE,
-	articleid integer REFERENCES articles ON DELETE CASCADE,
-	PRIMARY KEY (startupid, articleid)
-);
-CREATE TABLE user_has_startups (
-	userid integer REFERENCES users ON DELETE CASCADE,
-	startupid integer REFERENCES startups ON DELETE CASCADE,
-	PRIMARY KEY (userid, startupid)
-);
+
 
 	
 
