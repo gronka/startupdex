@@ -257,7 +257,7 @@ CREATE TABLE fts_startups (
 );
 
 CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
-FOR EACH ROW EXECUTE PROCEDURE startups_tsvector_update_trigger (
+FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger (
 tsv, 'pg_catalog.english', doc);
 
 CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);

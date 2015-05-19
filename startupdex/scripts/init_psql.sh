@@ -97,17 +97,6 @@ CREATE TABLE angelcomirror (
 );"
 
 psql -U taylor -d startupdex -c "
-CREATE TABLE passwords (
-	id SERIAL,
-	user_id INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-	password TEXT NOT NULL,
-	salt1 TEXT NOT NULL,
-	salt2 TEXT NOT NULL,
-	version INTEGER,
-	PRIMARY KEY (id)
-);"
-
-psql -U taylor -d startupdex -c "
 CREATE TABLE users (
 	id SERIAL NOT NULL,
 	email TEXT NOT NULL,
@@ -121,7 +110,7 @@ CREATE TABLE users (
 	status TEXT,
 	location TEXT,
 	country TEXT,
-	state_province TEXT
+	state_province TEXT,
 	city TEXT,
 	street_address TEXT,
 	thumb_url TEXT,
@@ -131,6 +120,17 @@ CREATE TABLE users (
 	blog_url TEXT,
 	facebook_url TEXT,
 	twitter_url TEXT,
+);"
+
+psql -U taylor -d startupdex -c "
+CREATE TABLE passwords (
+	id SERIAL,
+	user_id INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	password TEXT NOT NULL,
+	salt1 TEXT NOT NULL,
+	salt2 TEXT NOT NULL,
+	version INTEGER,
+	PRIMARY KEY (id)
 );"
 
 psql -U taylor -d startupdex -c "
@@ -168,7 +168,7 @@ CREATE TABLE fts_startups (
 
 psql -U taylor -d startupdex -c "
 CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
-FOR EACH ROW EXECUTE PROCEDURE startups_tsvector_update_trigger (
+FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger (
 tsv, 'pg_catalog.english', doc);
 
 CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);"
