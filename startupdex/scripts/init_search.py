@@ -1,4 +1,4 @@
 
-from playhouse.sqlite_ext import SqliteExtDatabase
+#from playhouse.sqlite_ext import SqliteExtDatabase
 
-db = SqliteExtDatabase('startupdex.db', threadlocals=True)
+#db = SqliteExtDatabase('startupdex.db', threadlocals=True)
