@@ -10,6 +10,8 @@ from .models import (
     Base,
     )
 
+import logging
+
 
 
 def main(global_config, **settings):
@@ -17,6 +19,15 @@ def main(global_config, **settings):
     """
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
+    #logger = logging.getLogger(__name__)
+    #hdlr = logging.FileHandler('/var/log/startupdex/wsgi.log')
+    #logging.config.fileConfig(settings['logging.config'],
+                              #disable_existing_loggers=False,
+                              #)
+    #formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    #hdlr.setFormatter(formatter)
+    #logger.addHandler(hdlr)
+    #logging.config.fileConfig(settings['logging.config'])
     # this allows imperative table definitions (as opposed to declarative
     Base.metadata.bind = engine
     authentication_policy = AuthTktAuthenticationPolicy(
