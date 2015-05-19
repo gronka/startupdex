@@ -31,13 +31,13 @@ Base = declarative_base()
 DATETIME_FORMAT = '%Y%m%d%H%M%S'
 
 import colander
-from peewee import *
-from playhouse.sqlite_ext import *
-from playhouse.apsw_ext import APSWDatabase
+#from peewee import *
+#from playhouse.sqlite_ext import *
+#from playhouse.apsw_ext import APSWDatabase
 from PIL import Image
 
 #ftsdb = SqliteExtDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
-ftsdb = APSWDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
+#ftsdb = APSWDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
 
 
 def write_basic_image(image, image_dir, imagename):
@@ -164,38 +164,38 @@ class LoginSchema(colander.MappingSchema):
     email = colander.SchemaNode(colander.String())
     password = colander.SchemaNode(colander.String())
 
-class Entry(Model):
-    title = CharField()
-    content = TextField()
+#class Entry(Model):
+    #title = CharField()
+    #content = TextField()
 
 
-    class Meta:
-        database = ftsdb
+    #class Meta:
+        #database = ftsdb
 
 
-class FTSEntry(FTSModel):
-    entry = ForeignKeyField(Entry, primary_key=True)
-    content = TextField()
+#class FTSEntry(FTSModel):
+    #entry = ForeignKeyField(Entry, primary_key=True)
+    #content = TextField()
 
 
-    class Meta:
-        database = ftsdb
+    #class Meta:
+        #database = ftsdb
 
 
-class FTSStartup(FTSModel):
-    # id is implicit
-    startupdex_id = TextField()
-    angelco_id = TextField()
-    name = TextField()
-    content = TextField()
-    quick_info = TextField()
-    short_info = TextField()
-    thumb_url = TextField()
-    ranking = TextField()
+#class FTSStartup(FTSModel):
+    ## id is implicit
+    #startupdex_id = TextField()
+    #angelco_id = TextField()
+    #name = TextField()
+    #content = TextField()
+    #quick_info = TextField()
+    #short_info = TextField()
+    #thumb_url = TextField()
+    #ranking = TextField()
 
 
-    class Meta:
-        database = ftsdb
+    #class Meta:
+        #database = ftsdb
 
 
 class FTSUser(FTSModel):

@@ -38,7 +38,7 @@ import uuid
 import datetime
 import math
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def generate_confirmation_token(email):

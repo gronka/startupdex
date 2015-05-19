@@ -20,10 +20,10 @@ from .models import (
     AngelCoMirror,
     User,
     Article,
-    FTSStartup,
+    #FTSStartup,
     fix_integer_fields,
     get_images_from_angelco,
-    update_startup_fts,
+    #update_startup_fts,
     )
 
 from startupdex.view_warlock import ViewWarlock
@@ -362,18 +362,18 @@ class AdminView(ViewWarlock):
                 print(startupdex.long_info)
                 print(str(type(startupdex.long_info)))
                 # adds startup to searchable database
-                update_startup_fts(startupdex)
-                FTSStartup.create(
-                    startupdexid=int(i),
-                    angelco_id=str(ca.id),
-                    name=name,
-                    content='\n'.join((startupdex.quick_info,
-                                    startupdex.short_info,
-                                    startupdex.long_info)),
-                    quick_info=startupdex.quick_info,
-                    short_info=startupdex.short_info,
-                    thumb_url=startupdex.thumb_url,
-                )
+                #update_startup_fts(startupdex)
+                #FTSStartup.create(
+                    #startupdexid=int(i),
+                    #angelco_id=str(ca.id),
+                    #name=name,
+                    #content='\n'.join((startupdex.quick_info,
+                                    #startupdex.short_info,
+                                    #startupdex.long_info)),
+                    #quick_info=startupdex.quick_info,
+                    #short_info=startupdex.short_info,
+                    #thumb_url=startupdex.thumb_url,
+                #)
 
                 # get image
                 get_images_from_angelco(i, ca.thumb_url, ca.logo_url)

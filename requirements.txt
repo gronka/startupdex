@@ -4,3 +4,5 @@ Pillow
 beautifulsoup4
 urllib3
 uwsgi
+pyramid_mailer
+peewee

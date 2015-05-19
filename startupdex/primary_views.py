@@ -21,7 +21,7 @@ from .models import (
     User,
     Article,
     fix_integer_fields,
-    FTSStartup,
+    #FTSStartup,
     startup_search,
     )
 
@@ -75,13 +75,13 @@ class FrontpageView(ViewWarlock):
         #per_page = param["per_page"]
         per_page = 10
 
-        results = (FTSStartup
-                .select(
-                    FTSStartup,
-                    FTSStartup.bm25(FTSStartup.content).alias('score'))
-                .where(FTSStartup.match( search_terms ))
-                .order_by(SQL('score').desc())
-                )
+        #results = (FTSStartup
+                #.select(
+                    #FTSStartup,
+                    #FTSStartup.bm25(FTSStartup.content).alias('score'))
+                #.where(FTSStartup.match( search_terms ))
+                #.order_by(SQL('score').desc())
+                #)
         num_pages = math.ceil(results.count() / per_page)
         offset = per_page * page - per_page
         print("now the results")

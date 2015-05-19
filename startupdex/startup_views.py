@@ -22,7 +22,6 @@ from .models import (
     UserHasStartups,
     Article,
     fix_integer_fields,
-    FTSStartup,
     name_to_local_url,
     CreateStartupSchema,
     ModifyStartupSchema,
