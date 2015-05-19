@@ -120,6 +120,7 @@ CREATE TABLE users (
 	blog_url TEXT,
 	facebook_url TEXT,
 	twitter_url TEXT,
+	PRIMARY KEY (id)
 );"
 
 psql -U taylor -d startupdex -c "
@@ -150,6 +151,7 @@ CREATE TABLE articles (
 	photo_url TEXT,
 	header_image TEXT,
 	other_images TEXT,
+	PRIMARY KEY (id)
 );"
 
 psql -U taylor -d startupdex -c "
