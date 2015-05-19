@@ -1,0 +1,78 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+
+<div class="container">
+	<div class="row">
+{% set active_tab = 'modify_startup' %}
+{% include "modify_tabs.jinja2" %}
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">Modifying {{ startup.name }}</h3>
+							<a href="{{ gibs.application_url }}upload_logo/{{ startup.id }}">
+						<button class="btn btn-default" id="enable-changes" type="submit"><i class="glyphicon glyphicon-camera"></i> Change Logo</button>
+						</a>
+				<br />
+				<br />
+
+					<input type="hidden" name="startupid" id="startupid" value="{{ startup.id }}" />
+					<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+					<table class="table settings_profile">
+						<tr>
+							<td class="col-xs-3 col-sm-2">Name</td>
+							<td><input type="text" name="name" class="name" value="{{ startup.name }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Startupdex Hyperlink</td>
+							<td>
+								<input type="text" name="local_url" class="local_url" value="{{ startup.local_url }}" />
+								<div class="test-local-url">
+									<i>startupdex.com/startup/{{ startup.local_url }}</i> is your current hyperlink.
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Search Tags</td>
+							<td><input type="text" name="tags" class="tags" value="" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Company Size</td>
+							<td>
+								<select class="company_size" name="company_size">
+									<option value="1-5" {{ 'selected' if startup.company_size == "1-5" }}>1-5 team members</option>
+									<option value="6-10" {{ 'selected' if startup.company_size == "6-10" }}>6-10 team members</option>
+									<option value="11-25" {{ 'selected' if startup.company_size == "11-25" }}>11-25 team members</option>
+									<option value="26+" {{ 'selected' if startup.company_size == "26+" }}>26+ team members</option>
+									<option value="not specified" {{ 'selected' if startup.company_size == "not specified" }}>Don't specify</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Short description <br />Will show up in search results. Try to keep <= 300 characters. </td>
+							<td><textarea class="form-control short_info" name="short_info" rows="3">{{ startup.short_info }}</textarea></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">About</td>
+							<td><textarea class="form-control about" name="about" rows="10" >{{ startup.about }}</textarea></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2"><button class="btn btn-default" id="save-changes" type="submit" disabled><i class="glyphicon glyphicon-ok"></i> Save Changes</button></td>
+							<td><button class="btn btn-default" id="cancel-changes" type="submit" disabled><i class="glyphicon glyphicon-remove"></i> Cancel Changes</button></td>
+						</tr>
+					</table>
+	
+	
+			</div>
+	</div>
+</div>
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

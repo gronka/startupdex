@@ -1,0 +1,87 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Creating a Startup at
+{% endblock %}
+
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+		<form action="{{ gibs.application_url }}create_startup" method="POST">
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">New Startup</h3>
+				<br />
+				<br />
+			<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+						<table class="table">
+							<tr>
+								<td class="col-xs-3 col-sm-2">Startup Name</td>
+								<td><input type="text" name="name" class="name" value="" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Country</td>
+								<td><input type="text" name="country" class="country" value="{{ user.country if user.country }}" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">State/Province</td>
+								<td><input type="text" name="state_province" class="state_province" value="{{ user.state_province if user.state_province }}" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">City</td>
+								<td><input type="text" name="city" class="city" value="{{ user.city if user.city }}" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Street Address</td>
+								<td><input type="text" name="street_address" class="street_address" value="{{ user.street_address if user.street_address }}" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Search Tags</td>
+								<td><input type="text" name="tags" class="tags" value="" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Contact Email</td>
+								<td><input type="text" name="contact_email" class="contact_email" value="{{ user.email }}" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Company Size</td>
+								<td>
+									<select class="company_size" name="company_size">
+										<option value="1-5">1-5 team members</option>
+										<option value="6-10">6-10 team members</option>
+										<option value="11-25">11-25 team members</option>
+										<option value="26+">26+ team members</option>
+										<option value="not specified">Don't specify</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Short description <br />Will show up in search results. Try to keep <= 300 characters. </td>
+								<td><textarea class="form-control short_info" name="short_info" rows="3"></textarea></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">About</td>
+								<td><textarea class="form-control about" name="about" rows="10" ></textarea></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2"></td>
+								<td><button type="submit" class="btn btn-primary" id="save-changes" name="form.submitted"><i class="glyphicon glyphicon-plus"></i> Create Startup</button></td>
+							</tr>
+						</table>
+					</div>
+	
+	
+		</form>
+	</div>
+</div>
+
+
+
+
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

@@ -1,9 +1,12 @@
-{% extends "admin_base.jinja2" %}
+{% extends "../base.jinja2" %}
 {% block title %}
 Database - angel.co administration at
 {% endblock %}
 
 {% block left_focus %}
+<div class="container">
+	<div class="row">
+	<div class="col-xs-12">
 <div class="well well-sm">
 			<div class="row">
 				<div class="col-md-12">
@@ -12,6 +15,15 @@ Database - angel.co administration at
 						</h3>
 						<p>
 							<a href="{{ gibs.application_url }}admin/db_angelco">Administrate Angelco interface</a>
+						</p>
+						<p>
+							<a href="{{ gibs.application_url }}admin/db_users">Administrate Users</a>
+						</p>
+						<p>
+							<a href="{{ gibs.application_url }}admin/db_startups">Administrate Startups</a>
+						</p>
+						<p>
+							<a href="{{ gibs.application_url }}admin/db_articles">Administrate Articles</a>
 						</p>
 				</div>
 			</div>
@@ -58,7 +70,6 @@ Database - angel.co administration at
 
 
 
-
-
-
 {% endblock left_focus %}
+{% block right_focus %}
+{% endblock right_focus %}

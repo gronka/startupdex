@@ -1,0 +1,5 @@
+colander
+itsdangerous
+Pillow
+beautifulsoup4
+urllib3

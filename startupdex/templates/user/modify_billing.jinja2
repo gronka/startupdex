@@ -1,0 +1,44 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+{% set active_tab = 'billing' %}
+{% include "modify_tabs.jinja2" %}
+
+<div class="container">
+<div class="row">
+	<div class="well well-sm">
+		<div class="row">
+			<div class="col-xs-3">
+				<img src="{{ gibs.images_url }}{{ user.thumb_url }}" alt="{{ user.thumb_url }}" class="img-responsive" width="100%">
+			</div>
+	
+			<div class="col-xs-9">
+				<h3>{{ user.fullname }}</h3>
+				<p>{{ user.location }}</p>
+				<p>{{ user.home_url }}</p>
+				<p>{{ user.quick_info }}</p>
+				<p>Quality: {{ user.angelco_quality }}</p>
+				
+				
+				<p>Locations: {{ user.locations }}</p>
+	
+	
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+
+
+
+
+{% endblock left_focus %}
+{% block right_focus %}
+{% endblock right_focus %}

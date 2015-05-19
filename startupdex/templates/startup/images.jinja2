@@ -1,0 +1,52 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Creating a Startup at
+{% endblock %}
+
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">Logo Upload</h3>
+				<br />
+				<br />
+			<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+				<form action="upload_logo">
+						<table class="table create_startup">
+							<tr>
+								<td class="col-xs-3 col-sm-2">Upload an Image</td>
+								<td>
+									<input type="file" id="logo">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Image Preview</td>
+								<td>
+									{#<form action="/logo-upload" class="dropzone" id="logo-upload"></form>#}
+									<img id="logo-img" src="#" alt="">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2"></td>
+								<td><button type="submit" class="btn btn-primary" id="save-changes" name="form.submitted"><i class="glyphicon glyphicon-plus"></i> Upload Logo</button></td>
+							</tr>
+						</table>
+					</form>
+			</div>
+	
+	
+	</div>
+</div>
+
+
+
+
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

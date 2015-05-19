@@ -1,0 +1,56 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+{% set active_tab = 'startups' %}
+{% include "manage_tabs.jinja2" %}
+
+<div class="row">
+	<div class="col-xs-12">
+		<br />
+		<h3 class="settings_editable">Manage Startups</h3>
+			<a class="btn btn-default" href="{{ gibs.application_url }}create_startup"><i class="glyphicon glyphicon-plus-sign"></i> Add a Startup</a>
+		<br />
+		<br />
+
+		{% if startups is none %}
+		<p>
+			You currently have no startups.
+		</p>
+		{% else %}
+			<div class="feed well well-sm">
+				<h3>Your Listed Startups</h3>
+				{% for startup_row in startups | batch(4) %}
+				<div class="row">
+					{% for startup in startup_row %}
+						<div class="col-md-3" data-sr>
+							<p>
+								<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
+									<h4 class="text-center">{{ startup.name }}</h4>
+									<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.logo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+								</a>
+							</p>
+							<p>
+								<a class="btn btn-default" href="{{ gibs.application_url }}modify_startup/{{ startup.id }}"><i class="glyphicon glyphicon-cog"></i> Modify</a>
+							</p>
+					
+						</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+
+
+	</div>
+</div>
+
+
+
+{% endblock left_focus %}
+

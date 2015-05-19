@@ -1,0 +1,52 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Upload Photo at
+{% endblock %}
+
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">Photo Upload for {{ article.title }}</h3>
+				<br />
+				<br />
+			<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+			<form method="POST" enctype="multipart/form-data"
+				action="{{ gibs.application_url }}upload_article_photo/{{ article.id  }}">
+						<table class="table">
+							<tr>
+								<td class="col-xs-3 col-sm-2">Upload an Image</td>
+								<td>
+									<input type="file" name="photo" id="photo">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Image Preview</td>
+								<td>
+									<img class="photo-preview" src="#" alt="">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2"></td>
+								<td><button type="submit" class="btn btn-primary" id="save-changes" name="form.submitted"><i class="glyphicon glyphicon-upload"></i> Upload Photo</button></td>
+							</tr>
+						</table>
+					</form>
+			</div>
+	
+	
+	</div>
+</div>
+
+
+
+
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

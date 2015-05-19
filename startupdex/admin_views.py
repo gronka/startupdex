@@ -23,6 +23,7 @@ from .models import (
     FTSStartup,
     fix_integer_fields,
     get_images_from_angelco,
+    update_startup_fts,
     )
 
 from startupdex.view_warlock import ViewWarlock
@@ -40,9 +41,52 @@ log = logging.getLogger(__name__)
 
 
 class AdminView(ViewWarlock):
+    def __init__(self, context, request):
+        ViewWarlock.__init__(self, context, request)
+
+    @view_config(route_name='db_users', renderer='templates/admin/db_users.jinja2')
+    def db_users(self):
+        newest_user = DBSession.query(User).order_by(desc("id")).first()
+        newest_user_list = []
+        if newest_user is not None:
+            for i in range(newest_user.id - 10, newest_user.id + 1):
+                user = DBSession.query(User).filter(User.id == i).first()
+                newest_user_list.append(user)
+        else:
+            newest_user = {"id": 0}
+        return {'gibs': self.gibs,
+                'newest_user': newest_user,
+                'newest_user_list': newest_user_list,
+                }
+
+    @view_config(name='admin_update_user.json', renderer='json')
+    def admin_update_user(self):
+        request = self.request
+        user_json = request.json_body
+        user = DBSession.query(User).filter(User.id == user_json['id']).first()
+        for key, prop in user_json.items():
+            if prop == "None":
+                prop = None
+            elif prop == "":
+                prop = None
+            elif prop == "False":
+                prop = False
+            elif prop == "True":
+                prop = True
+            if prop != getattr(user, key):
+                setattr(user, key, prop)
+        return ("")
+
+    @view_config(name='admin_remove_user.json', renderer='json')
+    def admin_remove_user(self):
+        request = self.request
+        user_id = request.json_body['user_id']
+        user = DBSession.query(User).filter(User.id == user_id).first()
+        DBSession.delete(user)
+        return ("")
+
     @view_config(route_name='db_angelco', renderer='templates/admin/db_angelco.jinja2')
     def db_angelco(self):
-        startups = DBSession.query(Startup).all()
         angelco_first_listing = DBSession.query(AngelCoMirror).first()
         angelco_last_listing = DBSession.query(AngelCoMirror).order_by(desc("id")).first()
         startupdex_first_listing = DBSession.query(Startup).first()
@@ -64,11 +108,12 @@ class AdminView(ViewWarlock):
             "SELECT id FROM startups WHERE status=:param ORDER BY id DESC",
             {"param": str(1)}
             ).first()
+        print("++++++++++++++++++++++++++++++++")
+        print("++++++++++++++++++++++++++++++++")
+        print(str(type(startupdex_update_point)))
+        startupdex_update_point_list = []
         if startupdex_update_point is not None:
-            print("++++++++++++++++++++++++++++++++")
-            print("++++++++++++++++++++++++++++++++")
-            print(str(startupdex_update_point.id))
-            startupdex_update_point_list = []
+            #print(str(startupdex_update_point.id))
             for i in range(startupdex_update_point.id - 5, startupdex_update_point.id + 1):
                 startupdex_update_point_list.append(DBSession.execute(
                     "SELECT * FROM startups WHERE id=:param",
@@ -94,11 +139,9 @@ class AdminView(ViewWarlock):
         else:
             angelcomirror_update_point = {"id": 0}
 
-        print(angelcomirror_update_point_list)
 
 
         return {'gibs': self.gibs,
-                'startups': startups,
                 'angelco_first_listing': angelco_first_listing,
                 'angelco_last_listing': angelco_last_listing,
                 'startupdex_first_listing': startupdex_first_listing,
@@ -178,12 +221,12 @@ class AdminView(ViewWarlock):
 
         for i in range(rangestart, rangeend):
             #current_angelco = DBSession.query(AngelCoMirror).where(AngelCoMirror.id==i)
-            #current_angelco = DBSession.select(AngelCoMirror).where(AngelCoMirror.startupdex_id==i)
+            #current_angelco = DBSession.select(AngelCoMirror).where(AngelCoMirror.startupdexid==i)
             print("+++++++++++++++++++++++++++")
             print("i is now " + str(i))
             #ca = current_angelco
             ca = DBSession.execute(
-                "SELECT * FROM angelcomirror WHERE startupdex_id=:param",
+                "SELECT * FROM angelcomirror WHERE startupdexid=:param",
                 {"param": str(i)}
                 ).first()
             print("type of ca " + str(type(ca)))
@@ -208,6 +251,40 @@ class AdminView(ViewWarlock):
             print(ca.name)
             name = ca.name.replace('/', '')
 
+            ca_string = ca.created_at.split('-')
+            year = ca_string[0]
+            month = ca_string[1]
+            ca_string = ca_string[2].split('T')
+            day = ca_string[0]
+            ca_string = ca_string[1].split(':')
+            hour = ca_string[0]
+            minute = ca_string[1]
+            ca_string = ca_string[2].split('Z')
+            second = ca_string[0]
+            created_at = datetime.datetime(year=year,
+                                           month=month,
+                                           day=day,
+                                           hour=hour,
+                                           minute=minute,
+                                           second=second)
+
+            ua_string = ua.created_at.split('-')
+            year = ua_string[0]
+            month = ua_string[1]
+            ua_string = ua_string[2].split('T')
+            day = ua_string[0]
+            ua_string = ua_string[1].split(':')
+            hour = ua_string[0]
+            minute = ua_string[1]
+            ua_string = ua_string[2].split('Z')
+            second = ua_string[0]
+            updated_at = datetime.datetime(year=year,
+                                           month=month,
+                                           day=day,
+                                           hour=hour,
+                                           minute=minute,
+                                           second=second)
+
             #if ca.status == '':
                 #angelco_status = -1
             #else:
@@ -220,67 +297,84 @@ class AdminView(ViewWarlock):
 
             company_size = ca.company_size
 
-            startupdex = Startup(
-                # already transferred - defaults
-                #id=ca.startupdex_id,
-                name=name,
-                #status="",
-                #locations=query_dict['locations'],
-                long_info=ca.community_profile,
-                #angelco_quality=query_dict['quality'],
-                #angelco_follower_count=query_dict['follower_count'],
-                #updated_at=query_dict['updated_at'],
-                #angelco_status=50,  # status of 50 implies what options are set here, currently
-                #blog_url=query_dict['blog_url'],
-                #twitter_url=query_dict['twitter_url'],
-                #facebook_url=query_dict['twitter_url'],
-                status="1",
-                headquarters=headquarters,
-                country=country,
-                state_province=state_province,
-                city=city,
-                created_at=datetime.utcnow().strftime('%Y/%m/%d %H:%M'),
-                updated_at=datetime.utcnow().strftime('%Y/%m/%d %H:%M'),
-                home_url=ca.company_url,
-                twitter_url=ca.twitter_url,
-                facebook_url=ca.facebook_url,
-                logo_url=ca.logo_url,
-                thumb_url=ca.thumb_url,
-                blog_url=ca.blog_url,
-                quick_info=ca.high_concept,
-                short_info=ca.product_desc,
-                angelco_status=ca.status,
-                company_size=company_size,
+            folder_group = str(int(math.ceil(i / 10000.0) * 10000.0))
+            thumb_url = "startups/thumbs/" + folder_group+"/"+str(i) + ".jpg"
+            logo_url = "startups/logos/" + folder_group+"/"+str(i) + ".jpg"
+
+            test_exists = DBSession.execute(
+                "SELECT * FROM startups WHERE id=:param",
+                {"param": str(i)}
+                ).first()
+            print("=====================")
+            print("=====================")
+            print("=====================")
+            print(str(type(test_exists)))
+
+            if test_exists is None:
+                startupdex = Startup(
+                    # already transferred - defaults
+                    #id=ca.startupdexid,
+                    name=name,
+                    #status="",
+                    #locations=query_dict['locations'],
+                    long_info=ca.community_profile,
+                    #angelco_quality=query_dict['quality'],
+                    #angelco_follower_count=query_dict['follower_count'],
+                    #updated_at=query_dict['updated_at'],
+                    #angelco_status=50,  # status of 50 implies what options are set here, currently
+                    #blog_url=query_dict['blog_url'],
+                    #twitter_url=query_dict['twitter_url'],
+                    #facebook_url=query_dict['twitter_url'],
+                    status="1",
+                    headquarters=headquarters,
+                    country=country,
+                    state_province=state_province,
+                    city=city,
+                    #created_at=datetime.utcnow().strftime('%Y/%m/%d %H:%M'),
+                    #updated_at=datetime.utcnow().strftime('%Y/%m/%d %H:%M'),
+                    created_at=created_at,
+                    updated_at=updated_at,
+                    home_url=ca.company_url,
+                    twitter_url=ca.twitter_url,
+                    facebook_url=ca.facebook_url,
+                    logo_url=logo_url,
+                    thumb_url=thumb_url,
+                    blog_url=ca.blog_url,
+                    quick_info=ca.high_concept,
+                    short_info=ca.product_desc,
+                    angelco_status=ca.status,
+                    company_size=company_size,
+                    )
+                print(startupdex)
+                DBSession.add(startupdex)
+
+                if startupdex.quick_info is None:
+                    startupdex.quick_info = "na"
+                if startupdex.short_info is None:
+                    startupdex.short_info = "na"
+                if startupdex.long_info is None:
+                    startupdex.long_info = "na"
+                if type(startupdex.long_info) is int:
+                    startupdex.long_info = "na"
+
+                print(startupdex.quick_info)
+                print(startupdex.short_info)
+                print(startupdex.long_info)
+                print(str(type(startupdex.long_info)))
+                # adds startup to searchable database
+                update_startup_fts(startupdex)
+                FTSStartup.create(
+                    startupdexid=int(i),
+                    angelco_id=str(ca.id),
+                    name=name,
+                    content='\n'.join((startupdex.quick_info,
+                                    startupdex.short_info,
+                                    startupdex.long_info)),
+                    quick_info=startupdex.quick_info,
+                    short_info=startupdex.short_info,
+                    thumb_url=startupdex.thumb_url,
                 )
-            print(startupdex)
-            DBSession.add(startupdex)
 
-            if startupdex.quick_info is None:
-                startupdex.quick_info = "na"
-            if startupdex.short_info is None:
-                startupdex.short_info = "na"
-            if startupdex.long_info is None:
-                startupdex.long_info = "na"
-            if type(startupdex.long_info) is int:
-                startupdex.long_info = "na"
-
-            print(startupdex.quick_info)
-            print(startupdex.short_info)
-            print(startupdex.long_info)
-            print(str(type(startupdex.long_info)))
-            # adds startup to searchable database
-            FTSStartup.create(
-                startupdex_id=str(i),
-                angelco_id=str(ca.id),
-                name=name,
-                content='\n'.join((startupdex.quick_info,
-                                   startupdex.short_info,
-                                   startupdex.long_info)),
-                quick_info=startupdex.quick_info,
-                short_info=startupdex.short_info,
-                thumb_url=startupdex.thumb_url,
-            )
-
-            # get image
-            get_images_from_angelco(i, startupdex.thumb_url, startupdex.logo_url)
+                # get image
+                get_images_from_angelco(i, ca.thumb_url, ca.logo_url)
 

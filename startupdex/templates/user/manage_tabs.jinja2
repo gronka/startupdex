@@ -1,0 +1,13 @@
+
+{% set navigation_bar  = [
+	('manage/articles', 'articles', 'Articles'),
+	('manage/startups', 'startups', 'Startups'),
+] -%}
+
+<div role="tabpanel">
+	<ul class="nav nav-tabs" role="tablist">
+		{% for href, page_id, caption in navigation_bar %}
+		<li role="presentation" {% if page_id == active_tab %} class="active" {% endif %}><a href="{{ gibs.application_url }}{{ href|e }}" role="tab">{{ caption|e }}</a></li>
+		{% endfor %}
+	</ul>
+</div>

@@ -22,6 +22,7 @@ from .models import (
     Article,
     fix_integer_fields,
     FTSStartup,
+    startup_search,
     )
 
 from startupdex.view_warlock import ViewWarlock
@@ -35,6 +36,10 @@ import logging
 
 from peewee import *
 from playhouse.sqlite_ext import *
+
+from pyramid_mailer import get_mailer
+from pyramid_mailer.mailer import Mailer
+from pyramid_mailer.message import Message
 
 log = logging.getLogger(__name__)
 
@@ -86,6 +91,13 @@ class FrontpageView(ViewWarlock):
         print("offset: " + str(offset))
         results = results[offset:offset+per_page]
 
+        test = startup_search(search_terms)
+        print("=======================")
+        print("=======================")
+        print(test)
+        print("=======================")
+
+
 
         return {'data': 'test_data',
                 'gibs': self.gibs,
@@ -96,72 +108,6 @@ class FrontpageView(ViewWarlock):
                 'offset': offset,
                 }
 
-    @view_config(route_name='user_profile', renderer='templates/user/profile.jinja2')
-    def user_profile(self):
-        #ident = self.request.matchdict['ident']
-        return {'data': 'test_data',
-                'gibs': self.gibs,
-                }
-
-    @view_config(route_name='user_create', renderer='templates/user/create.jinja2')
-    def user_create(self):
-        params = self.request.params
-        if 'form.submitted' in params:
-            try:
-                user = User(params)
-            except Exception as err:
-                print(err.__class__)
-                print(err)
-
-        return {'data': 'test_data',
-                'gibs': self.gibs,
-                }
-
-    @view_config(route_name='user_edit', renderer='templates/user/edit.jinja2')
-    def user_edit(self):
-        #identifier = self.request.matchdict['id']
-        return {'data': 'test_data',
-                'gibs': self.gibs,
-                }
-
-    @view_config(route_name='user_delete', renderer='templates/user/delete.jinja2')
-    def user_delete(self):
-        #ident = self.request.matchdict['ident']
-        return {'data': 'test_data',
-                'gibs': self.gibs,
-                }
-
-    @view_config(route_name='startup_profile', renderer='templates/startup/profile.jinja2')
-    def startup_profile(self):
-        ident = self.request.matchdict['ident']
-        #startup = DBSession.query(Startup).filter_by(name=ident).first()
-        #articles = DBSession.query(Article).filter_by(startupdex_id=ident)
-        startup = DBSession.execute(
-                "SELECT * FROM startups WHERE name=:param",
-                {"param": ident}
-                ).first()
-        articles = DBSession.execute(
-                "SELECT * FROM articles WHERE startupdex_id=:param",
-                {"param": startup.id}
-                )
-        #startup = DBSession.query(Startup).all()
-        #startup = Startup.query.filter_by(name=ident).first()
-        #startup = DBSession.query(Startup).all()
-
-        return {'gibs': self.gibs,
-                'ident': ident,
-                'startup': startup,
-                'articles': articles,
-                }
-
-    @view_config(route_name='startup_browse', renderer='templates/startup/browse.jinja2')
-    def startup_browse(self):
-        startups = DBSession.query(Startup).all()
-
-        return {'data': 'test_data',
-                'gibs': self.gibs,
-                'startups': startups,
-                }
 
     @view_config(route_name='admin_home', renderer='templates/admin/admin_home.jinja2')
     def admin_home(self):
@@ -171,11 +117,30 @@ class FrontpageView(ViewWarlock):
 
     @view_config(route_name='test2', renderer='templates/test2.jinja2')
     def test2(self):
-        startup = DBSession.execute(
-            "SELECT * FROM startups WHERE id=:param",
-            {"param": 1}
-            ).first()
-        print(startup)
+        #startup = DBSession.execute(
+            #"SELECT * FROM startups WHERE id=:param",
+            #{"param": 1}
+            #).first()
+        #print(startup)
+
+        request = self.request
+
+        body = """<p>Thanks for joining!</p>
+        <p>Click the following link to complete your registration: </p>
+        {confirmation_url}
+        """.format(confirmation_url='linklol')
+        message = Message(subject="Startupdex: New member confirmation",
+                            #sender="mail@startupdex.com",
+                            sender="taylor@localhost.localdomain",
+                            recipients=["mr.gronka@gmail.com", "taylor@localhost.localdomain"],
+                            body=body,
+                            )
+        #mailer = Mailer()
+        #mailer = get_mailer(request)
+        mailer = request.registry['mailer']
+        mailer.send(message)
+        #mailer.send_to_queue(message)
+        #mailer.send_immediately(message, fail_silently=False)
         return {'gibs': self.gibs,
                 }
 

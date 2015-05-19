@@ -48,4 +48,76 @@ browse-startup-heading {
 	//background-color: #EEE;
 }
 
+label {
+	font-weight: normal;
+}
 
+div.left {
+	display: inline-block;
+	width: 160px;
+	vertical-align: top;
+	line-height: 55px;
+	font-size: 16px;
+	margin-left: 16px;
+}
+div.right {
+	display: inline-block;
+	vertical-align: top;
+	line-height: 40px;
+}
+input.submit {
+	margin-left: 150px;
+}
+
+input[type="text"], input[type="password"] {
+	padding-left: 10px;
+	width: 250px;
+	//width: 100%;
+}
+
+.single-column {
+	float: none;
+}
+
+span.flash {
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+
+
+table.admin_update_user {
+	//table-layout: auto;
+	//width: 100%;
+}
+table.admin_update_user td {
+	//white-space: nowrap;
+}
+table.admin_update_user td input {
+	//white-space: nowrap;
+	width: 100px;
+	padding-left: 2px;
+}
+table.admin_update_user td.absorbing-column {
+	//width: 99%;
+}
+
+h3.settings_editable {
+	display: inline;
+	margin-right: 35px;
+}
+
+html {
+overflow-y: scroll;
+}
+
+.photo-preview {
+	max-width: 100px;
+	max-height: 100px;
+	min-width: 80px;
+	min-height: 80px;
+	//margin-bottom: 50px;
+}
+
+.test-local-url {
+	color: gray;
+}

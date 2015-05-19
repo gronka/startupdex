@@ -1,0 +1,58 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+{% set active_tab = 'articles' %}
+{% include "manage_tabs.jinja2" %}
+
+<div class="row">
+	<div class="col-xs-12">
+		<br />
+		<h3 class="settings_editable">Manage Articles</h3>
+			<a class="btn btn-default" href="{{ gibs.application_url }}create_article"><i class="glyphicon glyphicon-plus-sign"></i> Add an Article</a>
+		<br />
+		<br />
+		{% if articles is none %}
+		<p>
+			You currently have no articles.
+		</p>
+		{% else %}
+			<div class="feed well well-sm">
+				<h3>Your Listed articles</h3>
+				{% for article_row in articles | batch(4) %}
+				<div class="row">
+					{% for article in article_row %}
+						<div class="col-md-3" data-sr>
+							<p>
+								<a href="{{ gibs.application_url }}article/{{ article.name }}">
+									<h4 class="text-center">{{ article.title }}</h4>
+									<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+								</a>
+							</p>
+							<p>
+								<a class="btn btn-default" href="{{ gibs.application_url }}modify_article/{{ article.id }}"><i class="glyphicon glyphicon-cog"></i> Modify</a>
+							</p>
+					
+						</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+
+	</div>
+</div>
+
+
+
+
+
+
+
+{% endblock left_focus %}
+

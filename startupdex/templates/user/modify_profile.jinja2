@@ -1,0 +1,129 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+		{% set active_tab = 'profile' %}
+		{% include "modify_tabs.jinja2" %}
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">{{ user.fullname }}</h3>
+						<button class="btn btn-default" id="enable-changes" type="submit"><i class="glyphicon glyphicon-pencil"></i> Edit Profile</button>
+				<br />
+				<br />
+
+					<input type="hidden" name="id" id="id" value="{{ user.id }}" disabled/>
+					<table class="table">
+						<tr>
+							<td class="col-xs-3 col-sm-2">Full name</td>
+							<td><input type="text" name="fullname" class="fullname" value="{{ user.fullname }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Email</td>
+							<td><input type="text" name="email" class="email" value="{{ user.email }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Phone</td>
+							<td><input type="text" name="phone" class="phone" value="{{ user.phone }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Location</td>
+							<td><input type="text" name="location" class="location" value="{{ user.location }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Country</td>
+							<td><input type="text" name="country" class="country" value="{{ user.country }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">State/Province</td>
+							<td><input type="text" name="state_province" class="state_province" value="{{ user.state_province }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">City</td>
+							<td><input type="text" name="city" class="city" value="{{ user.city }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Street Adress</td>
+							<td><input type="text" name="street_address" class="street_address" value="{{ user.street_address }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Personal Website</td>
+							<td><input type="text" name="home_url" class="home_url" value="{{ user.home_url }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Blog</td>
+							<td><input type="text" name="blog_url" class="blog_url" value="{{ user.blog_url }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Facebook URL</td>
+							<td><input type="text" name="facebook_url" class="facebook_url" value="{{ user.facebook_url }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Twitter</td>
+							<td><input type="text" name="twitter_url" class="twitter_url" value="{{ user.twitter_url }}" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2"><button class="btn btn-default" id="save-changes" type="submit" disabled><i class="glyphicon glyphicon-ok"></i> Save Changes</button></td>
+							<td><button class="btn btn-default" id="cancel-changes" type="submit" disabled><i class="glyphicon glyphicon-remove"></i> Cancel Changes</button></td>
+						</tr>
+					</table>
+	
+	
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<h3>Profile Picture</h3>
+				<form method="POST" enctype="multipart/form-data"
+					action="{{ gibs.application_url }}upload_profile_photo">
+						<table class="table">
+							<tr>
+								<td>
+					{% if user.photo_url is none %}
+						<p>No profile picture has been uploaded</p>
+					{% else %}
+						<div class="photo-preview">
+							<img src="{{ gibs.images_url }}{{ user.photo_url }}" alt="{{ user.photo_url }}" class="img-responsive" width="100%">
+						</div>
+					{% endif %}
+
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Upload an Image</td>
+								<td>
+									<input type="file" name="photo" id="photo">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">New Image Preview</td>
+								<td>
+									<img class="photo-preview" src="" alt="">
+								</td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2"></td>
+								<td><button type="submit" class="btn btn-primary" id="save-changes" name="form.submitted"><i class="glyphicon glyphicon-upload"></i> Upload Logo</button></td>
+							</tr>
+						</table>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

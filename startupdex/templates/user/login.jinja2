@@ -1,0 +1,55 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Login at Startupdex
+{% endblock %}
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+	<div class="col-xs-12 col-md-8 col-md-offset-4">
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>Login</h1>
+		</div>
+			
+		<form action="{{ gibs.application_url }}login" method="POST">
+			<input type="hidden" name="came_from" value="{{ came_from }}" />
+
+			<div class="row">
+				<div class="left">
+					<label for="email">Email</label>
+				</div>
+				<div class="right">
+					<input type="text" id="email" name="email" value="" placeholder="Email" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="left">
+					<label for="password">Password</label>
+				</div>
+				<div class="right">
+					<input type="password" id="password" name="password" value="" placeholder="Password" />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="left"></div>
+				<div class="right">
+					<input type="submit" name="form.submitted" value="Login" class="submit btn btn-lg btn-primary"/>
+				</div>
+			</div>
+		</form>
+
+
+
+	</div>
+	</div>
+	</div>
+
+</div>
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

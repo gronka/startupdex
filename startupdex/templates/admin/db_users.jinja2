@@ -1,0 +1,122 @@
+{% extends "admin_base.jinja2" %}
+{% block title %}
+Database - User administration at
+{% endblock %}
+
+{% block left_focus %}
+<div class="container">
+<div class="well well-sm">
+	<div class="row bottom-buffer-12px">
+		<div class="col-md-12">
+				<h3>
+					Database management for users
+				</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<p>number of users {{ newest_user.id }}</p>
+			<label for="angelco-rangestart">input start range</label>
+			<br />
+			<label for="angelco-rangestart">input range width</label>
+			<input type="text" id="angelco-rangei" name="angelco-rangei" placeholder="rangei" value="50" />
+			<br />
+			<br />
+		</div>
+		<div class="col-md-8">
+			<br />
+			<br />
+			<br />
+			<button type="button" class="btn btn-success" id="angelco-get-some">Collect data from angel.co</button>
+			<br />
+			<br />
+			<button type="button" class="btn btn-warning" id="angelco-push-to-startupdex">Push data to Startupdex</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div id="angelco-results">
+				<p>
+					Latest accounts registered
+				</p>
+			</div>
+		</div>
+	</div>
+	{% for user in newest_user_list %}
+	{% if user.email %}
+		<div class="row bottom-buffer-12px">
+			<div class="col-md-2">
+				<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+			</div>
+			<div class="col-md-10">
+
+				{#<form method="POST" action="{{ gibs.sapplication_url }}admin/update_user?user_id={{ user.id }}">#}
+					<table class="table admin_update_user">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>id (int)</td>
+							<td>email</td>
+							<td>fullname</td>
+							<td>phone</td>
+							<td>confirmed(T/F)</td>
+							<td>joined</td>
+							<td>status</td>
+							<td>location</td>
+							<td>country</td>
+							<td>state_province</td>
+							<td>city</td>
+							<td>thumb_url</td>
+							<td>local_url</td>
+							<td>home_url</td>
+							<td>twitter_url</td>
+							<td>blog_url</td>
+							<td>facebook_url</td>
+						</tr>
+						<tr class="{{ user.id }}">
+							<td><button class="btn btn-default update-user" id="update-user-{{ user.id }}" type="submit"><i class="glyphicon glyphicon-ok"></i></button></td>
+							<td><button class="btn btn-default cancel-update" id="cancel-update-{{ user.id }}" type="submit"><i class="glyphicon glyphicon-remove"></i></button></td>
+							<td><button class="btn btn-default remove-user" id="remove-user-{{ user.id }}" type="submit"><i class="glyphicon glyphicon-trash"></i></button></td>
+							{#<td><button class="btn btn-default update-user" id="update-user" type="submit"><i class="glyphicon glyphicon-ok"></i></button></td>#}
+							{#<td><button class="btn btn-default cancel-update" id="cancel-update" type="submit"><i class="glyphicon glyphicon-remove"></i></button></td>#}
+							{#<td><button class="btn btn-default remove-user" id="remove-user" type="submit"><i class="glyphicon glyphicon-trash"></i></button></td>#}
+							<td><input type="text" name="id" class="id" value="{{ user.id }}" /></td>
+							<td><input type="text" name="email" class="email" value="{{ user.email }}"/></td>
+							<td><input type="text" name="fullname" class="fullname" value="{{ user.fullname }}"/></td>
+							<td><input type="text" name="phone" class="phone" value="{{ user.phone }}"/></td>
+							<td><input type="text" name="confirmed" class="confirmed" value="{{ user.confirmed }}"/></td>
+							<td><input type="text" name="joined" class="joined" value="{{ user.joined }}"/></td>
+							<td><input type="text" name="status" class="status" value="{{ user.status }}"/></td>
+							<td><input type="text" name="location" class="location" value="{{ user.location }}"/></td>
+							<td><input type="text" name="country" class="country" value="{{ user.country }}"/></td>
+							<td><input type="text" name="state_province" class="state_province" value="{{ user.state_province }}"/></td>
+							<td><input type="text" name="city" class="" value="{{ user.city }}"/></td>
+							<td><input type="text" name="thumb_url" class="thumb_url" value="{{ user.thumb_url }}"/></td>
+							<td><input type="text" name="local_url" class="local_url" value="{{ user.local_url }}"/></td>
+							<td><input type="text" name="home_url" class="home_url" value="{{ user.home_url }}"/></td>
+							<td><input type="text" name="twitter_url" class="twitter_url" value="{{ user.twitter_url }}"/></td>
+							<td><input type="text" name="blog_url" class="blog_url" value="{{ user.blog_url }}"/></td>
+							<td><input type="text" name="facebook_url" class="facebook_url" value="{{ user.facebook_url }}"/></td>
+						</tr>
+					</table>
+				
+				{#</form>#}
+				{#<input pattern=".{3,}" required title="3 characters minimum" />#}
+
+			</div>
+		</div>
+	{% endif %}
+	{% endfor %}
+
+
+
+</div>
+
+</div>
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

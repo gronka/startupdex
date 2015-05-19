@@ -6,46 +6,18 @@
 {% block left_focus %}
 <div class="well well-sm">
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-3">
 
-			<div id="startup-carousel" class="carousel slide">
-				<ol class="carousel-indicators">
-					<li data-target="#startup-carousel" data-slide-to="0" class="active"></li>
-					<li data-target="#startup-carousel" data-slide-to="1"></li>
-					<li data-target="#startup-carousel" data-slide-to="2"></li>
-				</ol>
-
-				<div class="carousel-inner">
-					<div class="item active">
-						<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-responsive" width="100%">
-					</div>
-					<div class="item">
-						<img src="{{ gibs.images_url }}apple1.jpg" alt="apple1.jpg" class="img-responsive" width="100%">
-					</div>
-					<div class="item">
-						<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive" width="100%">
-					</div>
-				</div>
-				<a class="carousel-control left" href="#startup-carousel" data-slide="prev">
-					<span class="icon-prev"></span>
-				</a>
-				<a class="carousel-control right" href="#startup-carousel" data-slide="next">
-					<span class="icon-next"></span>
-				</a>
-			</div>
+						<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.logo_url }}" class="img-responsive" width="100%">
 
 		</div>
 
-		<div class="col-md-6">
+		<div class="col-xs-9">
 			<h3>{{ startup.name }}</h3>
-			<p>{{ startup.location }}</p>
-			<p>{{ startup.home_url }}</p>
-			<p>{{ startup.headquarters }}</p>
-			<p>{{ startup.quick_info }}</p>
-			<p>Quality: {{ startup.angelco_quality }}</p>
-			
-			
-			<p>Locations: {{ startup.locations }}</p>
+			<p>{{ startup.city }}, {{ startup.state_province }}, {{ startup.country }}</p>
+			<p>{{ startup.contact_email }}</p>
+			<p>{{ startup.country }}</p>
+			<p>{{ startup.about }}</p>
 
 
 		</div>
@@ -53,53 +25,46 @@
 </div>
 
 
-<div class="row selected-articles">
-	<h3>Featured Articles</h3>
-	<div class="col-md-3">
-		<a href="#">
-			<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
-			<h4 class="text-center">Article title</h4>
-		</a>
-
-	</div>
-	<div class="col-md-3">
-		<a href="#">
-			<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
-			<h4 class="text-center">Article title</h4>
-		</a>
-		
-
-	</div>
-	<div class="col-md-3">
-		<a href="#">
-			<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
-			<h4 class="text-center">Article title</h4>
-		</a>
-		
-
-	</div>
-	<div class="col-md-3">
-		<a href="#">
-			<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">
-			<h4 class="text-center">Article title</h4>
-		</a>
-		
-
-	</div>
-</div>
+{#<div class="row selected-articles">#}
+	{#<h3>Featured Articles</h3>#}
+	{#<div class="col-md-3">#}
+		{#<a href="#">#}
+			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
+			{#<h4 class="text-center">Article title</h4>#}
+		{#</a>#}
+	{#</div>#}
+	{#<div class="col-md-3">#}
+		{#<a href="#">#}
+			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
+			{#<h4 class="text-center">Article title</h4>#}
+		{#</a>#}
+	{#</div>#}
+	{#<div class="col-md-3">#}
+		{#<a href="#">#}
+			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
+			{#<h4 class="text-center">Article title</h4>#}
+		{#</a>#}
+	{#</div>#}
+	{#<div class="col-md-3">#}
+		{#<a href="#">#}
+			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
+			{#<h4 class="text-center">Article title</h4>#}
+		{#</a>#}
+	{#</div>#}
+{#</div>#}
 
 
 
 
 <div class="feed well well-sm">
 	<h3>Feed and RSS</h3>
-	{% for article_row in articles | batch(4, '&nbsp;') %}
+	{% for article_row in articles | batch(4) %}
 	<div class="row">
 
 		{% for article in article_row %}
 		<div class="col-md-3" data-sr>
 			<a href="#">
-				<img src="{{ gibs.static_url }}{{ article.thumb_url }}" alt="{{ article.thumb_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+				<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
 				<h4 class="text-center">{{ article.title }}</h4>
 			</a>
 			<p>

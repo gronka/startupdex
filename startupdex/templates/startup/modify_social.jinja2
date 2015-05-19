@@ -1,0 +1,84 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+
+<div class="container">
+	<div class="row">
+{% set active_tab = 'social' %}
+{% include "modify_tabs.jinja2" %}
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">Modifying {{ startup.name }}</h3>
+							<a href="{{ gibs.application_url }}upload_logo/{{ startup.id }}">
+						</a>
+				<br />
+				<br />
+
+					<input type="hidden" name="startupid" id="startupid" value="{{ startup.id }}" />
+					<table class="table settings_profile">
+						<tr>
+							<td class="col-xs-3 col-sm-2">Contact Email</td>
+							<td><input type="text" name="contact_email" class="contact_email" value="{{ startup.contact_email }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Contact Phone</td>
+							<td><input type="text" name="contact_phone" class="contact_phone" value="{{ startup.contact_phone }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Personal Website</td>
+							<td><input type="text" name="home_url" class="home_url" value="{{ startup.home_url }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Blog</td>
+							<td><input type="text" name="blog_url" class="blog_url" value="{{ startup.blog_url }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Facebook URL</td>
+							<td><input type="text" name="facebook_url" class="facebook_url" value="{{ startup.facebook_url }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Twitter</td>
+							<td><input type="text" name="twitter_url" class="twitter_url" value="{{ startup.twitter_url }}" /></td>
+						</tr>
+						<tr>
+							<td><h3>Headquarters</h3</td>
+							<td></td>
+						</tr>
+
+						<tr>
+							<td class="col-xs-3 col-sm-2">Country</td>
+							<td><input type="text" name="country" class="country" value="{{ startup.country }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">State/Province</td>
+							<td><input type="text" name="state_province" class="state_province" value="{{ startup.state_province }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">City</td>
+							<td><input type="text" name="city" class="city" value="{{ startup.city }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Street Adress</td>
+							<td><input type="text" name="street_address" class="street_address" value="{{ startup.street_address }}" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2"><button class="btn btn-default" id="save-changes" type="submit" disabled><i class="glyphicon glyphicon-ok"></i> Save Changes</button></td>
+							<td><button class="btn btn-default" id="cancel-changes" type="submit" disabled><i class="glyphicon glyphicon-remove"></i> Cancel Changes</button></td>
+						</tr>
+					</table>
+	
+	
+			</div>
+	</div>
+</div>
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

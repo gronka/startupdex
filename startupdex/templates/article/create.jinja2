@@ -1,0 +1,66 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+Settings at
+{% endblock %}
+
+
+{% block left_focus %}
+
+<div class="container">
+	<div class="row">
+		<form action="{{ gibs.application_url }}create_article" method="POST">
+
+			<div class="col-sm-9 col-sm-offset-1">
+				<br />
+				<h3 class="settings_editable">New Article</h3>
+				<br />
+				<br />
+			<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+					<table class="table">
+						<tr>
+							<td class="col-xs-3 col-sm-2">Article is About</td>
+							<td>
+								<select id="about" name="about">
+									{% for startup in startups %}
+										<option value="{{ startup.id }}">{{ startup.name }}</option>
+									{% endfor %}
+									<option value="aboutme">Personal Writing/Editorial</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Search Tags</td>
+							<td><input type="text" name="tags" class="tags" value="" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Title</td>
+							<td><input type="text" name="title" class="title" value="" /></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Lead Text/<br />Article Preview</td>
+							<td><textarea class="form-control lead_text" name="lead_text" rows="2" ></textarea></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2">Story</td>
+							<td><textarea class="form-control story" name="story" rows="10" ></textarea></td>
+						</tr>
+						<tr>
+								<td class="col-xs-3 col-sm-2"></td>
+								<td><button type="submit" class="btn btn-primary" id="save-changes" name="form.submitted"><i class="glyphicon glyphicon-plus"></i> Publish Article</button></td>
+						</tr>
+					</table>
+	
+	
+				</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

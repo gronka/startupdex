@@ -5,34 +5,39 @@ Browsing startups at
 
 {% block left_focus %}
 <div class="well well-sm">
-			<div class="row">
-				<div class="col-md-12">
-						<h4>
-							Browsing all listed startups at StartupDex
-						</h4>
-				</div>
-			</div>
+	<div class="row">
+		<div class="col-md-12">
+				<h4>
+					Browsing all listed startups at StartupDex
+				</h4>
+		</div>
+	</div>
 
-		{% for startup in startups %}
-			<div class="row bottom-buffer-12px">
-						<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
-							<div class="col-md-3">
-								<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
-							</div>
-							<div class="col-md-9">
-								<h5 class="browse-startup-heading">
+	{% for startup in startups %}
+		<div class="row bottom-buffer-12px">
+			<div class="col-xs-2">
+					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+				{% if startup.logo_url is not none %}
+							<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
+					{% else %}
+							<img src="{{ gibs.images_url }}user.png" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
+				{% endif %}
+					</a>
+			</div>
+						<div class="col-xs-10">
+							<h5 class="browse-startup-heading">
+								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
 									{{ startup.name }}
-								</h5>
-						</a>
+								</a>
+							</h5>
 
-					<p>
-						short_info from the database goes here. 
-						{{ startup.short_info }}
-					</p>
-				</div>
+				<p>
+					{{ startup.short_info[:300] }}
+				</p>
 			</div>
+		</div>
 
-		{% endfor %}
+	{% endfor %}
 
 	<div class="row">
 		<div class="col-md-6">

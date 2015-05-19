@@ -1,0 +1,15 @@
+
+{% set navigation_bar  = [
+	('modify_article', 'modify_article', 'Article Content'),
+	('modify_photo', 'Photo', 'Social Links & Contact'),
+	('modify_locations', 'locations', 'Search Visibility'),
+	('modify_owners', 'owners', 'Owners'),
+] -%}
+
+<div role="tabpanel">
+	<ul class="nav nav-tabs" role="tablist">
+		{% for href, page_id, caption in navigation_bar %}
+		<li role="presentation" {% if page_id == active_tab %} class="active" {% endif %}><a href="{{ gibs.application_url }}{{ href|e }}/{{ article.id }}" role="tab">{{ caption|e }}</a></li>
+		{% endfor %}
+	</ul>
+</div>

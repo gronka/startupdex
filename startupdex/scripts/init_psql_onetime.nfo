@@ -30,5 +30,113 @@ psql -d postgres -U taylor
 change database connection path at:
 sqlalchemy.url = postgresql://taylor:doit@localhost:5432/startupdex
 
+useful commands:
+(as user taylor)
+psql -d startupdex -c "ALTER TABLE startups ALTER company_size TYPE text"
+psql -d startupdex -c "TRUNCATE TABLE startups"
+psql -d startupdex -c "TRUNCATE TABLE startups restart identity"
+psql -d startupdex -c "CREATE INDEX index_startups_on_id ON startups USING btree (id)"
+psql -d startupdex -c "CREATE INDEX index_startups_on_state ON startups USING btree (state)"
+
 psql -U postgres -d startupdex -c "GRANT all ON articles TO taylor";
 psql -U postgres -d startupdex -c "TRUNCATE TABLE startups RESTART IDENTITY";
+
+psql -U postgres -d startupdex -c "SELECT * FROM users WHERE username='donny' ORDER BY id DESC"
+
+psql -U postgres -d startupdex -c "ALTER TABLE users ADD COLUMN fullname text, ADD COLUMN email text"
+psql -U postgres -d startupdex -c "ALTER TABLE users DROP COLUMN username, DROP COLUMN name"
+
+psql -U postgres -d startupdex -c "INSERT INTO users (name, username, password, home_url) VALUES ('Zim zam the zim man', 'donny', '1234', 'http://google.com')"
+psql -U postgres -d startupdex -c "INSERT INTO users (fullname, email, password, home_url) VALUES ('Zim zam the zim man', 'donny@hotmail.co', '1234', 'http://google.com')"
+
+psql -U taylor -d startupdex -c "CREATE TABLE passwords (id SERIAL NOT NULL, user_id INTEGER, password TEXT NOT NULL, salt1 TEXT NOT NULL, salt2 TEXT NOT NULL, version INTEGER NOT NULL, CONSTRAINT user_id_fk FOREIGN KEY(user_id) REFERENCES users (id) )"
+psql -U taylor -d startupdex -c "CREATE UNIQUE INDEX password_user_id ON passwords(user_id)"
+
++++++ index +++++
+CREATE UNIQUE INDEX name ON table (column [, ...]);
+psql -U taylor -d startupdex -c "CREATE UNIQUE INDEX local_url_index ON startups local_url"
+++++++++++
+
+
+psql -U postgres -d startupdex -c "ALTER TABLE startups ADD COLUMN created_at timestamp with time zone"
+psql -U postgres -d startupdex -c "ALTER TABLE startups ADD COLUMN updated_at timestamp with time zone"
+psql -U postgres -d startupdex -c "ALTER TABLE articles ADD COLUMN date_published timestamp with time zone"
+psql -U postgres -d startupdex -c "ALTER TABLE articles ADD COLUMN date_edited timestamp with time zone"
+
+
+
+
+
++++++ foreign keys +++++
+CREATE TABLE element (
+    element_id SERIAL NOT NULL,
+    parent_node_id INTEGER,
+    PRIMARY KEY (element_id)
+)
+CREATE TABLE node (
+    node_id SERIAL NOT NULL,
+    primary_element INTEGER,
+    PRIMARY KEY (node_id)
+)
+ALTER TABLE element ADD CONSTRAINT fk_element_parent_node_id
+    FOREIGN KEY(parent_node_id) REFERENCES node (node_id)
+ALTER TABLE node ADD FOREIGN KEY(primary_element)
+    REFERENCES element (element_id)
+
+ALTER TABLE element DROP CONSTRAINT fk_element_parent_node_id
+DROP TABLE node
+DROP TABLE element
++++++++++++
+
+
+CREATE TABLE fts_startups ( id SERIAL, doc TEXT, tsv TSVECTOR);
+
+CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
+FOR EACH ROW EXECUTE PROCEDURE startups_tsvector_update_trigger (
+tsv, 'pg_catalog.english', doc);
+
+CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);
+
+INSERT INTO fts_startups (doc) VALUES ('sketching the trees'), ('Found in schema.org');
+
+WITH q AS ( SELECT to_tsquery('sketch & trees') AS query ),
+ranked AS ( SELECT id, doc, ts_ranked_cd(tsv, query) AS rank
+FROM fts_startups, query
+WHERE q.query @@ tsv ORDER BY rank DESC LIMIT 10
+)
+
+SELECT id, ts_headline (doc, q.query)
+FROM ranked, q
+ORDER BY ranked DESC;
+
++++++++++++++++++++++++++++++++
+CREATE TABLE user_has_articles (
+	userid integer REFERENCES users ON DELETE CASCADE,
+	articleid integer REFERENCES articles ON DELETE CASCADE,
+	PRIMARY KEY (userid, articleid)
+);
+CREATE TABLE startup_has_articles (
+	startupid integer REFERENCES startups ON DELETE CASCADE,
+	articleid integer REFERENCES articles ON DELETE CASCADE,
+	PRIMARY KEY (startupid, articleid)
+);
+CREATE TABLE user_has_startups (
+	userid integer REFERENCES users ON DELETE CASCADE,
+	startupid integer REFERENCES startups ON DELETE CASCADE,
+	PRIMARY KEY (userid, startupid)
+);
+
+	
+
+
+
+SQLITE:
+#delete and reset
+Delete from TableName
+DELETE FROM SQLITE_SEQUENCE WHERE name='TableName';
+
+# Create the tables from a python shell
+>>> from search_example import Entry, FTSEntry
+>>> Entry.create_table()
+>>> FTSEntry.create_table()
+

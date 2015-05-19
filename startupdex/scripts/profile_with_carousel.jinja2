@@ -1,30 +1,52 @@
 {% extends "../base.jinja2" %}
 {% block title %}
-{{ user.name }} at
+{{ startup.name }} at
 {% endblock %}
 
 {% block left_focus %}
 <div class="well well-sm">
 	<div class="row">
 		<div class="col-xs-3">
-			{% if user.photo_url is not none %}
-				<img src="{{ gibs.images_url }}{{ user.photo_url }}" alt="{{ user.photo_url }}" class="img-responsive" width="100%">
-			{% else %}
-				<img src="{{ gibs.images_url }}user.png" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-			{% endif %}
+
+			<div id="startup-carousel" class="carousel slide">
+				<ol class="carousel-indicators">
+					<li data-target="#startup-carousel" data-slide-to="0" class="active"></li>
+					<li data-target="#startup-carousel" data-slide-to="1"></li>
+					<li data-target="#startup-carousel" data-slide-to="2"></li>
+				</ol>
+
+				<div class="carousel-inner">
+					<div class="item active">
+						<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.logo_url }}" class="img-responsive" width="100%">
+					</div>
+					<div class="item">
+						<img src="{{ gibs.images_url }}apple1.jpg" alt="apple1.jpg" class="img-responsive" width="100%">
+					</div>
+					<div class="item">
+						<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive" width="100%">
+					</div>
+				</div>
+				<a class="carousel-control left" href="#startup-carousel" data-slide="prev">
+					<span class="icon-prev"></span>
+				</a>
+				<a class="carousel-control right" href="#startup-carousel" data-slide="next">
+					<span class="icon-next"></span>
+				</a>
+			</div>
+
 		</div>
 
 		<div class="col-xs-9">
-			<h3>{{ user.fullname }}</h3>
-			<p>
-				{{ user.city if user.city }}, {{ user.country }}
-			</p>
-			{% if user.home_url %}
-				<p>{{ user.home_url }}</p>
-			{% endif %}
-			{% if user.blog_url %}
-				<p>{{ user.blog_url }}</p>
-			{% endif %}
+			<h3>{{ startup.name }}</h3>
+			<p>{{ startup.location }}</p>
+			<p>{{ startup.home_url }}</p>
+			<p>{{ startup.headquarters }}</p>
+			<p>{{ startup.quick_info }}</p>
+			<p>Quality: {{ startup.angelco_quality }}</p>
+			
+			
+			<p>Locations: {{ startup.locations }}</p>
+
 
 		</div>
 	</div>
@@ -64,7 +86,7 @@
 
 <div class="feed well well-sm">
 	<h3>Feed and RSS</h3>
-	{% for article_row in articles | batch(4, '&nbsp;') %}
+	{% for article_row in articles | batch(4) %}
 	<div class="row">
 
 		{% for article in article_row %}
@@ -88,8 +110,16 @@
 
 <div class="row">
 	<div class="col-md-12">
+		State directory
 	</div>
 </div>
+<p>
+	ladeedaa
+</p>
+<p>ident:		{{ ident }}</p>
+<p>
+	startup.name: {{ startup.name }}
+</p>
 
 
 {% endblock left_focus %}
