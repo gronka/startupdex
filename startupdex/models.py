@@ -198,12 +198,12 @@ class LoginSchema(colander.MappingSchema):
         #database = ftsdb
 
 
-class FTSUser(FTSModel):
-    user_id = TextField()
-    fullname = TextField()
-    about = TextField()
-    thumb_url = TextField()
-    content = TextField()
+#class FTSUser(FTSModel):
+    #user_id = TextField()
+    #fullname = TextField()
+    #about = TextField()
+    #thumb_url = TextField()
+    #content = TextField()
 
 # this function is meant for correcting empty fields so they are properly
 # committed to the postgresql database
