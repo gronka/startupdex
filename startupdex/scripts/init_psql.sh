@@ -23,8 +23,9 @@ CREATE TABLE user_has_startups (
 	userid integer REFERENCES users(id) ON DELETE CASCADE,
 	startupid integer REFERENCES startups(id) ON DELETE CASCADE,
 	PRIMARY KEY (userid, startupid)
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE startups (
 	id SERIAL NOT NULL,
 	userid_creator INTEGER NOT NULL,
@@ -59,8 +60,9 @@ CREATE TABLE startups (
 	company_size TEXT NOT NULL,
 	company_status INTEGER ,
 	PRIMARY KEY (id)
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE angelcomirror (
 	startupdexid INTEGER NOT NULL,
 	id INTEGER,
@@ -92,8 +94,9 @@ CREATE TABLE angelcomirror (
 	fundraising TEXT,
 	locations TEXT,
 	PRIMARY KEY (startupdexid)
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE passwords (
 	id SERIAL,
 	user_id INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -102,8 +105,9 @@ CREATE TABLE passwords (
 	salt2 TEXT NOT NULL,
 	version INTEGER,
 	PRIMARY KEY (id)
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE users (
 	id SERIAL NOT NULL,
 	email TEXT NOT NULL,
@@ -127,8 +131,9 @@ CREATE TABLE users (
 	blog_url TEXT,
 	facebook_url TEXT,
 	twitter_url TEXT,
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE articles (
 	id SERIAL NOT NULL,
 	startupdexid INTEGER,
@@ -145,8 +150,9 @@ CREATE TABLE articles (
 	photo_url TEXT,
 	header_image TEXT,
 	other_images TEXT,
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TABLE fts_startups (
 	id SERIAL,
 	startupdex_id INTEGER UNIQUE REFERENCES startups(id) ON DELETE CASCADE,
@@ -158,13 +164,12 @@ CREATE TABLE fts_startups (
 	ranking TEXT,
 	doc TEXT,
 	tsv TSVECTOR
-);
+);"
 
+psql -U taylor -d startupdex -c "
 CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
 FOR EACH ROW EXECUTE PROCEDURE startups_tsvector_update_trigger (
 tsv, 'pg_catalog.english', doc);
 
-CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);
-
-";
+CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);"
 
