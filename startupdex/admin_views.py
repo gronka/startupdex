@@ -188,7 +188,7 @@ class AdminView(ViewWarlock):
                             query_dict[key] = json.dumps(value)
 
                     url_test = False
-                    local_url = name_to_local_url(deserialized['name'])
+                    local_url = name_to_local_url(query_dict['name'])
                     num = 1
                     local_url_num = local_url
                     while not url_test:
@@ -324,21 +324,9 @@ class AdminView(ViewWarlock):
             print("=====================")
             print(str(type(test_exists)))
 
-            url_test = False
-            local_url = name_to_local_url(deserialized['name'])
-            num = 1
-            local_url_num = local_url
-            while not url_test:
-                st = DBSession.query(Startup).filter(Startup.local_url == local_url_num).first()
-                if st is None:
-                    url_test = True
-                else:
-                    local_url_num = local_url + "-" + str(num)
-                    num = num + 1
-
             if test_exists is None:
                 url_test = False
-                local_url = name_to_local_url(deserialized['name'])
+                local_url = name_to_local_url(name)
                 num = 1
                 local_url_num = local_url
                 while not url_test:
