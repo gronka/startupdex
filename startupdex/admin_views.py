@@ -311,11 +311,24 @@ class AdminView(ViewWarlock):
             print("=====================")
             print(str(type(test_exists)))
 
+            url_test = False
+            local_url = name_to_local_url(deserialized['name'])
+            num = 1
+            local_url_num = local_url
+            while not url_test:
+                st = DBSession.query(Startup).filter(Startup.local_url == local_url_num).first()
+                if st is None:
+                    url_test = True
+                else:
+                    local_url_num = local_url + "-" + str(num)
+                    num = num + 1
+
             if test_exists is None:
                 startupdex = Startup(
                     # already transferred - defaults
                     #id=ca.startupdexid,
                     name=name,
+                    local_url=local_url,
                     #status="",
                     #locations=query_dict['locations'],
                     about=ca.community_profile,
