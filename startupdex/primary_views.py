@@ -23,6 +23,7 @@ from .models import (
     fix_integer_fields,
     #FTSStartup,
     startup_search,
+    send_mail,
     )
 
 from startupdex.view_warlock import ViewWarlock
@@ -161,27 +162,11 @@ class FrontpageView(ViewWarlock):
         subject="Startupdex: New Member Confirmation"
         sender="noreply@startupdex.com"
         recipients = ["mr.gronka@gmail.com", "taylor@localhost.localdomain"]
-        message = Message(subject=subject,
-                            #sender="mail@startupdex.com",
-                            sender=sender,
-                            recipients=recipients,
-                            body=body,
-                            )
-        #mailer = Mailer()
-        #mailer = get_mailer(request)
-        mailer = request.registry['mailer']
-        try:
-            #mailer.send(message)
-            #send_mail(to=recipients,
-                        #fro=sender,
-                        #subject=subject,
-                        #text=body,
-                        #)
-            #mailer.send_to_queue(message)
-            mailer.send_immediately(message, fail_silently=False)
-        except ValueError as e:
-            log.error("Email failed to send" + e)
-
+        send_mail(to=recipients,
+                  fro=sender,
+                  subject=subject,
+                  text=body
+                  )
 
         return {'gibs': self.gibs,
                 }

