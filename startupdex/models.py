@@ -304,8 +304,10 @@ def get_images_from_angelco(index, thumb_url, logo_url):
 class UserHasArticles(Base):
     """ The SQLAlchemy declarative model class for the User-Article relationship. """
     __tablename__ = "user_has_articles"
-    userid = Column(Integer, ForeignKey("users.id"), primary_key=True)
-    articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
+    #userid = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    #articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
+    userid = Column(Integer, primary_key=True)
+    articleid = Column(Integer, primary_key=True)
 
 
 class StartupHasArticles(Base):
