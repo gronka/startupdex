@@ -130,7 +130,7 @@ class StartupView(ViewWarlock):
 
         #startups = DBSession.query(UserHasStartups).filter(User.id == user.id)
         return {'gibs': self.gibs,
-                'user': self.user,
+                'user': self.current_user,
                 #'startups': startups,
                 }
 

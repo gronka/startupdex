@@ -168,7 +168,7 @@ class UserView(ViewWarlock):
                 update_password(deserialized['email'], deserialized['password'])
                 token = generate_confirmation_token(user.email)
                 url = request.route_url('frontpage')
-                url = 'http://127.0.0.1/confirm_email/'
+                url = 'http://' + self.gibs.application_url + '/confirm_email/'
                 print("++++++++++++++++++++++++")
                 print("++++++++++++++++++++++++")
                 print(str(url))
@@ -314,10 +314,8 @@ class UserView(ViewWarlock):
 
     @view_config(route_name='loggedin_profile', renderer='templates/user/profile.jinja2')
     def loggedin_profile(self):
-        email = self.gibs['current_user_email']
-        user = DBSession.query(User).filter(User.email == email).first()
         return {'gibs': self.gibs,
-                'user': user,
+                'user': self.current_user,
                 }
 
     @view_config(route_name='modify_profile', renderer='templates/user/modify_profile.jinja2')
@@ -346,10 +344,8 @@ class UserView(ViewWarlock):
 
     @view_config(route_name='modify_billing', renderer='templates/user/modify_billing.jinja2')
     def modify_billing(self):
-        email = self.gibs['current_user_email']
-        user = DBSession.query(User).filter(User.email == email).first()
         return {'gibs': self.gibs,
-                'user': user,
+                'user': self.current_user,
                 }
 
     @view_config(route_name='upload_profile_photo')
