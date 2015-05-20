@@ -99,12 +99,12 @@ def write_basic_image(image, image_dir, imagename):
 
 def update_fts_startups(startup):
     doc = startup.name + " " + startup.short_info + " " + startup.about
-    DBSession.execute("INSERT INTO fts_startups (startupdex_id, doc, name, short_info, photo_url) VALUES (?, ?, ?, ?, ?)",
+    DBSession.execute("INSERT INTO fts_startups (startupdex_id, doc, name, short_info, logo_url) VALUES (?, ?, ?, ?, ?)",
                       startup.id,
                       doc,
                       startup.name,
                       startup.short_info,
-                      startup.photo_url)
+                      startup.logo_url)
     print("++++++++++++++++")
     print(doc)
 
