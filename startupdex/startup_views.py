@@ -170,7 +170,7 @@ class StartupView(ViewWarlock):
             file_path = os.path.join(logo_path)
             open(file_path, 'wb').write(image.file.read())
 
-            thumb_dir = 'var/www/startupdex/images/startups/thumbs/' + folder_group + '/'
+            thumb_dir = '/var/www/startupdex/images/startups/thumbs/' + folder_group + '/'
             d = os.path.dirname(thumb_dir)
             try:
                 os.stat(d)
