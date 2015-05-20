@@ -10,7 +10,7 @@
 			{% if user.photo_url is not none %}
 				<img src="{{ gibs.images_url }}{{ user.photo_url }}" alt="{{ user.photo_url }}" class="img-responsive" width="100%">
 			{% else %}
-				<img src="{{ gibs.images_url }}user.png" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
+				<img src="{{ gibs.images_url }}user.png" alt="{{ user.fullname }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
 			{% endif %}
 		</div>
 
