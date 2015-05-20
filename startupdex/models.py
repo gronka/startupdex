@@ -365,8 +365,8 @@ class Startup(Base):
 
 class AngelCoMirror(Base):
     __tablename__ = 'angelcomirror'
-    startupdexid = Column(Integer, primary_key=True)
-    id = Column(Integer)
+    id = Column(Integer, primary_key=True)
+    startupdexid = Column(Integer)
     hidden = Column(Integer)
     community_profile = Column(Integer)
     name = Column(Text)

@@ -191,6 +191,7 @@ class AdminView(ViewWarlock):
 
                     new_angelco_mirror = AngelCoMirror(**query_dict)
                     new_startup = Startup(name=query_dict['name'],
+                                          userid_creator=0,
                                           status="",
                                           locations=query_dict['locations'],
                                           about=query_dict['community_profile'],

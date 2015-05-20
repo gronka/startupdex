@@ -28,7 +28,7 @@ CREATE TABLE user_has_startups (
 psql -U taylor -d startupdex -c "
 CREATE TABLE startups (
 	id SERIAL NOT NULL,
-	userid_creator INTEGER NOT NULL,
+	userid_creator INTEGER,
 	name TEXT NOT NULL,
 	status TEXT,
 	country TEXT NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE startups (
 
 psql -U taylor -d startupdex -c "
 CREATE TABLE angelcomirror (
-	startupdexid INTEGER NOT NULL,
+	startupdexid INTEGER,
 	id INTEGER,
 	hidden INTEGER,
 	community_profile INTEGER,
@@ -95,7 +95,7 @@ CREATE TABLE angelcomirror (
 	launch_date TEXT,
 	fundraising TEXT,
 	locations TEXT,
-	PRIMARY KEY (startupdexid)
+	PRIMARY KEY (id)
 );"
 
 psql -U taylor -d startupdex -c "
