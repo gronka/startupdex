@@ -202,23 +202,24 @@ class AdminView(ViewWarlock):
                     fix_integer_fields(query_dict)
 
                     new_angelco_mirror = AngelCoMirror(**query_dict)
-                    new_startup = Startup(name=query_dict['name'],
-                                          local_url=local_url,
-                                          userid_creator=0,
-                                          status="",
-                                          locations=query_dict['locations'],
-                                          about=query_dict['community_profile'],
-                                          angelco_quality=query_dict['quality'],
-                                          angelco_follower_count=query_dict['follower_count'],
-                                          updated_at=query_dict['updated_at'],
-                                          angelco_status=50,  # status of 50 implies what options are set here, currently
-                                          blog_url=query_dict['blog_url'],
-                                          twitter_url=query_dict['twitter_url'],
-                                          facebook_url=query_dict['twitter_url'],
-                                          )
-
                     DBSession.add(new_angelco_mirror)
-                    DBSession.add(new_startup)
+
+                    #new_startup = Startup(name=query_dict['name'],
+                                          #local_url=local_url,
+                                          #userid_creator=0,
+                                          #status="",
+                                          #locations=query_dict['locations'],
+                                          #about=query_dict['community_profile'],
+                                          #angelco_quality=query_dict['quality'],
+                                          #angelco_follower_count=query_dict['follower_count'],
+                                          #updated_at=query_dict['updated_at'],
+                                          #angelco_status=50,  # status of 50 implies what options are set here, currently
+                                          #blog_url=query_dict['blog_url'],
+                                          #twitter_url=query_dict['twitter_url'],
+                                          #facebook_url=query_dict['twitter_url'],
+                                          #short_info=query['product_desc']
+                                          #)
+                    #DBSession.add(new_startup)
             except KeyError:
                 print("+++++++++++++++++++++++++++++++")
                 log.debug("startup ID " + str(i) + " at angel.co returned a KeyError")
