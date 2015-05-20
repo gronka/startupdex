@@ -193,7 +193,7 @@ class AdminView(ViewWarlock):
                     new_startup = Startup(name=query_dict['name'],
                                           status="",
                                           locations=query_dict['locations'],
-                                          long_info=query_dict['community_profile'],
+                                          about=query_dict['community_profile'],
                                           angelco_quality=query_dict['quality'],
                                           angelco_follower_count=query_dict['follower_count'],
                                           updated_at=query_dict['updated_at'],
@@ -317,7 +317,7 @@ class AdminView(ViewWarlock):
                     name=name,
                     #status="",
                     #locations=query_dict['locations'],
-                    long_info=ca.community_profile,
+                    about=ca.community_profile,
                     #angelco_quality=query_dict['quality'],
                     #angelco_follower_count=query_dict['follower_count'],
                     #updated_at=query_dict['updated_at'],
@@ -340,7 +340,7 @@ class AdminView(ViewWarlock):
                     logo_url=logo_url,
                     thumb_url=thumb_url,
                     blog_url=ca.blog_url,
-                    quick_info=ca.high_concept,
+                    tags=ca.high_concept,
                     short_info=ca.product_desc,
                     angelco_status=ca.status,
                     company_size=company_size,
@@ -348,29 +348,27 @@ class AdminView(ViewWarlock):
                 print(startupdex)
                 DBSession.add(startupdex)
 
-                if startupdex.quick_info is None:
-                    startupdex.quick_info = "na"
                 if startupdex.short_info is None:
                     startupdex.short_info = "na"
-                if startupdex.long_info is None:
-                    startupdex.long_info = "na"
-                if type(startupdex.long_info) is int:
-                    startupdex.long_info = "na"
+                if startupdex.about is None:
+                    startupdex.about = "na"
+                if type(startupdex.about) is int:
+                    startupdex.about = "na"
 
-                print(startupdex.quick_info)
+                print(startupdex.tags)
                 print(startupdex.short_info)
-                print(startupdex.long_info)
-                print(str(type(startupdex.long_info)))
+                print(startupdex.about)
+                print(str(type(startupdex.about)))
                 # adds startup to searchable database
                 #update_startup_fts(startupdex)
                 #FTSStartup.create(
                     #startupdexid=int(i),
                     #angelco_id=str(ca.id),
                     #name=name,
-                    #content='\n'.join((startupdex.quick_info,
+                    #content='\n'.join((startupdex.tags,
                                     #startupdex.short_info,
-                                    #startupdex.long_info)),
-                    #quick_info=startupdex.quick_info,
+                                    #startupdex.about)),
+                    #tags=startupdex.tags,
                     #short_info=startupdex.short_info,
                     #thumb_url=startupdex.thumb_url,
                 #)
