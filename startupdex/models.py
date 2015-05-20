@@ -31,13 +31,49 @@ Base = declarative_base()
 DATETIME_FORMAT = '%Y%m%d%H%M%S'
 
 import colander
+from PIL import Image
+
 #from peewee import *
 #from playhouse.sqlite_ext import *
 #from playhouse.apsw_ext import APSWDatabase
-from PIL import Image
-
 #ftsdb = SqliteExtDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
 #ftsdb = APSWDatabase('/var/www/startupdex/startupdex_fts.sqlite', threadlocals=True)
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.utils import COMMASPACE, formatdate
+from email import encoders
+import os
+
+def send_mail(to, fro, subject, text, files=[],server="localhost"):
+    assert type(to)==list
+    assert type(files)==list
+
+
+    msg = MIMEMultipart()
+    msg['From'] = fro
+    msg['To'] = COMMASPACE.join(to)
+    msg['Date'] = formatdate(localtime=True)
+    msg['Subject'] = subject
+
+    msg.attach( MIMEText(text) )
+
+    for file in files:
+        part = MIMEBase('application', "octet-stream")
+        part.set_payload( open(file,"rb").read() )
+        Encoders.encode_base64(part)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'
+                        % os.path.basename(file))
+        msg.attach(part)
+
+    smtp = smtplib.SMTP(server)
+    smtp.sendmail(fro, to, msg.as_string() )
+    smtp.close()
+
+# Example:
+#send_mail(['Taylor Gronka <mr.gronka@gmail.com>'],'GentleBud <yourbud.com>','Hello Python!','Heya buddy! Say hello to Python! :)', [])
 
 
 def write_basic_image(image, image_dir, imagename):

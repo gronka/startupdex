@@ -150,8 +150,37 @@ class FrontpageView(ViewWarlock):
         return {'gibs': self.gibs,
                 }
 
-    @view_config(route_name='test', renderer='templates/test.jinja2')
-    def test(self):
+    @view_config(route_name='contact_us', renderer='templates/test.jinja2')
+    def contact_us(self):
+        from pyramid_mailer.message import Message
+        request = self.request
+        body = """<p>Thanks for joining!</p>
+        <p>Click the following link to complete your registration: </p>
+        {confirmation_url}
+        """.format(confirmation_url="goodurl.com")
+        subject="Startupdex: New Member Confirmation"
+        sender="noreply@startupdex.com"
+        recipients = ["mr.gronka@gmail.com", "taylor@localhost.localdomain"]
+        message = Message(subject=subject,
+                            #sender="mail@startupdex.com",
+                            sender=sender,
+                            recipients=recipients,
+                            body=body,
+                            )
+        #mailer = Mailer()
+        #mailer = get_mailer(request)
+        mailer = request.registry['mailer']
+        try:
+            #mailer.send(message)
+            #send_mail(to=recipients,
+                        #fro=sender,
+                        #subject=subject,
+                        #text=body,
+                        #)
+            #mailer.send_to_queue(message)
+            mailer.send_immediately(message, fail_silently=False)
+        except ValueError as e:
+            log.error("Email failed to send" + e)
 
 
         return {'gibs': self.gibs,

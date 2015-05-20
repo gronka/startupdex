@@ -19,6 +19,7 @@ from .models import (
     UserHasStartups,
     RegisterUserSchema,
     write_basic_image,
+    send_mail
     )
 
 from pyramid.security import (
@@ -177,22 +178,31 @@ class UserView(ViewWarlock):
                 <p>Click the following link to complete your registration: </p>
                 {confirmation_url}
                 """.format(confirmation_url=confirmation_url)
-                message = Message(subject="Startupdex: New member confirmation",
+                subject="Startupdex: New Member Confirmation"
+                sender="noreply@startupdex.com"
+                recipients = [user.email, "mr.gronka@gmail.com", "taylor@localhost.localdomain"]
+                message = Message(subject=subject,
                                   #sender="mail@startupdex.com",
-                                  sender="taylor@localhost.localdomain",
-                                  recipients=[user.email, "mr.gronka@gmail.com", "taylor@localhost.localdomain"],
+                                  sender=sender,
+                                  recipients=recipients,
                                   body=body,
                                   )
                 #mailer = Mailer()
                 #mailer = get_mailer(request)
                 mailer = request.registry['mailer']
                 try:
-                    mailer.send(message)
+                    #mailer.send(message)
+                    #send_mail(to=recipients,
+                              #fro=sender,
+                              #subject=subject,
+                              #text=body,
+                              #)
+                    #mailer.send_to_queue(message)
+                    mailer.send_immediately(message, fail_silently=False)
                 except ValueError as e:
                     log.error("Email failed to send" + e)
 
-                #mailer.send_to_queue(message)
-                #mailer.send_immediately(message, fail_silently=False)
+
                 request.session.flash('Please verify the email address ' + str(user.email) + ' to complete your registration.',
                                     queue='successes')
                 request.session.flash('Don\'t forget to check your spam.',

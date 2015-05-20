@@ -113,11 +113,13 @@ CREATE TABLE users (
 	state_province TEXT,
 	city TEXT,
 	street_address TEXT,
+	about TEXT,
 	thumb_url TEXT,
 	photo_url TEXT,
 	local_url TEXT,
 	home_url TEXT,
 	blog_url TEXT,
+	linkedin_url TEXT,
 	facebook_url TEXT,
 	twitter_url TEXT,
 	PRIMARY KEY (id)

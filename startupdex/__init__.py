@@ -51,6 +51,7 @@ def main(global_config, **settings):
                      factory='startupdex.security.EntryFactory')
 
     config.add_route('frontpage', '/')
+    config.add_route('contact_us', '/contact_us')
     config.add_route('register', '/register')
     config.add_route('confirm_email', '/confirm_email/{token}')
     config.add_route('login', '/login')
