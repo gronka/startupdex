@@ -160,8 +160,10 @@ class FrontpageView(ViewWarlock):
         {confirmation_url}
         """.format(confirmation_url="goodurl.com")
         subject="Startupdex: New Member Confirmation"
-        sender="noreply@startupdex.com"
-        recipients = ["mr.gronka@gmail.com", "taylor@localhost.localdomain"]
+        #sender="noreply@startupdex.com"
+        #recipients = ["mr.gronka@gmail.com", "taylor@localhost.localdomain"]
+        sender="Startupdex <noreply@startupdex.com>"
+        recipients = [user.name + " <"+user.email+">",]
         send_mail(to=recipients,
                   fro=sender,
                   subject=subject,
