@@ -186,11 +186,23 @@ class AdminView(ViewWarlock):
                         if type(value) is list or type(value) is dict:
                             query_dict[key] = json.dumps(value)
 
-                    fix_integer_fields(query_dict)
+                    url_test = False
+                    local_url = name_to_local_url(deserialized['name'])
+                    num = 1
+                    local_url_num = local_url
+                    while not url_test:
+                        st = DBSession.query(Startup).filter(Startup.local_url == local_url_num).first()
+                        if st is None:
+                            url_test = True
+                        else:
+                            local_url_num = local_url + "-" + str(num)
+                            num = num + 1
 
+                    fix_integer_fields(query_dict)
 
                     new_angelco_mirror = AngelCoMirror(**query_dict)
                     new_startup = Startup(name=query_dict['name'],
+                                          local_url=local_url,
                                           userid_creator=0,
                                           status="",
                                           locations=query_dict['locations'],
@@ -324,6 +336,17 @@ class AdminView(ViewWarlock):
                     num = num + 1
 
             if test_exists is None:
+                url_test = False
+                local_url = name_to_local_url(deserialized['name'])
+                num = 1
+                local_url_num = local_url
+                while not url_test:
+                    st = DBSession.query(Startup).filter(Startup.local_url == local_url_num).first()
+                    if st is None:
+                        url_test = True
+                    else:
+                        local_url_num = local_url + "-" + str(num)
+                        num = num + 1
                 startupdex = Startup(
                     # already transferred - defaults
                     #id=ca.startupdexid,
