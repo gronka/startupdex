@@ -163,7 +163,7 @@ class FrontpageView(ViewWarlock):
         #sender="noreply@startupdex.com"
         #recipients = ["mr.gronka@gmail.com", "taylor@localhost.localdomain"]
         sender="Startupdex <noreply@startupdex.com>"
-        recipients = [user.name + " <"+user.email+">",]
+        recipients = ["Taylor Gronka <mr.gronka@gmail.com>",]
         send_mail(to=recipients,
                   fro=sender,
                   subject=subject,
