@@ -291,9 +291,10 @@ class UserView(ViewWarlock):
     @view_config(route_name='manage_articles', renderer='templates/user/manage_articles.jinja2')
     def manage_articles(self):
         articles = []
-        articles = DBSession.query(Article) \
-            .join(UserHasArticles) \
-            .filter(UserHasArticles.userid == self.current_user['id']).all()
+        #articles = DBSession.query(Article) \
+            #.join(UserHasArticles) \
+            #.filter(UserHasArticles.userid == self.current_user['id']).all()
+        articles = DBSession.query(Article).filter(Article.authorid == self.current_user['id']).all()
 
         return {'gibs': self.gibs,
                 'user': self.current_user,
@@ -303,9 +304,10 @@ class UserView(ViewWarlock):
     @view_config(route_name='manage_startups', renderer='templates/user/manage_startups.jinja2')
     def manage_startups(self):
         startups = []
-        startups = DBSession.query(Startup) \
-            .join(UserHasStartups) \
-            .filter(UserHasStartups.userid == self.current_user['id']).all()
+        #startups = DBSession.query(Startup) \
+            #.join(UserHasStartups) \
+            #.filter(UserHasStartups.userid == self.current_user['id']).all()
+        startups = DBSession.query(Startup).filter(Startup.userid_creator == self.current_user['id']).all()
 
         return {'gibs': self.gibs,
                 'user': self.current_user,
