@@ -143,13 +143,12 @@ class UserView(ViewWarlock):
             schema = RegisterUserSchema()
             try:
                 deserialized = schema.deserialize(params)
+                check_user = DBSession.query(User).filter(User.email == deserialized['email']).first()
+                if check_user is not None:
+                    request.session.flash("Email address is in use by another user.", queue='errors')
+                    dont_add_user = True
             except colander.Invalid as e:
                 request.session.flash(e, queue='errors')
-                dont_add_user = True
-
-            check_user = DBSession.query(User).filter(User.email == deserialized['email']).first()
-            if check_user is not None:
-                request.session.flash("Email address is in use by another user.", queue='errors')
                 dont_add_user = True
 
             if dont_add_user is True:
@@ -180,7 +179,7 @@ class UserView(ViewWarlock):
                 """.format(confirmation_url=confirmation_url)
                 subject="Startupdex: New Member Confirmation"
                 sender="Startupdex <noreply@startupdex.com>"
-                recipients = [user.name + " <"+user.email+">",]
+                recipients = [user.fullname + " <"+user.email+">",]
                 message = Message(subject=subject,
                                   #sender="mail@startupdex.com",
                                   sender=sender,
