@@ -313,8 +313,10 @@ class UserHasArticles(Base):
 class StartupHasArticles(Base):
     """ The SQLAlchemy declarative model class for the User-Article relationship. """
     __tablename__ = "startup_has_articles"
-    startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
-    articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
+    #startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
+    #articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
+    startupid = Column(Integer, primary_key=True)
+    articleid = Column(Integer, primary_key=True)
 
 
 class UserHasStartups(Base):
