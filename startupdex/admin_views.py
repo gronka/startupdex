@@ -24,6 +24,7 @@ from .models import (
     fix_integer_fields,
     get_images_from_angelco,
     #update_startup_fts,
+    name_to_local_url,
     )
 
 from startupdex.view_warlock import ViewWarlock
