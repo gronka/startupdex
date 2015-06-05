@@ -45,8 +45,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
+from email.encoders import encode_base64
 
-def send_mail(to, fro, subject, text, files=[],server="localhost"):
+def send_mail(to, fro, subject, text, html, files=[],server="localhost"):
     assert type(to)==list
     assert type(files)==list
 
@@ -57,12 +58,14 @@ def send_mail(to, fro, subject, text, files=[],server="localhost"):
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject
 
-    msg.attach( MIMEText(text) )
+    msg.attach( MIMEText(text, 'plain') )
+    msg.attach( MIMEText(html, 'html') )
+
 
     for file in files:
         part = MIMEBase('application', "octet-stream")
         part.set_payload( open(file,"rb").read() )
-        Encoders.encode_base64(part)
+        encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"'
                         % os.path.basename(file))
         msg.attach(part)

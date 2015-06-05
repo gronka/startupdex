@@ -171,9 +171,10 @@ class UserView(ViewWarlock):
                 print("++++++++++++++++++++++++")
                 print(str(url))
                 confirmation_url = url + token
-                body = """<p>Thanks for joining!</p>
-                <p>Click the following link to complete your registration: </p>
-                {confirmation_url}
+                html_body = """<h3>Welcome to Startupdex!</h3>
+                <p>The online community for finding and networking with relevant startup businesses in your area!</p>
+                <p>Please click the following link to activate your new account: </p>
+                <a href="{confirmation_url}">{confirmation_url}</a>
                 """.format(confirmation_url=confirmation_url)
                 subject="Startupdex: New Member Confirmation"
                 sender="Startupdex <noreply@startupdex.com>"
@@ -186,10 +187,11 @@ class UserView(ViewWarlock):
                                   #)
                 try:
                     send_mail(to=recipients,
-                                fro=sender,
-                                subject=subject,
-                                text=body,
-                                )
+                              fro=sender,
+                              subject=subject,
+                              text='',
+                              html=html_body,
+                              )
                 except:
                     request.session.flash('Verifcation email failed to send.',
                                           queue='errors')
