@@ -28,7 +28,7 @@ class ViewWarlock(object):
         self.current_user = {'email': 'NotLoggedIn'}
         self.logged_in = False
 
-        self.gibs = {}
+        #self.gibs = {}
 
         if request.path != 'logout':
         #print(self.userid_from_cookie)
@@ -39,12 +39,11 @@ class ViewWarlock(object):
                     {"param": self.userid_from_cookie}
                     ).first()
                 if self.current_user is None:
-                    headers = forget(self.request)
-                    url = self.request.route_url('frontpage')
+                    #headers = forget(self.request)
+                    url = self.request.route_url('logout')
                     self.request.session.flash('You have been logged out by the system. If this was an error, please contact support.',
                                                queue='warnings')
-                    return HTTPFound(location=url,
-                                    headers=headers)
+                    return HTTPFound(location=url)
 
                 if self.userid_from_cookie == '1':
                     self.privilege = "admin"

@@ -257,7 +257,7 @@ class UserView(ViewWarlock):
         #url = self.request.route_url('frontpage')
         url = self.request.referrer
         if url is None:
-            url = self.gibs['application_url']
+            url = self.request.route_url('frontpage')
 
         self.request.session.flash('Successfully logged out',
                               queue='notifications')
