@@ -116,6 +116,18 @@ class ArticleView(ViewWarlock):
         ViewWarlock.__init__(self, context, request)
 
 
+    @view_config(route_name='article_profile', renderer='templates/article/profile.jinja2')
+    def article_profile(self):
+        ident = self.request.matchdict['ident']
+        article = DBSession.query(Article).filter(Article.local_url == ident).first()
+        startup = DBSession.query(Startup).filter(Startup.id == article.startupdexid).first()
+
+        return {'gibs': self.gibs,
+                'ident': ident,
+                'startup': startup,
+                'article': article,
+                }
+
     @view_config(route_name='create_article', renderer='templates/article/create.jinja2')
     def article_create(self):
         request = self.request
@@ -209,7 +221,8 @@ class ArticleView(ViewWarlock):
         if 'form.submitted' in params:
             image = request.params['photo']
             folder_group = str(int(math.ceil(article.id / 10000.0) * 10000.0))
-            photo_url = 'articles/photos/' + folder_group + '/' + str(articleid) + '.jpg'
+            imagename = str(articleid) + '.jpg'
+            photo_url = 'articles/photos/' + folder_group + '/' + imagename
             article.photo_url = photo_url
 
             photo_dir = '/var/www/startupdex/images/articles/photos/' + folder_group + '/'

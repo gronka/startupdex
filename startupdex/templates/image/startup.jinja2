@@ -1,0 +1,5 @@
+{% if startup.logo_url is not none %}
+	<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
+{% else %}
+	<img src="{{ gibs.images_url }}startup.png" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
+{% endif %}

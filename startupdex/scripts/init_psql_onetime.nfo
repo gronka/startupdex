@@ -61,6 +61,7 @@ CREATE TABLE startups (
 	userid_creator INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	status TEXT,
+	hidden BOOLEAN,
 	country TEXT NOT NULL,
 	state_province TEXT NOT NULL,
 	city TEXT NOT NULL,
@@ -194,7 +195,11 @@ psql -d startupdex -c "CREATE INDEX index_startups_on_id ON startups USING btree
 psql -d startupdex -c "CREATE INDEX index_startups_on_state ON startups USING btree (state)"
 
 psql -U postgres -d startupdex -c "GRANT all ON articles TO taylor";
-psql -U postgres -d startupdex -c "TRUNCATE TABLE startups RESTART IDENTITY";
+psql -U postgres -d startupdex -c "
+TRUNCATE TABLE startups, user_has_startups, angelcomirror, startup_has_categories, categories
+RESTART IDENTITY CASCADE
+;
+"
 
 psql -U postgres -d startupdex -c "SELECT * FROM users WHERE username='donny' ORDER BY id DESC"
 

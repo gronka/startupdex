@@ -1,9 +1,10 @@
 
 {% set navigation_bar  = [
-	('modify_profile', 'profile', 'Profile'),
+	('admin/frontpage', 'frontpage', 'Manage Frontpage'),
+	('admin/db_angelco', 'db_angelco', 'Manage angel.co data'),
+	('admin/db_users', 'db_users', 'Manage users'),
 ] -%}
 
-	{#('modify_billing', 'billing', 'Billing'),#}
 <div role="tabpanel">
 	<ul class="nav nav-tabs" role="tablist">
 		{% for href, page_id, caption in navigation_bar %}
@@ -11,3 +12,4 @@
 		{% endfor %}
 	</ul>
 </div>
+

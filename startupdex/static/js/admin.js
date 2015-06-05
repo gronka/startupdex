@@ -1,4 +1,134 @@
 $(function() {
+	var url = window.location.href.split('/');
+	var current_page = url[url.length - 1];
+	// get next page path if we're simply pulling an ID
+	if (isNaN(current_page) == false) {
+		current_page = url[url.length -2];
+	}
+	var current_host = "http://"+url[2];
+	//var startup_scroller_trigger = 110;
+	//var startup_scroller_pull_count = 10;
+
+	function parseStartupScroller(startups, el, options) {
+		//alert(current_host);
+		options = options || [];
+		$(el).empty();
+		$.each(startups, function(i, startup) {
+			var div = document.createElement('div');
+			div.className = "startup-scroller-result";
+
+			var a = document.createElement('a');
+			a.href = current_host + "/startup/" + startup.local_url;
+			a.textContent = "link";
+			var img = document.createElement('img');
+			img.src = current_host + "/images/" + startup.logo_url;
+			img.width = "80";
+			img.height = "50";
+			var h4 = document.createElement('h4');
+			h4.textContent = startup.name;
+
+			var p = document.createElement('p');
+			p.textContent = startup.short_info;
+
+			var id = document.createElement('div');
+			//id.className = startup.id
+			id.className = "id"
+			id.textContent = startup.id;
+			id.style.visibility = "hidden";
+
+
+			div.appendChild(img);
+			div.appendChild(h4);
+
+			$.each(options, function(j, option) {
+				//TODO: parse text so that frontpage-db isn't manually inserted here
+				if (option == "remove") {
+					var button = document.createElement('div');
+					button.className = "btn btn-danger remove-from-frontpage-db";
+					var i = document.createElement('i');
+					i.className = "glyphicon glyphicon-remove";
+				} else if (option == "add") {
+					var button = document.createElement('div');
+					button.className = "btn btn-success add-to-frontpage-db";
+					var i = document.createElement('i');
+					i.className = "glyphicon glyphicon-plus";
+				}
+				button.appendChild(i);
+				div.appendChild(button);
+			});
+
+			div.appendChild(p);
+			div.appendChild(a);
+			div.appendChild(id);
+
+			$(el).append(div);
+		});
+	}
+
+	function startupSearchByName() {
+		$.ajax({
+			url: '/startup_search_by_name.json',
+			data: JSON.stringify({startup_search_by_name: $('#startup_search_by_name').val()}),
+			success: function(data) {
+			  parseStartupScroller(data, $("#startup-search-scroller"), ['add']);
+				$('.add-to-frontpage-db').click(function() {
+					addToFrontpageDB(this)
+				});
+			}
+		});
+	}
+	$('#startup-search-by-name').keyup(debounce(function() {
+			startupSearchByName()
+		}, 400)
+	);
+	$('#startup-search-by-name').click(function() {
+			startupSearchByName()
+		}
+	);
+
+
+	function getFrontpageDB() {
+		$.ajax({
+			url: '/admin_get_frontpage_db.json',
+			data: JSON.stringify(),
+			success: function(data) {
+				parseStartupScroller(data, $("#frontpage-db-scroller"), ['remove']);
+				$('.remove-from-frontpage-db').click(function() {
+					removeFromFrontpageDB(this);
+				});
+			}
+		});
+
+	}
+	function addToFrontpageDB(el) {
+		//startupid = $(el).find(".id").attr("class");
+		var startup = $(el).parent();
+		var startupid = startup.find(".id").html();
+		$.ajax({
+			url: '/admin_add_to_frontpage_db.json',
+			data: JSON.stringify({startupid: startupid}),
+			success: function(data) {
+				if (data == "Already listed") {
+					alert("Startup is already listed on the frontpage");
+				} else {
+					getFrontpageDB();
+				}
+			}
+		});
+	}
+
+	function removeFromFrontpageDB(el) {
+		var startup = $(el).parent();
+		var startupid = startup.find(".id").html();
+		$.ajax({
+			url: '/admin_remove_from_frontpage_db.json',
+			data: JSON.stringify({startupid: startupid}),
+			success: function(data) {
+				getFrontpageDB();
+			}
+		});
+	}
+
 
 	function pullFromAngelCo(rangestart, rangei) {
 		$.ajax({
@@ -120,6 +250,14 @@ $(function() {
 	}
 
 	$(window).bind("load", function() {
+		if (document.getElementById('frontpage-db-scroller') != 'undefined') {
+			getFrontpageDB();
+		}
+		//$('.startup-search-scroller').scroll(debounce(function() {
+			//if ($('.startup-search-scroller').height() - $('.startup-search-scroller').scrollTop()  < startup_scroller_trigger){
+				//alert('okay');
+			//}
+		//}, 400));
 		$.ajaxSetup({
 			type: 'POST',
 			dataType: 'json',

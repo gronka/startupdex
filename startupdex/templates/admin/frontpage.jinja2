@@ -1,0 +1,70 @@
+{% extends "admin_base.jinja2" %}
+{% block title %}
+Database - User administration at
+{% endblock %}
+
+{% block left_focus %}
+<div class="container">
+<div class="row">
+	{% set active_tab = 'frontpage' %}
+	{% include "admin_tabs.jinja2" %}
+	<div class="row bottom-buffer-12px">
+		<div class="col-md-12">
+			<h3>
+				Frontpage
+			</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+				<div class="form-group">
+					<div class="input-group">
+						<input name="search_terms" class="form-control" id="startup_search_by_name" type="text" placeholder="Locate Startup">
+						<div class="input-group-btn">
+							<button class="btn btn-default" id="startup-search-by-name"><i class="glyphicon glyphicon-refresh"></i></button>
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="col-md-9">
+				<div class="row">
+					<div class="col-xs-12">
+						<div id="startup-search-scroller">
+							<div class="startup-scroller-result">
+								<h4 class="margin-top-0px">Result name</h4>
+								<p>Result text</p>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="well well-sm">
+				<div id="frontpage-db-scroller">
+					<div class="startup-scroller-result">
+						<h4 class="margin-top-0px">Result name</h4>
+						<p>Result text</p>
+					</div>
+					
+				</div>
+
+		</div>
+	</div>
+
+
+
+
+
+</div>
+</div>
+{% endblock left_focus %}
+
+{% block right_focus %}
+{% endblock right_focus %}

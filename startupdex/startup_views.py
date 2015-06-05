@@ -107,6 +107,7 @@ class StartupView(ViewWarlock):
                                   local_url=local_url_num,
                                   userid_creator=int(userid_creator),
                                   country=deserialized['country'],
+                                  postal_code=deserialized['postal_code'],
                                   state_province=deserialized['state_province'],
                                   city=deserialized['city'],
                                   street_address=deserialized['street_address'],
@@ -152,6 +153,7 @@ class StartupView(ViewWarlock):
         startup = DBSession.query(Startup).filter(Startup.id == startupid).first()
 
         if 'form.submitted' in params:
+            #TODO: implement write_basic_image() function
             image = request.params['logo']
             folder_group = str(int(math.ceil(startup.id / 10000.0) * 10000.0))
             imagename = str(startupid) + '.jpg'
@@ -192,7 +194,6 @@ class StartupView(ViewWarlock):
     @view_config(route_name='modify_startup', renderer='templates/startup/modify_startup.jinja2')
     def modify_startup(self):
         request = self.request
-        params = request.params
         startupid = request.matchdict['id']
         startup = DBSession.query(Startup).filter(Startup.id == startupid).first()
 
@@ -266,12 +267,37 @@ class StartupView(ViewWarlock):
                 setattr(startup, key, prop)
         return ("Success")
 
+    @view_config(route_name='modify_startup_delete', renderer='templates/startup/modify_startup_delete.jinja2')
+    def modify_startup_delete(self):
+        request = self.request
+        params = request.params
+        startupid = request.matchdict['id']
+        startup = DBSession.query(Startup).filter(Startup.id == startupid).first()
+        print(startup.hidden)
+
+        if 'form.submitted' in params:
+            if 'hide_startup' in params:
+                startup.hidden = True
+                request.session.flash(startup.name + ' is now hidden.', queue='warnings')
+            else:
+                startup.hidden = False
+                request.session.flash(startup.name + ' is now visible.', queue='warnings')
+            if params['delete_startup'] == "DELETE":
+                DBSession.delete(startup)
+                request.session.flash(startup.name + ' has been deleted.', queue='errors')
+                return HTTPFound(location=request.route_url("manage_startups"))
+
+        return {'gibs': self.gibs,
+                'user': self.current_user,
+                'startup': startup,
+                }
+
     @view_config(name='test_local_url.json', renderer='json')
     def test_local_url(self):
         request = self.request
-        json = request.json_body
+        josh = request.json_body
 
-        startup = DBSession.query(Startup).filter(Startup.local_url == json['local_url']).first()
+        startup = DBSession.query(Startup).filter(Startup.local_url == josh['local_url']).first()
         if startup is not None:
             return ("Taken")
         else:

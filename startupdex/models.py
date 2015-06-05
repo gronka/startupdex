@@ -2,10 +2,12 @@ from sqlalchemy import (
     Column,
     #Index,
     Integer,
+    Float,
     Text,
     Boolean,
     DateTime,
     ForeignKey,
+    and_,
     )
 
 from sqlalchemy.orm import (
@@ -19,11 +21,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
-import json
 import re
 import datetime
 import os
-import io
+import math
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
@@ -44,8 +45,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
-from email import encoders
-import os
 
 def send_mail(to, fro, subject, text, files=[],server="localhost"):
     assert type(to)==list
@@ -119,12 +118,42 @@ def startup_search(text):
 
 
 def name_to_local_url(name):
-    return re.sub('[^0-9a-zA-Z]+', '-', name)
+    s = name.lower()
+    return re.sub('[^0-9a-zA-Z]+', '-', s)
 
 def title_to_local_url(title):
-    return re.sub('[^0-9a-zA-Z]+', '-', title)
+    s = title.lower()
+    return re.sub('[^0-9a-zA-Z]+', '-', s)
 
 def user_has_permission(user, permission):
+    return True
+
+
+def add_startup_has_category(startupid, categoryid):
+    # exit the function if the relationship already exists
+    if DBSession.query(StartupHasCategories).filter(and_(
+        StartupHasCategories.categoryid == categoryid,
+        StartupHasCategories.startupid == startupid)).count() > 0:
+        return False
+
+    start_has_cat = StartupHasCategories(startupid=startupid,
+                                       categoryid=categoryid)
+    DBSession.add(start_has_cat)
+    category = DBSession.query(Category).filter(Category.id == categoryid).first()
+    category.num_startups += 1
+    return True
+
+
+def rem_startup_has_category(startupid, categoryid):
+    start_has_cat = DBSession.query(StartupHasCategories).filter(and_(
+                                    StartupHasCategories.categoryid == categoryid,
+                                    StartupHasCategories.startupid == startupid)).first()
+    # exit function if row does not exist to be removed
+    if start_has_cat is None:
+        return False
+    DBSession.delete(start_has_cat)
+    category = DBSession.query(Category).filter(Category.id == categoryid).first()
+    category.num_startups -= 1
     return True
 
 
@@ -153,6 +182,7 @@ class CreateStartupSchema(colander.MappingSchema):
     name = colander.SchemaNode(colander.String())
     #userid_creator = colander.SchemaNode(colander.Integer())
     country = colander.SchemaNode(colander.String())
+    postal_code = colander.SchemaNode(colander.String())
     state_province = colander.SchemaNode(colander.String())
     city = colander.SchemaNode(colander.String())
     street_address = colander.SchemaNode(colander.String(), missing=None)
@@ -180,6 +210,7 @@ class ModifySocialSchema(colander.MappingSchema):
     facebook_url = colander.SchemaNode(colander.String(), missing=None)
     twitter_url = colander.SchemaNode(colander.String(), missing=None)
     country = colander.SchemaNode(colander.String())
+    postal_code = colander.SchemaNode(colander.String())
     state_province = colander.SchemaNode(colander.String())
     city = colander.SchemaNode(colander.String())
     street_address = colander.SchemaNode(colander.String(), missing=None)
@@ -270,28 +301,55 @@ def fix_integer_fields(db_dict):
 def get_images_from_angelco(index, thumb_url, logo_url):
     import requests
     import os
-    print(str(index))
+    #print(str(index))
+
+    if thumb_url == "https://angel.co/images/shared/nopic_startup.png":
+        thumb_url = logo_url
+    if logo_url == "https://angel.co/images/shared/nopic_startup.png":
+        return "no_image"
+
     folder_group = str(int(math.ceil(index / 10000.0) * 10000.0))
     fpath = '/var/www/startupdex/images/startups/thumbs/'+folder_group+'/'
     if not os.path.exists(fpath):
         os.makedirs(fpath)
     try:
-        print(str(thumb_url))
+        #print(str(thumb_url))
         f = open(fpath+str(index)+'.jpg', 'wb')
     except ValueError:
         print("thumb_url is undefined for index " + str(index))
     f.write(requests.get(thumb_url).content)
     f.close()
+    #reformat
+    file_path = fpath + str(index)+'.jpg'
+    maxsize = 350, 350
+    im = Image.open(file_path)
+    im.thumbnail(maxsize, Image.ANTIALIAS)
+    try:
+        im.save(file_path)
+    except OSError as e:
+        print(e)
+        print("failed to determine image type")
+
     fpath = '/var/www/startupdex/images/startups/logos/'+folder_group+'/'
     if not os.path.exists(fpath):
         os.makedirs(fpath)
     try:
-        print(str(logo_url))
+        #print(str(logo_url))
         f = open(fpath+str(index)+'.jpg', 'wb')
     except ValueError:
         print("logo_url is undefined for index " + str(index))
     f.write(requests.get(logo_url).content)
     f.close()
+    #reformat
+    file_path = fpath + str(index)+'.jpg'
+    maxsize = 350, 350
+    im = Image.open(file_path)
+    im.thumbnail(maxsize, Image.ANTIALIAS)
+    try:
+        im.save(file_path)
+    except OSError as e:
+        print(e)
+        print("failed to determine image type")
 
     #fpath = '/home/taylor/projects/startupdex/startupdex/static/images/startups/logos/'+folder_group+'/'
     #if not os.path.exists(fpath):
@@ -299,24 +357,21 @@ def get_images_from_angelco(index, thumb_url, logo_url):
     #f = open(fpath+str(index)+'.jpg', 'wb')
     #f.write(requests.get(logo_url).content)
     #f.close()
+    return "complete"
 
 
 class UserHasArticles(Base):
     """ The SQLAlchemy declarative model class for the User-Article relationship. """
     __tablename__ = "user_has_articles"
-    #userid = Column(Integer, ForeignKey("users.id"), primary_key=True)
-    #articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
-    userid = Column(Integer, primary_key=True)
-    articleid = Column(Integer, primary_key=True)
+    userid = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
 
 
 class StartupHasArticles(Base):
     """ The SQLAlchemy declarative model class for the User-Article relationship. """
     __tablename__ = "startup_has_articles"
-    #startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
-    #articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
-    startupid = Column(Integer, primary_key=True)
-    articleid = Column(Integer, primary_key=True)
+    startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
+    articleid = Column(Integer, ForeignKey("articles.id"), primary_key=True)
 
 
 class UserHasStartups(Base):
@@ -325,18 +380,30 @@ class UserHasStartups(Base):
     userid = Column(Integer, ForeignKey("users.id"), primary_key=True)
     startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
 
+
+class AngelcomirrorHasStartups(Base):
+    """ The SQLAlchemy declarative model class for the AngelCoMirror-Startup relationship. """
+    __tablename__ = "angelcomirror_has_startups"
+    angelcoid = Column(Integer, ForeignKey("angelcomirror.id"), primary_key=True)
+    startupdexid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
+
+
 class Startup(Base):
     """ The SQLAlchemy declarative model class for a Startup object. """
     __tablename__ = 'startups'
     id = Column(Integer, primary_key=True)
-    userid_creator = Column(Integer)
+    userid_creator = Column(Integer, ForeignKey("users.id"))
     name = Column(Text)
     status = Column(Text)
+    hidden = Column(Boolean)
     locations = Column(Text)
     country = Column(Text)
+    postal_code = Column(Text)
     state_province = Column(Text)
     city = Column(Text)
     street_address = Column(Text)
+    lat = Column(Float)
+    lng = Column(Float)
     tags = Column(Text)
     contact_phone = Column(Text)
     contact_email = Column(Text)
@@ -361,6 +428,12 @@ class Startup(Base):
     angelco_status = Column(Text)
     company_size = Column(Text)
     company_status = Column(Integer)
+
+
+class FrontpageStartup(Base):
+    """ The SQLAlchemy declarative model class for a Frontpage object. """
+    __tablename__ = 'frontpage_startups'
+    startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
 
 
 class AngelCoMirror(Base):
@@ -399,7 +472,7 @@ class AngelCoMirror(Base):
 class Password(Base):
     __tablename__ = "passwords"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
+    userid = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
     password = Column(Text)
     salt1 = Column(Text)
     salt2 = Column(Text)
@@ -422,6 +495,7 @@ class User(Base):
     # replace location with search_locs?
     location = Column(Text)
     country = Column(Text)
+    postal_code = Column(Text)
     state_province = Column(Text)
     city = Column(Text)
     street_address = Column(Text)
@@ -450,8 +524,8 @@ class NotLoggedUser(User):
 class Article(Base):
     __tablename__ = "articles"
     id = Column(Integer, primary_key=True)
-    startupdexid = Column(Integer)
-    authorid = Column(Integer)
+    startupdexid = Column(Integer, ForeignKey('startups.id'))
+    authorid = Column(Integer, ForeignKey('users.id'))
     author_name = Column(Text)
     title = Column(Text)
     subtitle = Column(Text)
@@ -467,3 +541,20 @@ class Article(Base):
 
 
 #Index('my_index', MyModel.name, unique=True, mysql_length=255)
+
+
+class Category(Base):
+    """ The SQLAlchemy declarative model class for a Category object. """
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text)
+    local_url = Column(Text)
+    popularity = Column(Integer)
+    num_startups = Column(Integer)
+
+
+class StartupHasCategories(Base):
+    """ The SQLAlchemy declarative model class for the Startup-Category relationship. """
+    __tablename__ = "startup_has_categories"
+    startupid = Column(Integer, ForeignKey("startups.id"), primary_key=True)
+    categoryid = Column(Integer, ForeignKey("categories.id"), primary_key=True)

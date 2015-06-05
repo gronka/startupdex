@@ -7,24 +7,23 @@
 <div class="well well-sm">
 	<div class="row">
 		<div class="col-xs-3">
-					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-				{% if startup.logo_url is not none %}
-							<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-				{% else %}
-							<img src="{{ gibs.images_url }}startup.jpg" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-				{% endif %}
-					</a>
-
-						{#<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.logo_url }}" class="img-responsive" width="100%">#}
-
+			{% include "../image/startup.jinja2" %}
 		</div>
 
 		<div class="col-xs-9">
 			<h3>{{ startup.name }}</h3>
-			<p>{{ startup.city }}, {{ startup.state_province }}, {{ startup.country }}</p>
-			<p>{{ startup.contact_email }}</p>
-			<p>{{ startup.country }}</p>
-			<p>{{ startup.about }}</p>
+			<p>
+				{% if startup.city %}
+					{{ startup.city }}, 
+				{% endif %}
+				{{ startup.country if startup.country }}
+			</p>
+			{% if startup.contact_email %}
+				<p>{{ startup.contact_email }}</p>
+			{% endif %}
+			{% if startup.about %}
+				<p>{{ startup.about }}</p>
+			{% endif %}
 
 
 		</div>
@@ -32,55 +31,21 @@
 </div>
 
 
-{#<div class="row selected-articles">#}
-	{#<h3>Featured Articles</h3>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-{#</div>#}
-
-
-
-
 <div class="feed well well-sm">
-	<h3>Feed and RSS</h3>
+	<h3>News Feed</h3>
 	{% for article_row in articles | batch(4) %}
 	<div class="row">
-
 		{% for article in article_row %}
 		<div class="col-md-3" data-sr>
 			<a href="#">
-				<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+				{% include "../image/article.jinja2" %}
 				<h4 class="text-center">{{ article.title }}</h4>
 			</a>
 			<p>
 				{{ article.lead_text }}
 			</p>
-	
 		</div>
 		{% endfor %}
-
 	</div>
 	{% endfor %}
 </div>
@@ -92,13 +57,6 @@
 		State directory
 	</div>
 </div>
-<p>
-	ladeedaa
-</p>
-<p>ident:		{{ ident }}</p>
-<p>
-	startup.name: {{ startup.name }}
-</p>
 
 
 {% endblock left_focus %}

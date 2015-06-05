@@ -1,0 +1,43 @@
+{% extends "../base.jinja2" %}
+{% block title %}
+{{ article.name }} at
+{% endblock %}
+
+{% block left_focus %}
+<div class="well well-sm">
+	<div class="row">
+		<div class="col-xs-3">
+			{% include "../image/article.jinja2" %}
+		</div>
+
+		<div class="col-xs-9">
+			<h3>{{ article.title }}</h3>
+			<p>{{ article.story }}</p>
+
+
+		</div>
+	</div>
+</div>
+
+
+<div class="feed well well-sm">
+	<h3>News Feed</h3>
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-12">
+		State directory
+	</div>
+</div>
+<p>
+thaisojfe
+</p>
+<p>ident:		{{ ident }}</p>
+<p>
+	article.name: {{ article.name }}
+</p>
+
+
+{% endblock left_focus %}

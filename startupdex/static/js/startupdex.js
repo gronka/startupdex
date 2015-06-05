@@ -1,7 +1,3 @@
-Dropzone.options.logoUpload = {
-	maxFilesize: 2,
-	maxFiles: 1,
-}
 function debounce(func, wait, immediate) {
 	var timeout;
 	return function() {
@@ -16,6 +12,22 @@ function debounce(func, wait, immediate) {
 }
 
 $(function() {
+	var country_selector = document.getElementById('country-selector');
+	var country = undefined;
+	if (country_selector) {
+		country = country_selector.options[country_selector.selectedIndex].text;
+		if (country == "None") {
+			print_country("country-selector");
+		} else {
+			print_country("country-selector");
+			$('#country-selector').val(country);
+			
+		}
+	}
+	$('#country-selector').change(function() {
+		print_state('state-province-selector', this.selectedIndex);
+	});
+
 	var url = window.location.href.split('/');
 	var current_page = url[url.length - 1];
 	// get next page path if we're simply pulling an ID
@@ -57,7 +69,6 @@ $(function() {
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-
 	$("#logo").change(function () {
 		readURL(this);
 	});
@@ -83,6 +94,9 @@ $(function() {
 		$('input').each(function() {
 			$(this).prop('disabled', false);
 		});
+		$('select').each(function() {
+			$(this).prop('disabled', false);
+		});
 		$('#save-changes').prop('disabled', false);
 		$('#cancel-changes').prop('disabled', false);
 	});
@@ -90,6 +104,9 @@ $(function() {
 	$('#cancel-changes').click(function () {
 		$('input').each(function() {
 			$(this).prop('disabled', true);
+		});
+		$('select').each(function() {
+			$(this).prop('disabled', false);
 		});
 		$('#save-changes').prop('disabled', true);
 		$('#cancel-changes').prop('disabled', true);
@@ -122,6 +139,7 @@ $(function() {
 													 phone: tr.find('.phone').val(),
 													 location: tr.find('.location').val(),
 													 country: tr.find('.country').val(),
+													 postal_code: tr.find('.postal_code').val(),
 													 state_province: tr.find('.state_province').val(),
 													 city: tr.find('.city').val(),
 													 street_address: tr.find('.street_address').val(),
@@ -160,6 +178,7 @@ $(function() {
 														facebook_url: tr.find('.facebook_url').val(),
 														twitter_url: tr.find('.twitter_url').val(),
 														country: tr.find('.country').val(),
+														postal_code: tr.find('.postal_code').val(),
 														state_province: tr.find('.state_province').val(),
 														city: tr.find('.city').val(),
 														street_address: tr.find('.street_address').val(),
@@ -198,6 +217,45 @@ $(function() {
 			})
 		});
 	}
+
+	function postalCodeAutorefresh(el) {
+		if ($(el).val().length >= 4) {
+			var postal_code = $(el).val();
+			var country = $(el).parent().parent().parent().find(".country").val();
+			var apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" + postal_code + ", " + country
+			$.ajax({
+				url: apiUrl,
+				xhrFields: { withCredentials: false },
+				success: function(data) {
+					var geocode = data;
+					var country = undefined;
+					var state_province = undefined;
+					var city = undefined;
+					$.each(geocode.results[0].address_components, function(i, component) {
+						if (component.types[0] == "country") { country = component.long_name }
+						if (component.types[0] == "administrative_area_level_3") { city = component.long_name }
+						if (component.types[0] == "locality") { city = component.long_name }
+						if (component.types[0] == "administrative_area_level_1") { state_province = component.long_name }
+					});
+					if (country) {
+						$('#country-selector').val(country);
+						print_state('state-province-selector', document.getElementById('country-selector').selectedIndex);
+					}
+					$('#state-province-selector').val(state_province);
+					$('.city').val(city);
+				}
+			});
+		}
+	}
+	$('#postal-code-autorefresh').change(debounce(function() {
+			postalCodeAutorefresh(this)
+		}, 800)
+	);
+	$('#postal-code-autorefresh').keyup(debounce(function() {
+			postalCodeAutorefresh(this)
+		}, 800)
+	);
+
 
 	$(window).bind("load", function() {
 		$.ajaxSetup({

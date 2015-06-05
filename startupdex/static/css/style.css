@@ -121,3 +121,32 @@ overflow-y: scroll;
 .test-local-url {
 	color: gray;
 }
+
+
+
+
+//scroller styling
+.startup-search-scroller {
+	display: inline-block;
+	width: 100%;
+    //white-space: nowrap;
+    max-height: 400px;
+}
+.startup-scroller-result {
+	height: 140px;
+	width: 155px;
+	display: inline-block;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	overflow-y: auto;
+}
+.margin-top-0px {
+	margin-top: 0px;
+}
+.padding-top-0px {
+	padding-top: 0px;
+}
+.margin-bottom-0px {
+	margin-bottom: 20px;
+}
+

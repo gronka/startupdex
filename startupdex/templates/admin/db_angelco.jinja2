@@ -4,7 +4,8 @@ Database - angel.co administration at
 {% endblock %}
 
 {% block left_focus %}
-<div class="well well-sm">
+{% set active_tab = 'db_angelco' %}
+{% include "admin_tabs.jinja2" %}
 	<div class="row bottom-buffer-12px">
 		<div class="col-md-12">
 				<h3>
@@ -33,7 +34,7 @@ Database - angel.co administration at
 			<label for="angelco-rangestart">input start range</label>
 			<input type="text" id="angelco-rangestart" name="angelco-rangestart" placeholder="rangestart" value="{{ angelco_last_listing.id + 1}}" />
 			<br />
-			<label for="angelco-rangestart">input range width</label>
+			<label for="angelco-rangei">input range width</label>
 			<input type="text" id="angelco-rangei" name="angelco-rangei" placeholder="rangei" value="50" />
 			<br />
 			<br />
@@ -68,9 +69,11 @@ Database - angel.co administration at
 							<h5 class="browse-startup-heading">
 								ID :: {{ startup.id }} ::
 								{{ startup.name }}
-								<a href="{{ gibs.application_url }}startup/{{ startup.name }}">
+								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
 									>> link
 								</a>
+								<p>{{ startup.about }}</p>
+								<p>{{ startup.short_info }}</p>
 							</h5>
 				<p>
 					short_info from the database goes here. 
@@ -95,7 +98,7 @@ Database - angel.co administration at
 		{% if startup.name %}
 		<div class="row bottom-buffer-12px">
 						<div class="col-md-3">
-							<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+							<img src="{{ startup.logo_url }}" alt="{{ startup.local_url }}" class="img-rounded img-responsive browse-thumb" width="100%">
 						</div>
 						<div class="col-md-9">
 							<h5 class="browse-startup-heading">
@@ -126,6 +129,5 @@ Database - angel.co administration at
 		{#</div>#}
 	{#</div>#}
 
-</div>
 
 {% endblock left_focus %}

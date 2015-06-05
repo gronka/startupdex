@@ -5,12 +5,14 @@ Database - User administration at
 
 {% block left_focus %}
 <div class="container">
-<div class="well well-sm">
+<div class="row">
+	{% set active_tab = 'db_users' %}
+	{% include "admin_tabs.jinja2" %}
 	<div class="row bottom-buffer-12px">
 		<div class="col-md-12">
-				<h3>
-					Database management for users
-				</h3>
+			<h3>
+				Database management for users
+			</h3>
 		</div>
 	</div>
 
@@ -113,7 +115,6 @@ Database - User administration at
 
 
 
-</div>
 
 </div>
 {% endblock left_focus %}

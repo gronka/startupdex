@@ -28,9 +28,11 @@ Settings at
 					{% for article in article_row %}
 						<div class="col-md-3" data-sr>
 							<p>
-								<a href="{{ gibs.application_url }}article/{{ article.name }}">
+								<a href="{{ gibs.application_url }}article/{{ article.local_url }}">
 									<h4 class="text-center">{{ article.title }}</h4>
-									<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+									{% if article.photo_url %}
+										<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+									{% endif %}
 								</a>
 							</p>
 							<p>

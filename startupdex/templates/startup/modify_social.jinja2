@@ -47,18 +47,31 @@ Settings at
 							<td><input type="text" name="twitter_url" class="twitter_url" value="{{ startup.twitter_url }}" /></td>
 						</tr>
 						<tr>
-							<td><h3>Headquarters</h3</td>
+							<td><h3>Headquarters</h3></td>
 							<td></td>
 						</tr>
 
-						<tr>
-							<td class="col-xs-3 col-sm-2">Country</td>
-							<td><input type="text" name="country" class="country" value="{{ startup.country }}" /></td>
-						</tr>
-						<tr>
-							<td class="col-xs-3 col-sm-2">State/Province</td>
-							<td><input type="text" name="state_province" class="state_province" value="{{ startup.state_province }}" /></td>
-						</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Country</td>
+								<td>
+									<select id="country-selector" name="country" class="country" value="{{user.country }}" >
+										<option value="{{ user.country }}">{{ startup.country }}</option>
+									</select>
+								</td>
+
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Postal Code</td>
+								<td><input type="text" id="postal-code-autorefresh" name="postal_code" class="postal_code" value="{{ startup.postal_code }}"  /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">State/Province</td>
+								<td>
+									<select id="state-province-selector" name="state_province" class="state_province" value="{{ user.state_province if user.state_province }}" >
+										<option value="{{ user.state_province }}">{{ startup.state_province }}</option>
+									</select>
+								</td>
+							</tr>
 						<tr>
 							<td class="col-xs-3 col-sm-2">City</td>
 							<td><input type="text" name="city" class="city" value="{{ startup.city }}" /></td>

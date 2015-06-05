@@ -34,6 +34,15 @@ class ViewWarlock(object):
                     self.privilege = "admin"
         #flashmsgs = request.session.pop_flash()
 
+        application_url = self.request.route_url('frontpage')
+        if application_url == 'http://127.0.0.1/':
+            request.session.flash("Local server", queue='warnings')
+
+
+        #TODO: store timezone offset in self.gibs
+        # for anonymous users, send it from the browser and store it in the
+        # cookie?
+
         self.gibs = {'application_url': self.request.route_url('frontpage'),
                      'static_url': self.static_url,
                      'images_url': self.images_url,

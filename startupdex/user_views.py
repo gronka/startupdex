@@ -22,6 +22,8 @@ from .models import (
     send_mail
     )
 
+from sqlalchemy import func
+
 from pyramid.security import (
     remember,
     forget,
@@ -66,16 +68,12 @@ def login_user(login_params):
         #"SELECT * FROM users WHERE email=:param ORDER BY id DESC",
         #{"param": user.email}
         #).first()
-    user_lookup = DBSession.query(User).filter(User.email == login_params.email).first()
+    user_lookup = DBSession.query(User).filter(func.lower(User.email) == func.lower(login_params.email)).first()
     if user_lookup is None:
-        print("returned FALSE")
         return False
-    print("email found. testing password")
     if check_password(login_params.email, login_params.password) is True:
-        print("login succeeded")
         return True
     else:
-        print("other error - login failed")
         return False
 
 
@@ -89,7 +87,7 @@ def update_password(email, password):
     for i in range(0, 413):
         hashed_password = hashlib.sha512(hashed_password.encode()).hexdigest()
 
-    password = Password(user_id=user.id,
+    password = Password(userid=user.id,
                         salt1=salt1,
                         salt2=salt2,
                         password=hashed_password,
@@ -99,8 +97,8 @@ def update_password(email, password):
 
 
 def check_password(email, password):
-    user = DBSession.query(User).filter(User.email == email).first()
-    pw = DBSession.query(Password).filter(Password.user_id == user.id).first()
+    user = DBSession.query(User).filter(func.lower(User.email) == func.lower(email)).first()
+    pw = DBSession.query(Password).filter(Password.userid == user.id).first()
     try:
         combo = pw.salt2 + password + pw.salt1
     except AttributeError:
@@ -168,7 +166,7 @@ class UserView(ViewWarlock):
                 update_password(deserialized['email'], deserialized['password'])
                 token = generate_confirmation_token(user.email)
                 url = request.route_url('frontpage')
-                url = 'http://' + self.gibs.application_url + '/confirm_email/'
+                url = self.gibs['application_url'] + 'confirm_email/'
                 print("++++++++++++++++++++++++")
                 print("++++++++++++++++++++++++")
                 print(str(url))
@@ -180,17 +178,22 @@ class UserView(ViewWarlock):
                 subject="Startupdex: New Member Confirmation"
                 sender="Startupdex <noreply@startupdex.com>"
                 recipients = [user.fullname + " <"+user.email+">",]
-                message = Message(subject=subject,
-                                  #sender="mail@startupdex.com",
-                                  sender=sender,
-                                  recipients=recipients,
-                                  body=body,
-                                  )
-                send_mail(to=recipients,
-                            fro=sender,
-                            subject=subject,
-                            text=body,
-                            )
+                #message = Message(subject=subject,
+                                  ##sender="mail@startupdex.com",
+                                  #sender=sender,
+                                  #recipients=recipients,
+                                  #body=body,
+                                  #)
+                try:
+                    send_mail(to=recipients,
+                                fro=sender,
+                                subject=subject,
+                                text=body,
+                                )
+                except:
+                    request.session.flash('Verifcation email failed to send.',
+                                          queue='errors')
+
                 #mailer = request.registry['mailer']
                 #try:
                     #mailer.send(message)
@@ -223,10 +226,7 @@ class UserView(ViewWarlock):
             referrer = '/'
         came_from = request.params.get('came_from', referrer)
         if 'form.submitted' in params:
-            user = DBSession.execute(
-                "SELECT * FROM users WHERE email=:param ORDER BY id DESC",
-                {"param": params['email']}
-                ).first()
+            user = DBSession.query(User).filter(func.lower(User.email) == func.lower(params['email'])).first()
 
             if user is not None:
                 if user.confirmed is False:
@@ -291,10 +291,10 @@ class UserView(ViewWarlock):
     @view_config(route_name='manage_articles', renderer='templates/user/manage_articles.jinja2')
     def manage_articles(self):
         articles = []
-        #articles = DBSession.query(Article) \
-            #.join(UserHasArticles) \
-            #.filter(UserHasArticles.userid == self.current_user['id']).all()
-        articles = DBSession.query(Article).filter(Article.authorid == self.current_user['id']).all()
+        articles = DBSession.query(Article) \
+            .join(UserHasArticles) \
+            .filter(UserHasArticles.userid == self.current_user['id']).all()
+        #articles = DBSession.query(Article).filter(Article.authorid == self.current_user['id']).all()
 
         return {'gibs': self.gibs,
                 'user': self.current_user,
@@ -304,10 +304,10 @@ class UserView(ViewWarlock):
     @view_config(route_name='manage_startups', renderer='templates/user/manage_startups.jinja2')
     def manage_startups(self):
         startups = []
-        #startups = DBSession.query(Startup) \
-            #.join(UserHasStartups) \
-            #.filter(UserHasStartups.userid == self.current_user['id']).all()
-        startups = DBSession.query(Startup).filter(Startup.userid_creator == self.current_user['id']).all()
+        startups = DBSession.query(Startup) \
+            .join(UserHasStartups) \
+            .filter(UserHasStartups.userid == self.current_user['id']).all()
+        #startups = DBSession.query(Startup).filter(Startup.userid_creator == self.current_user['id']).all()
 
         return {'gibs': self.gibs,
                 'user': self.current_user,

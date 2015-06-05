@@ -65,6 +65,7 @@ def main(global_config, **settings):
     config.add_route('upload_logo', '/upload_logo/{id}')
     config.add_route('modify_startup', '/modify_startup/{id}')
     config.add_route('modify_social', '/modify_social/{id}')
+    config.add_route('modify_startup_delete', '/modify_startup_delete/{id}')
     config.add_route('modify_locations', '/modify_locations/{id}')
     config.add_route('modify_images', '/modify_images/{id}')
     config.add_route('startup_profile', '/startup/{ident}')
@@ -74,6 +75,7 @@ def main(global_config, **settings):
     config.add_route('create_article', '/create_article')
     config.add_route('upload_article_photo', '/upload_article_photo/{id}')
     config.add_route('modify_article', '/modify_article/{id}')
+    config.add_route('article_profile', '/article/{ident}')
 
     # not currently in use
     config.add_route('startup_edit', '/startup/edit/{id}')
@@ -93,6 +95,7 @@ def main(global_config, **settings):
     config.add_route('user_delete', '/user/delete/{id}')
     config.add_route('user_delete_confirmed', '/user/delete/confirmed/{id}')
 
+    config.add_route('admin_frontpage', '/admin/frontpage')
     config.add_route('admin_home', '/admin/')
     config.add_route('db_angelco', '/admin/db_angelco/')
     config.add_route('db_users', '/admin/db_users/')

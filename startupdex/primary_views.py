@@ -20,6 +20,7 @@ from .models import (
     AngelCoMirror,
     User,
     Article,
+    FrontpageStartup,
     fix_integer_fields,
     #FTSStartup,
     startup_search,
@@ -31,6 +32,7 @@ from startupdex.view_warlock import ViewWarlock
 import json
 import requests
 import math
+from random import shuffle
 from datetime import datetime
 
 import logging
@@ -51,8 +53,13 @@ class FrontpageView(ViewWarlock):
 
     @view_config(route_name='frontpage', renderer='templates/frontpage.jinja2')
     def frontpage(self):
-        return {'data': 'test_data',
-                'gibs': self.gibs,
+        startups = DBSession.query(Startup).join(FrontpageStartup).all()
+        shuffle(startups)
+        focused_startup = startups.pop()
+
+        return {'gibs': self.gibs,
+                'startups': startups,
+                'startup': focused_startup,
                 }
 
     @view_config(route_name='search_redirect', renderer='templates/search.jinja2')
@@ -108,6 +115,61 @@ class FrontpageView(ViewWarlock):
                 'page': page,
                 'offset': offset,
                 }
+
+
+    @view_config(name='postal_code_autorefresh.json', renderer='json')
+    def postal_code_autorefresh(self):
+        request = self.request
+
+        city = None
+        state_province = None
+        postal_code = None
+        country = None
+        if 'locations' in ca:
+            # take the city from the json, and get the state if it's
+            # there
+            try:
+                locations = json.loads(ca['locations'])
+                loc = locations[0]['display_name'].split(", ")
+                city = loc[0]
+            except:
+                pass
+            try:
+                state_province = loc[1]
+            except:
+                pass
+
+        if city is not None:
+            search_string = city.replace(" ", "+") + ",+"
+        if state_province is not None:
+            search_string += state_province.replace(" ", "+") + ",+"
+        if postal_code is not None:
+            search_string += postal_code.replace(" ", "+") + ",+"
+        if country is not None:
+            search_string += country.replace(" ", "+") + ",+"
+        geocode = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" + search_string
+        #print(geocode)
+        geocode = requests.get(geocode)
+        results = json.loads(geocode.text)['results']
+        #print("GEOCODEO")
+        #pprint.pprint(results)
+
+        if type(results) is list:
+            results = results.pop()
+        for component in results['address_components']:
+            if 'country' in component['types']:
+                country = component['long_name']
+            elif 'administrative_area_level_1' in component['types']:
+                state_province = component['long_name']
+            elif 'administrative_area_level_3' in component['types']:
+                city = component['long_name']
+            elif 'locality' in component['types']:
+                city = component['long_name']
+            elif 'postal_code' in component['types']:
+                postal_code = component['long_name']
+
+        lat = results['geometry']['location']['lat']
+        lng = results['geometry']['location']['lng']
 
 
     @view_config(route_name='admin_home', renderer='templates/admin/admin_home.jinja2')

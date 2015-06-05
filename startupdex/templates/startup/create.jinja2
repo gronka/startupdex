@@ -23,11 +23,24 @@ Creating a Startup at
 							</tr>
 							<tr>
 								<td class="col-xs-3 col-sm-2">Country</td>
-								<td><input type="text" name="country" class="country" value="{{ user.country if user.country }}" /></td>
+								<td>
+									<select id="country-selector" name="country" class="country" value="{{user.country if user.country }}">
+										<option value="{{ user.country }}">{{ user.country }}</option>
+									</select>
+								</td>
+
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Postal Code</td>
+								<td><input type="text" id="postal-code-autorefresh" name="postal_code" class="postal_code" value="{{ user.postal_code if user.postal_code }}" /></td>
 							</tr>
 							<tr>
 								<td class="col-xs-3 col-sm-2">State/Province</td>
-								<td><input type="text" name="state_province" class="state_province" value="{{ user.state_province if user.state_province }}" /></td>
+								<td>
+									<select id="state-province-selector" name="state_province" class="state_province" value="{{ user.state_province if user.state_province }}">
+										<option value="{{ user.state_province }}">{{ user.state_province }}</option>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td class="col-xs-3 col-sm-2">City</td>

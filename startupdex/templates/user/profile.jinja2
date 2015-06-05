@@ -7,17 +7,16 @@
 <div class="well well-sm">
 	<div class="row">
 		<div class="col-xs-3">
-			{% if user.photo_url is not none %}
-				<img src="{{ gibs.images_url }}{{ user.photo_url }}" alt="{{ user.photo_url }}" class="img-responsive" width="100%">
-			{% else %}
-				<img src="{{ gibs.images_url }}user.png" alt="{{ user.fullname }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-			{% endif %}
+			{% include "../image/user.jinja2" %}
 		</div>
 
 		<div class="col-xs-9">
 			<h3>{{ user.fullname }}</h3>
 			<p>
-				{{ user.city if user.city }}, {{ user.country }}
+				{% if user.city %}
+					{{ user.city }}, 
+				{% endif %}
+				{{ user.country if user.country }}
 			</p>
 			{% if user.home_url %}
 				<p>{{ user.home_url }}</p>
@@ -30,38 +29,6 @@
 	</div>
 </div>
 
-
-{#<div class="row selected-articles">#}
-	{#<h3>Featured Articles</h3>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-	{#<div class="col-md-3">#}
-		{#<a href="#">#}
-			{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive img-rounded hidden-sm hidden-xs" width="100%">#}
-			{#<h4 class="text-center">Article title</h4>#}
-		{#</a>#}
-	{#</div>#}
-{#</div>#}
-
-
-
-
 <div class="feed well well-sm">
 	<h3>Feed and RSS</h3>
 	{% for article_row in articles | batch(4, '&nbsp;') %}
@@ -70,7 +37,7 @@
 		{% for article in article_row %}
 		<div class="col-md-3" data-sr>
 			<a href="#">
-				<img src="{{ gibs.images_url }}{{ article.thumb_url }}" alt="{{ article.thumb_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
+				{% include "../image/user.jinja2" %}
 				<h4 class="text-center">{{ article.title }}</h4>
 			</a>
 			<p>

@@ -32,18 +32,27 @@ Settings at
 							<td class="col-xs-3 col-sm-2">Phone</td>
 							<td><input type="text" name="phone" class="phone" value="{{ user.phone }}" disabled/></td>
 						</tr>
-						<tr>
-							<td class="col-xs-3 col-sm-2">Location</td>
-							<td><input type="text" name="location" class="location" value="{{ user.location }}" disabled/></td>
-						</tr>
-						<tr>
-							<td class="col-xs-3 col-sm-2">Country</td>
-							<td><input type="text" name="country" class="country" value="{{ user.country }}" disabled/></td>
-						</tr>
-						<tr>
-							<td class="col-xs-3 col-sm-2">State/Province</td>
-							<td><input type="text" name="state_province" class="state_province" value="{{ user.state_province }}" disabled/></td>
-						</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Country</td>
+								<td>
+									<select id="country-selector" name="country" class="country" value="{{user.country if user.country }}" disabled>
+										<option value="{{ user.country }}">{{ user.country }}</option>
+									</select>
+								</td>
+
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">Postal Code</td>
+								<td><input type="text" id="postal-code-autorefresh" name="postal_code" class="postal_code" value="{{ user.postal_code }}" disabled /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-3 col-sm-2">State/Province</td>
+								<td>
+									<select id="state-province-selector" name="state_province" class="state_province" value="{{ user.state_province if user.state_province }}" disabled>
+										<option value="{{ user.state_province }}">{{ user.state_province }}</option>
+									</select>
+								</td>
+							</tr>
 						<tr>
 							<td class="col-xs-3 col-sm-2">City</td>
 							<td><input type="text" name="city" class="city" value="{{ user.city }}" disabled/></td>
