@@ -61,7 +61,7 @@ class FrontpageView(ViewWarlock):
             focused_startup = {"name": "no startups listed"}
 
         return {'gibs': self.gibs,
-                'startups': startups,
+                'startups': startups[:6],
                 'startup': focused_startup,
                 }
 
