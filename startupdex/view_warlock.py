@@ -1,4 +1,7 @@
-from pyramid.security import authenticated_userid
+from pyramid.security import (
+    authenticated_userid,
+    forget,
+    )
 from pyramid.view import (
     notfound_view_config
     )
@@ -30,6 +33,11 @@ class ViewWarlock(object):
                     "SELECT * FROM users WHERE id=:param",
                     {"param": self.userid_from_cookie}
                     ).first()
+                if self.current_user is None:
+                    headers = forget(self.request)
+                    self.request.session.flash('You have been logged out by the system. If this was unintentional, please contact support.',
+                                               queue='warnings')
+
                 if self.userid_from_cookie == '1':
                     self.privilege = "admin"
         #flashmsgs = request.session.pop_flash()
