@@ -36,7 +36,7 @@ import colander
 
 #import Image
 import os
-import shutil
+import datetime
 import math
 
 log = logging.getLogger(__name__)
@@ -229,6 +229,7 @@ class StartupView(ViewWarlock):
                 prop = True
             if prop != getattr(startup, key):
                 setattr(startup, key, prop)
+        startup.updated_at = datetime.datetime.utcnow()
         return ("Success")
 
     @view_config(route_name='modify_social', renderer='templates/startup/modify_social.jinja2')
@@ -265,6 +266,7 @@ class StartupView(ViewWarlock):
                 prop = True
             if prop != getattr(startup, key):
                 setattr(startup, key, prop)
+        startup.updated_at = datetime.datetime.utcnow()
         return ("Success")
 
     @view_config(route_name='modify_startup_delete', renderer='templates/startup/modify_startup_delete.jinja2')

@@ -428,6 +428,7 @@ class Startup(Base):
     angelco_status = Column(Text)
     company_size = Column(Text)
     company_status = Column(Integer)
+    language = Column(Text)
 
 
 class FrontpageStartup(Base):
@@ -488,6 +489,7 @@ class User(Base):
     phone = Column(Text)
     confirmed = Column(Boolean, default=False)
     join_date = Column(DateTime, default=datetime.datetime.utcnow)
+    last_login = Column(DateTime, default=datetime.datetime.utcnow)
     tz = Column(Text)
     tzoffset = Column(Text)
     status = Column(Text)

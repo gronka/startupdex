@@ -55,7 +55,10 @@ class FrontpageView(ViewWarlock):
     def frontpage(self):
         startups = DBSession.query(Startup).join(FrontpageStartup).all()
         shuffle(startups)
-        focused_startup = startups.pop()
+        if focused_startup is not None:
+            focused_startup = startups.pop()
+        else:
+            focused_startup = {"name": "no startups listed"}
 
         return {'gibs': self.gibs,
                 'startups': startups,

@@ -17,6 +17,7 @@ CREATE TABLE users (
 	phone TEXT,
 	confirmed BOOLEAN,
 	join_date TIMESTAMP,
+	last_login TIMESTAMP,
 	tz TEXT,
 	tzoffset TEXT,
 	status TEXT,
@@ -58,8 +59,10 @@ CREATE TABLE startups (
 	userid_creator INTEGER,
 	name TEXT NOT NULL,
 	status TEXT,
+	hidden BOOLEAN default false,
 	locations TEXT,
 	country TEXT,
+	postal_code TEXT,
 	state_province TEXT,
 	city TEXT,
 	street_address TEXT,
@@ -223,8 +226,9 @@ CREATE TABLE fts_startups (
 	short_info TEXT,
 	local_url TEXT UNIQUE,
 	photo_url TEXT,
+	language TEXT NOT NULL DEFAULT('english'),
 	ranking TEXT,
-	doc TEXT,
+	about TEXT,
 	tsv TSVECTOR,
 	PRIMARY KEY (id)
 );
@@ -240,6 +244,24 @@ tsv, 'pg_catalog.english', doc);
 CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);
 "
 
+### WORK IN PROGRESS ###
+CREATE INDEX fts_idx ON fts_startups
+USING gin(setweight(to_tsvector('english', name), 'A') ||
+	setweight(to_tsvector('english', short_info), 'B') ||
+	setweight(to_tsvector('english', about), 'C'));
+
+CREATE INDEX idx_fts_post ON fts_startups 
+USING gin(setweight(to_tsvector('english', name), 'A') || 
+           setweight(to_tsvector('english', short_info), 'B'));
+
+
+SELECT name FROM startups WHERE to_tsvector(short_info || ' ' || about) @@ to_tsquery('cloud');
+
+CREATE INDEX fts_idx ON startups USING gin(to_tsvector('english', about));
+CREATE INDEX fts_idx ON startups USING gin(to_tsvector(startups.language, about));
+
+
+
 psql -U taylor -d startupdex -c "
 SELECT id, name
 FROM (SELECT startup.id as id,
@@ -250,6 +272,7 @@ setweight(to_tsvector(post.english::regconfig, startup.about), 'B') as document
 
 SELECT to_tsvector(post.english, 
 "
+
 
 
 SELECT to_tsvector('It''s kind of fun to do the impossible') @@ to_tsquery('impossible');
