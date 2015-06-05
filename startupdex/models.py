@@ -428,7 +428,7 @@ class Startup(Base):
     angelco_status = Column(Text)
     company_size = Column(Text)
     company_status = Column(Integer)
-    language = Column(Text)
+    language = Column(Text, default='english')
 
 
 class FrontpageStartup(Base):

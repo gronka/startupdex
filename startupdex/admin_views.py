@@ -434,6 +434,7 @@ class AdminView(ViewWarlock):
                                       angelco_quality=int(ca['quality']),
                                       angelco_follower_count=int(ca['follower_count']),
                                       angelco_status=ca['status'],
+                                      language='english',
                                       )
                     DBSession.add(startup)
                     DBSession.flush()
@@ -642,6 +643,7 @@ class AdminView(ViewWarlock):
                     short_info=ca.product_desc,
                     angelco_status=ca.status,
                     company_size=company_size,
+                    language = 'english',
                     )
                 print(startupdex)
                 DBSession.add(startupdex)
