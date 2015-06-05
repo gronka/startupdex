@@ -28,10 +28,6 @@ class ViewWarlock(object):
         self.current_user = {'email': 'NotLoggedIn'}
         self.logged_in = False
 
-        application_url = self.request.route_url('frontpage')
-        if application_url == 'http://127.0.0.1/':
-            request.session.flash("Local server", queue='warnings')
-
         if request.path != 'logout':
         #print(self.userid_from_cookie)
             if self.userid_from_cookie is not None:
@@ -42,9 +38,9 @@ class ViewWarlock(object):
                     ).first()
                 if self.current_user is None:
                     headers = forget(self.request)
-                    self.request.session.flash('You have been logged out by the system. If this was unintentional, please contact support.',
+                    self.request.session.flash('You have been logged out by the system. If this was an error, please contact support.',
                                                queue='warnings')
-                    url = self.gibs['application_url']
+                    url = self.request.route_url('frontpage')
                     return HTTPFound(location=url,
                                     headers=headers)
 
@@ -52,6 +48,10 @@ class ViewWarlock(object):
                     self.privilege = "admin"
         #flashmsgs = request.session.pop_flash()
 
+
+        application_url = self.request.route_url('frontpage')
+        if application_url == 'http://127.0.0.1/':
+            request.session.flash("Local server", queue='warnings')
 
 
         #TODO: store timezone offset in self.gibs
