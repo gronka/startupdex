@@ -23,6 +23,7 @@ CREATE TABLE users (
 	status TEXT,
 	location TEXT,
 	country TEXT,
+	postal_code TEXT,
 	state_province TEXT,
 	city TEXT,
 	street_address TEXT,
@@ -93,7 +94,7 @@ CREATE TABLE startups (
 	angelco_status TEXT ,
 	company_size TEXT,
 	company_status INTEGER,
-	language TEXT NOT NULL DEFAULT('english'),
+	language TEXT NOT NULL DEFAULT 'english',
 	PRIMARY KEY (id),
 	FOREIGN KEY (userid_creator) REFERENCES users (id)
 );
