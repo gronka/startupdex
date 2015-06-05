@@ -10,7 +10,10 @@ from pyramid.httpexceptions import (
     )
 from .models import (
     DBSession,
-)
+    )
+from pyramid.httpexceptions import (
+    HTTPFound,
+    )
 
 
 class ViewWarlock(object):
@@ -25,6 +28,10 @@ class ViewWarlock(object):
         self.current_user = {'email': 'NotLoggedIn'}
         self.logged_in = False
 
+        application_url = self.request.route_url('frontpage')
+        if application_url == 'http://127.0.0.1/':
+            request.session.flash("Local server", queue='warnings')
+
         if request.path != 'logout':
         #print(self.userid_from_cookie)
             if self.userid_from_cookie is not None:
@@ -37,14 +44,14 @@ class ViewWarlock(object):
                     headers = forget(self.request)
                     self.request.session.flash('You have been logged out by the system. If this was unintentional, please contact support.',
                                                queue='warnings')
+                    url = self.gibs['application_url']
+                    return HTTPFound(location=url,
+                                    headers=headers)
 
                 if self.userid_from_cookie == '1':
                     self.privilege = "admin"
         #flashmsgs = request.session.pop_flash()
 
-        application_url = self.request.route_url('frontpage')
-        if application_url == 'http://127.0.0.1/':
-            request.session.flash("Local server", queue='warnings')
 
 
         #TODO: store timezone offset in self.gibs
