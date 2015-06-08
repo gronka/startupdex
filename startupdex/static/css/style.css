@@ -169,15 +169,74 @@ overflow-y: scroll;
 }
 
 
-//state directory
-div.state-directory {
-	margin: 0px;
-	padding: 0px;
-	background-color: #bbb;
+.header-startup-frontpage {
+	background-color: #F0FAFF; 
+	height: auto;
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	padding: 80px 0;
 }
-.state-listing {
-	font-size: 18px;
+
+.header-startup-frontpage h3 {
+	margin: 0 0 70px 30px;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
 }
+
+.trending-startups-frontpage {
+	background-color: #FFF; 
+	height: auto;
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	padding: 80px 0;
+}
+.trending-startups-frontpage h3 {
+	margin: 40px;
+	margin-bottom: 50px;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+.state-directory {
+	background-color: #EBE0D6; 
+	height: auto;
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	padding: 80px 0;
+}
+.state-directory p {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 3px 50px;
+}
+.state-directory h4 {
+	margin: 0 0 70px 30px;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.imager {
+	max-width: 120px;
+	max-height: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

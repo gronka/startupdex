@@ -3,78 +3,86 @@
 Browsing startups at
 {% endblock %}
 
-{% block left_focus %}
-<div class="row">
-	<div class="col-md-12">
-			<h4>
-				Searching StartupDex
-			</h4>
-	</div>
-</div>
+{% block content %}
 
-{% if rowcount == 0 %}
-	<p>
-		No results for your search, "{{ search_terms }}".
-	</p>
-{% else %}
-	<p>
-		{{ rowcount }} results for your search, "{{ search_terms }}".
-	</p>
-{% endif %}
-{% for result in results %}
-	<div class="row bottom-buffer-12px">
-		<a href="{{ gibs.application_url }}startup/{{ result.local_url }}">
-					<div class="col-xs-3">
-						<img src="{{ gibs.images_url }}{{ result.logo_url }}" alt="{{ result.name }}" class="img-rounded img-responsive browse-thumb" width="100%">
+<div class="container">
+	<div class="row">
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-12">
+						<h4>
+							Searching StartupDex
+						</h4>
+				</div>
+			</div>
+
+			{% if rowcount == 0 %}
+				<p>
+					No results for your search, "{{ search_terms }}".
+				</p>
+			{% else %}
+				<p>
+					{{ rowcount }} results for your search, "{{ search_terms }}".
+				</p>
+			{% endif %}
+			{% for result in results %}
+				<div class="row bottom-buffer-12px">
+					<a href="{{ gibs.application_url }}startup/{{ result.local_url }}">
+								<div class="col-xs-2">
+									<img src="{{ gibs.images_url }}{{ result.logo_url }}" alt="{{ result.name }}" class="img-rounded img-responsive browse-thumb" width="100%">
+								</div>
+								<div class="col-xs-10">
+									<h5 class="browse-startup-heading">
+									{{ loop.index+offset }}.	{{ result.name }}
+									</h5>
+							</a>
+
+						<p>
+							{{ result.short_info[:300] }}...
+						</p>
 					</div>
-					<div class="col-xs-9">
-						<h5 class="browse-startup-heading">
-						{{ loop.index+offset }}.	{{ result.name }}
-						</h5>
-				</a>
+				</div>
+			{% endfor %}
+					
+			<div class="row">
+				<div class="col-md-12">
+					<nav>
+						<ul class="pagination">
+							<li {{ 'class=disabled' if page == 1 }}>
+								{% if page != 1 %}
+									<a href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{page-1}}" aria-label="Previous">
+								{% endif %}
+								<span aria-hidden="true">&laquo;</span>
+							</a></li>
+							{% for i in range(1, num_pages+1) %}
+							<li {{ 'class=active' if page == i }}>
+								<a
+								{% if page != i %}
+									href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{i}}"
+								{% endif %}
+								>
+									{{ i }}
+								</a></li>
+							{% endfor %}
+							<li {{ 'class=disabled' if page == num_pages }}>
+								{% if page != num_pages %}
+									<a href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{page+1}}" aria-label="Next">
+								{% endif %}
+									<span aria-hidden="true">&raquo;</span>
+								</a></li>
+						</ul>
+					</nav>
 
-			<p>
-				{{ result.short_info[:300] }}...
-			</p>
+
+				</div>
+			</div>
 		</div>
-	</div>
-{% endfor %}
-		
-<div class="row">
-	<div class="col-md-12">
-		<nav>
-			<ul class="pagination">
-				<li {{ 'class=disabled' if page == 1 }}>
-					{% if page != 1 %}
-						<a href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{page-1}}" aria-label="Previous">
-					{% endif %}
-					<span aria-hidden="true">&laquo;</span>
-				</a></li>
-				{% for i in range(1, num_pages+1) %}
-				<li {{ 'class=active' if page == i }}>
-					<a
-					{% if page != i %}
-						href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{i}}"
-					{% endif %}
-					>
-						{{ i }}
-					</a></li>
-				{% endfor %}
-				<li {{ 'class=disabled' if page == num_pages }}>
-					{% if page != num_pages %}
-						<a href="{{ gibs.application_url }}search?search_terms={{search_terms}}&page={{page+1}}" aria-label="Next">
-					{% endif %}
-						<span aria-hidden="true">&raquo;</span>
-					</a></li>
-			</ul>
-		</nav>
-
+		<div class="hidden-xs hidden-sm col-md-3">
+			{% include "../snips/startups_sidebar.jinja2" %}
+		</div>
 
 	</div>
 </div>
 
 
-
-
-
-{% endblock left_focus %}
+{% endblock content %}

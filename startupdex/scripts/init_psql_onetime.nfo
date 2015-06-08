@@ -191,6 +191,10 @@ useful commands:
 psql -d startupdex -c "ALTER TABLE startups ALTER company_size TYPE text"
 psql -d startupdex -c "TRUNCATE TABLE startups"
 psql -d startupdex -c "TRUNCATE TABLE startups restart identity"
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+
 psql -d startupdex -c "CREATE INDEX index_startups_on_id ON startups USING btree (id)"
 psql -d startupdex -c "CREATE INDEX index_startups_on_state ON startups USING btree (state)"
 

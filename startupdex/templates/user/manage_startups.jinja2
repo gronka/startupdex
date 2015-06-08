@@ -4,11 +4,14 @@ Settings at
 {% endblock %}
 
 
-{% block left_focus %}
+{% block content %}
 
-{% set active_tab = 'startups' %}
-{% include "manage_tabs.jinja2" %}
 
+<div class="container">
+<div class="row">
+	{% set active_tab = 'startups' %}
+	{% include "manage_tabs.jinja2" %}
+</div>
 <div class="row">
 	<div class="col-xs-12">
 		<br />
@@ -24,18 +27,14 @@ Settings at
 		{% else %}
 			<div class="feed well well-sm">
 				<h3>Your Listed Startups</h3>
-				{% for startup_row in startups | batch(4) %}
+				{% for startup_row in startups | batch(6) %}
 				<div class="row">
 					{% for startup in startup_row %}
-						<div class="col-md-3" data-sr>
+						<div class="col-sm-2" data-sr>
 							<p>
 								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
 									<h4 class="text-center">{{ startup.local_url }}</h4>
-									{% if startup.logo_url is not none %}
-										<img src="{{ gibs.images_url }}{{ startup.logo_url }}" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-									{% else %}
-										<img src="{{ gibs.images_url }}startup.jpg" alt="{{ startup.name }} thumbnail" class="img-rounded img-responsive browse-thumb" width="100%">
-									{% endif %}
+									{% include "../snips/image_startup.jinja2" %}
 								</a>
 							</p>
 							<p>
@@ -53,8 +52,9 @@ Settings at
 
 	</div>
 </div>
+</div>
 
 
 
-{% endblock left_focus %}
+{% endblock content %}
 

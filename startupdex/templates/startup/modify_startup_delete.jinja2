@@ -4,49 +4,46 @@ Settings at
 {% endblock %}
 
 
-{% block left_focus %}
-
+{% block content %}
 
 <div class="container">
 	<div class="row">
-{% set active_tab = 'modify_delete' %}
-{% include "modify_tabs.jinja2" %}
+		{% set active_tab = 'modify_delete' %}
+		{% include "modify_tabs.jinja2" %}
+	</div>
+	<div class="row">
+		<div class="col-sm-9 col-sm-offset-1">
+			<br />
+			<h3 class="settings_editable">Modifying {{ startup.name }}</h3>
+					<button class="btn btn-default" id="enable-changes" type="submit"><i class="glyphicon glyphicon-lock"></i> Unlock This Page</button>
+			<br />
+			<br />
 
-			<div class="col-sm-9 col-sm-offset-1">
-				<br />
-				<h3 class="settings_editable">Modifying {{ startup.name }}</h3>
-						<button class="btn btn-default" id="enable-changes" type="submit"><i class="glyphicon glyphicon-lock"></i> Unlock This Page</button>
-				<br />
-				<br />
+			<form action="{{ gibs.application_url }}modify_startup_delete/{{ startup.id }}" method="POST">
+				<div class="form-group">
+					<input type="hidden" name="startupid" id="startupid" value="{{ startup.id }}" />
+					<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
+					<table class="table">
+						<tr>
+							<td class="col-xs-8 col-sm-5">Select to hide your startup from the public</td>
+							{#<td><input type="text" name="hide_startup" class="hide_startup" value="{{ startup.hidden }}" disabled/></td>#}
+							<td><input type="checkbox" name="hide_startup" class="hide_startup" {{ 'checked' if startup.hidden }} disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-8 col-sm-5">Type "DELETE" to permanently remove your startup</td>
+							<td><input type="text" name="delete_startup" class="delete_startup" placeholder="Must be all caps to confirm" disabled/></td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 col-sm-2"><button class="btn btn-default" id="save-changes" type="submit" name="form.submitted" disabled><i class="glyphicon glyphicon-ok"></i> Commit Changes</button></td>
+							<td><button class="btn btn-default" id="cancel-changes" type="submit" disabled><i class="glyphicon glyphicon-remove"></i> Cancel Changes</button></td>
+						</tr>
+					</table>
+				</div>
+			</form>
 
-				<form action="{{ gibs.application_url }}modify_startup_delete/{{ startup.id }}" method="POST">
-					<div class="form-group">
-						<input type="hidden" name="startupid" id="startupid" value="{{ startup.id }}" />
-						<input type="hidden" name="userid" id="userid" value="{{ user.id }}" />
-						<table class="table">
-							<tr>
-								<td class="col-xs-8 col-sm-8">Select to hide your startup from the public</td>
-								{#<td><input type="text" name="hide_startup" class="hide_startup" value="{{ startup.hidden }}" disabled/></td>#}
-								<td><input type="checkbox" name="hide_startup" class="hide_startup" {{ 'checked' if startup.hidden }} disabled/></td>
-							</tr>
-							<tr>
-								<td class="col-xs-8 col-sm-8">Type "DELETE" to permanently remove your startup</td>
-								<td><input type="text" name="delete_startup" class="delete_startup" placeholder="Must be all caps to confirm" disabled/></td>
-							</tr>
-							<tr>
-								<td class="col-xs-3 col-sm-2"><button class="btn btn-default" id="save-changes" type="submit" name="form.submitted" disabled><i class="glyphicon glyphicon-ok"></i> Commit Changes</button></td>
-								<td><button class="btn btn-default" id="cancel-changes" type="submit" disabled><i class="glyphicon glyphicon-remove"></i> Cancel Changes</button></td>
-							</tr>
-						</table>
-					</div>
-				</form>
-	
-	
-			</div>
+
+		</div>
 	</div>
 </div>
 
-{% endblock left_focus %}
-
-{% block right_focus %}
-{% endblock right_focus %}
+{% endblock content %}

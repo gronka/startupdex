@@ -3,60 +3,73 @@
 {{ startup.name }} at
 {% endblock %}
 
-{% block left_focus %}
-<div class="well well-sm">
-	<div class="row">
-		<div class="col-xs-3">
-			{% include "../image/startup.jinja2" %}
-		</div>
-
-		<div class="col-xs-9">
-			<h3>{{ startup.name }}</h3>
-			<p>
-				{% if startup.city %}
-					{{ startup.city }}, 
-				{% endif %}
-				{{ startup.country if startup.country }}
-			</p>
-			{% if startup.contact_email %}
-				<p>{{ startup.contact_email }}</p>
-			{% endif %}
-			{% if startup.about %}
-				<p>{{ startup.about }}</p>
-			{% endif %}
-
-
-		</div>
-	</div>
-</div>
-
-
-<div class="feed well well-sm">
-	<h3>News Feed</h3>
-	{% for article_row in articles | batch(4) %}
-	<div class="row">
-		{% for article in article_row %}
-		<div class="col-md-3" data-sr>
-			<a href="#">
-				{% include "../image/article.jinja2" %}
-				<h4 class="text-center">{{ article.title }}</h4>
-			</a>
-			<p>
-				{{ article.lead_text }}
-			</p>
-		</div>
-		{% endfor %}
-	</div>
-	{% endfor %}
-</div>
-
-
-
+{% block content %}
+<div class="container">
 <div class="row">
-	<div class="col-md-12">
-		State directory
+	<div class="col-md-9">
+		<div class="well well-sm">
+			<div class="row">
+				<div class="col-xs-3">
+					{% include "../snips/image_startup.jinja2" %}
+				</div>
+
+				<div class="col-xs-9">
+					<h3>{{ startup.name }}</h3>
+					<p>
+						{% if startup.city %}
+							{{ startup.city }}, 
+						{% endif %}
+						{{ startup.country if startup.country }}
+					</p>
+					{% if startup.contact_email %}
+						<p>{{ startup.contact_email }}</p>
+					{% endif %}
+					{% if startup.about %}
+						<p>{{ startup.about }}</p>
+					{% endif %}
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hidden-xs hidden-sm col-md-3">
+		{% include "../snips/startups_sidebar.jinja2" %}
+	</div>
+
+
+<div class="container">
+	<div class="row">
+		<div class="feed well well-sm">
+			<h3>News Feed</h3>
+			{% for article_row in articles | batch(4) %}
+			<div class="row">
+				{% for article in article_row %}
+				<div class="col-md-3" data-sr>
+					<a href="#">
+						{% include "../snips/image_article.jinja2" %}
+						<h4 class="text-center">{{ article.title }}</h4>
+					</a>
+					<p>
+						{{ article.lead_text }}
+					</p>
+				</div>
+				{% endfor %}
+			</div>
+			{% endfor %}
+		</div>
 	</div>
 </div>
 
 
-{% endblock left_focus %}
+
+	<div class="row">
+		<div class="col-md-12">
+			<a href="#" id="state-directory-nugget">
+				State directory >>
+			</a>
+		</div>
+	</div>
+
+
+{% endblock content %}

@@ -219,23 +219,6 @@ CREATE TABLE startup_has_categories (
 );
 "
 
-psql -U taylor -d startupdex -c "
-CREATE TABLE fts_startups (
-	id SERIAL,
-	startupdexid INTEGER UNIQUE REFERENCES startups(id) ON DELETE CASCADE,
-	angelcoid INTEGER UNIQUE,
-	name TEXT,
-	short_info TEXT,
-	local_url TEXT UNIQUE,
-	photo_url TEXT,
-	language TEXT NOT NULL DEFAULT('english'),
-	ranking TEXT,
-	about TEXT,
-	tsv TSVECTOR,
-	PRIMARY KEY (id)
-);
-"
-
 
 ### FULL TEXT SEARCH ###
 psql -U taylor -d startupdex -c "
@@ -265,6 +248,9 @@ CREATE INDEX startups_fts_idx ON startups USING gin(fts);
 
 ### FTS TESTING ###
 SELECT name FROM startups WHERE to_tsvector(short_info || ' ' || about) @@ to_tsquery('cloud');
+SELECT to_tsvector('It''s kind of fun to do the impossible') @@ to_tsquery('impossible');
+SELECT to_tsvector('tree') @@ to_tsquery(
+
 
 psql -U taylor -d startupdex -c "
 SELECT id, name
@@ -278,9 +264,6 @@ SELECT to_tsvector(post.english,
 "
 
 
-
-SELECT to_tsvector('It''s kind of fun to do the impossible') @@ to_tsquery('impossible');
-SELECT to_tsvector('tree') @@ to_tsquery(
 
 
 psql -U taylor -d startupdex -c "

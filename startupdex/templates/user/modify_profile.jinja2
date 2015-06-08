@@ -4,13 +4,14 @@ Settings at
 {% endblock %}
 
 
-{% block left_focus %}
+{% block content %}
 
 <div class="container">
 	<div class="row">
 		{% set active_tab = 'profile' %}
 		{% include "modify_tabs.jinja2" %}
-
+	</div>
+	<div class="row">
 			<div class="col-sm-9 col-sm-offset-1">
 				<br />
 				<h3 class="settings_editable">{{ user.fullname }}</h3>
@@ -129,10 +130,4 @@ Settings at
 </div>
 
 
-
-
-
-{% endblock left_focus %}
-
-{% block right_focus %}
-{% endblock right_focus %}
+{% endblock content %}

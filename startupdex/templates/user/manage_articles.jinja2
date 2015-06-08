@@ -4,11 +4,13 @@ Settings at
 {% endblock %}
 
 
-{% block left_focus %}
+{% block content %}
 
-{% set active_tab = 'articles' %}
-{% include "manage_tabs.jinja2" %}
-
+<div class="container">
+<div class="row">
+	{% set active_tab = 'articles' %}
+	{% include "manage_tabs.jinja2" %}
+</div>
 <div class="row">
 	<div class="col-xs-12">
 		<br />
@@ -23,16 +25,14 @@ Settings at
 		{% else %}
 			<div class="feed well well-sm">
 				<h3>Your Listed articles</h3>
-				{% for article_row in articles | batch(4) %}
+				{% for article_row in articles | batch(6) %}
 				<div class="row">
 					{% for article in article_row %}
-						<div class="col-md-3" data-sr>
+						<div class="col-sm-2" data-sr>
 							<p>
 								<a href="{{ gibs.application_url }}article/{{ article.local_url }}">
 									<h4 class="text-center">{{ article.title }}</h4>
-									{% if article.photo_url %}
-										<img src="{{ gibs.images_url }}{{ article.photo_url }}" alt="{{ article.photo_url }}" class="img-responsive hidden-sm hidden-xs" width="100%">
-									{% endif %}
+									{% include "../snips/image_article.jinja2" %}
 								</a>
 							</p>
 							<p>
@@ -49,12 +49,8 @@ Settings at
 
 	</div>
 </div>
+</div>
 
 
-
-
-
-
-
-{% endblock left_focus %}
+{% endblock content %}
 

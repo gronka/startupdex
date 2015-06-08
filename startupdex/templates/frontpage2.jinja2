@@ -1,0 +1,91 @@
+{% extends "base.jinja2" %}
+{% block title %}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+{#<section class="header-startup-frontpage" data-speed="2" data-type="background">#}
+	{#<div class="container">#}
+		{#<div class="row">#}
+			{#<div class="col-md-12">#}
+				{#<div class="row text-center">#}
+					{#<div class="col-xs-12 text-center">#}
+						{#<h3>Networking for Startups</h3>#}
+					{#</div>#}
+
+					{#<div class="col-xs-2 col-xs-offset-5">#}
+						{#<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">#}
+							{#{% include "snips/image_startup.jinja2" %}#}
+						{#</a>#}
+					{#</div>#}
+
+					{#<div class="col-xs-6 col-xs-offset-3">#}
+						{#<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">#}
+							{#<h3>{{ startup.name }}</h3>#}
+						{#</a>#}
+					{#</div>#}
+					{#<div class="col-xs-6 col-xs-offset-3">#}
+						{#<p>#}
+							{#{% if startup.city %}#}
+								{#{{ startup.city }}, #}
+							{#{% endif %}#}
+							{#{{ startup.country if startup.country }}#}
+						{#</p>#}
+					{#</div>#}
+					{#<div class="col-xs-8 col-xs-offset-2">#}
+						{#{% if startup.contact_email %}#}
+							{#<p>{{ startup.contact_email }}</p>#}
+						{#{% endif %}#}
+						{#{% if startup.short_info %}#}
+							{#<p>{{ startup.short_info }}</p>#}
+						{#{% endif %}#}
+
+					{#</div>#}
+				{#</div>#}
+
+			{#</div>#}
+		{#</div>#}
+	{#</div>#}
+{#</section>#}
+
+
+<section class="header-startup-frontpage" data-speed="2" data-type="background">
+	<div class="container">
+		<div class="row">
+			<h3 class="trending-startups-frontpage-title">Startupdex</h3>
+			<h3 class="trending-startups-frontpage-title">Networking for Startups</h3>
+		</div>
+		{% for startup_row in startups | batch(6) %}
+			<div class="row">
+				{% for startup in startup_row %}
+					<div class="col-xs-2 col-lg-2" data-sr>
+						<div class="trending-startups-frontpage-item">
+							<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+								{% include "snips/image_startup.jinja2" %}
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="row">
+				{% for startup in startup_row %}
+					<div class="col-xs-2 col-lg-2" data-sr>
+						<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+							<h4 class="text-center">{{ startup.name }}</h4>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		{% endfor %}
+	</div>
+</section>
+
+{% include "search/state_directory.jinja2" %}
+
+{% endblock content %}
+

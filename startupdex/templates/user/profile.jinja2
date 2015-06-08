@@ -3,11 +3,13 @@
 {{ user.name }} at
 {% endblock %}
 
-{% block left_focus %}
+{% block content %}
+<div class="container">
+<div class="row">
 <div class="well well-sm">
 	<div class="row">
 		<div class="col-xs-3">
-			{% include "../image/user.jinja2" %}
+			{% include "../snips/image_user.jinja2" %}
 		</div>
 
 		<div class="col-xs-9">
@@ -28,35 +30,32 @@
 		</div>
 	</div>
 </div>
-
-<div class="feed well well-sm">
-	<h3>Feed and RSS</h3>
-	{% for article_row in articles | batch(4, '&nbsp;') %}
-	<div class="row">
-
-		{% for article in article_row %}
-		<div class="col-md-3" data-sr>
-			<a href="#">
-				{% include "../image/user.jinja2" %}
-				<h4 class="text-center">{{ article.title }}</h4>
-			</a>
-			<p>
-				{{ article.lead_text }}
-			</p>
-	
-		</div>
-		{% endfor %}
-
-	</div>
-	{% endfor %}
 </div>
-
-
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="feed well well-sm">
+		<h3>Feed and RSS</h3>
+		{% for article_row in articles | batch(4, '&nbsp;') %}
+		<div class="row">
+
+			{% for article in article_row %}
+			<div class="col-md-3" data-sr>
+				<a href="#">
+					{% include "../image/user.jinja2" %}
+					<h4 class="text-center">{{ article.title }}</h4>
+				</a>
+				<p>
+					{{ article.lead_text }}
+				</p>
+		
+			</div>
+			{% endfor %}
+
+		</div>
+		{% endfor %}
 	</div>
+</div>
 </div>
 
 
-{% endblock left_focus %}
+{% endblock content %}

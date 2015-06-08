@@ -8,93 +8,67 @@
 {% endblock %}
 
 
-{% block left_focus %}
-<div class="well well-sm">
+{% block content %}
+<div class="container">
 	<div class="row">
-		<div class="col-xs-3">
-			<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-				{% include "image/startup.jinja2" %}
-			</a>
+		<div class="col-md-9">
+		<div class="well well-sm">
+			<div class="row">
+				<div class="col-xs-3">
+					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+						{% include "snips/image_startup.jinja2" %}
+					</a>
+				</div>
+
+				<div class="col-xs-9">
+					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+						<h3>{{ startup.name }}</h3>
+					</a>
+					<p>
+						{% if startup.city %}
+							{{ startup.city }}, 
+						{% endif %}
+						{{ startup.country if startup.country }}
+					</p>
+					{% if startup.contact_email %}
+						<p>{{ startup.contact_email }}</p>
+					{% endif %}
+					{% if startup.about %}
+						<p>{{ startup.about }}</p>
+					{% endif %}
+
+
+				</div>
+			</div>
+
+		</div>
+		<div class="row">
+			<h3 class="margin-top-0px margin-bottom-0px">Trending Startups</h3>
+		</div>
+		{% for startup_row in startups | batch(6) %}
+		<div class="row">
+			{% for startup in startup_row %}
+			<div class="col-xs-2" data-sr>
+				<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+					{% include "snips/image_startup.jinja2" %}
+					<h4 class="text-center">{{ startup.name }}</h4>
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+		{% endfor %}
 		</div>
 
-		<div class="col-xs-9">
-			<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-				<h3>{{ startup.name }}</h3>
-			</a>
-			<p>
-				{% if startup.city %}
-					{{ startup.city }}, 
-				{% endif %}
-				{{ startup.country if startup.country }}
-			</p>
-			{% if startup.contact_email %}
-				<p>{{ startup.contact_email }}</p>
-			{% endif %}
-			{% if startup.about %}
-				<p>{{ startup.about }}</p>
-			{% endif %}
 
-
+		<div class="hidden-xs hidden-sm col-md-3">
+			{% include "snips/startups_sidebar.jinja2" %}
 		</div>
 	</div>
-
-
-
-		{#<div class="col-md-6 col-sm-5">#}
-
-			{#<div id="startup-carousel" class="carousel slide">#}
-				{#<ol class="carousel-indicators">#}
-					{#<li data-target="#startup-carousel" data-slide-to="0" class="active"></li>#}
-					{#<li data-target="#startup-carousel" data-slide-to="1"></li>#}
-					{#<li data-target="#startup-carousel" data-slide-to="2"></li>#}
-				{#</ol>#}
-
-				{#<div class="carousel-inner">#}
-					{#<div class="item active">#}
-						{#<img src="{{ gibs.images_url }}apple0.jpg" alt="apple0.jpg" class="img-responsive" width="100%">#}
-					{#</div>#}
-					{#<div class="item">#}
-						{#<img src="{{ gibs.images_url }}apple1.jpg" alt="apple1.jpg" class="img-responsive" width="100%">#}
-					{#</div>#}
-					{#<div class="item">#}
-						{#<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-responsive" width="100%">#}
-					{#</div>#}
-				{#</div>#}
-				{#<a class="carousel-control left" href="#startup-carousel" data-slide="prev">#}
-					{#<span class="icon-prev"></span>#}
-				{#</a>#}
-				{#<a class="carousel-control right" href="#startup-carousel" data-slide="next">#}
-					{#<span class="icon-next"></span>#}
-				{#</a>#}
-			{#</div>#}
-
-		{#</div>#}
-
 </div>
 
-<div class="row">
-	<h3 class="margin-top-0px margin-bottom-0px">Trending Startups</h3>
-</div>
-{% for startup_row in startups | batch(6) %}
-<div class="row">
-	{% for startup in startup_row %}
-	<div class="col-xs-2" data-sr>
-		<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-			{% include "image/startup.jinja2" %}
-			<h4 class="text-center">{{ startup.name }}</h4>
-		</a>
-	</div>
-	{% endfor %}
-</div>
-{% endfor %}
 
 
 {% include "search/state_directory.jinja2" %}
 
-{% endblock left_focus %}
+{% endblock content %}
 
-
-
-{% block right_focus %}
-{{ super() }}
-{% endblock right_focus %}

@@ -65,6 +65,20 @@ class FrontpageView(ViewWarlock):
                 'startup': focused_startup,
                 }
 
+    @view_config(route_name='frontpage2', renderer='templates/frontpage2.jinja2')
+    def frontpage2(self):
+        startups = DBSession.query(Startup).join(FrontpageStartup).all()
+        shuffle(startups)
+        try:
+            focused_startup = startups.pop()
+        except Exception:
+            focused_startup = {"name": "no startups listed"}
+
+        return {'gibs': self.gibs,
+                'startups': startups[:6],
+                'startup': focused_startup,
+                }
+
     @view_config(route_name='search_redirect', renderer='templates/search.jinja2')
     def search_redirect(self):
         params = self.request.params

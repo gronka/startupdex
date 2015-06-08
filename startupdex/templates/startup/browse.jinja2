@@ -3,7 +3,10 @@
 Browsing startups at
 {% endblock %}
 
-{% block left_focus %}
+{% block content %}
+<div class="container">
+	<div class="row">
+	<div class="col-md-9">
 	<div class="row">
 		<div class="col-md-12">
 				<h4>
@@ -16,7 +19,7 @@ Browsing startups at
 		<div class="row margin-bottom-12px">
 			<div class="col-xs-2">
 					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-						{% include "../image/startup.jinja2" %}
+						{% include "../snips/image_startup.jinja2" %}
 					</a>
 			</div>
 						<div class="col-xs-10">
@@ -34,37 +37,44 @@ Browsing startups at
 
 	{% endfor %}
 
-<div class="row">
-	<div class="col-md-12">
-		<nav>
-			<ul class="pagination">
-				<li {{ 'class=disabled' if page == 1 }}>
-					{% if page != 1 %}
-						<a href="{{ gibs.application_url }}browse?page={{page-1}}" aria-label="Previous">
-					{% endif %}
-					<span aria-hidden="true">&laquo;</span>
-				</a></li>
-				{% for i in range(1, num_pages+1) %}
-				<li {{ 'class=active' if page == i }}>
-					<a
-					{% if page != i %}
-						href="{{ gibs.application_url }}browse?page={{i}}"
-					{% endif %}
-					>
-						{{ i }}
+	<div class="row">
+		<div class="col-md-12">
+			<nav>
+				<ul class="pagination">
+					<li {{ 'class=disabled' if page == 1 }}>
+						{% if page != 1 %}
+							<a href="{{ gibs.application_url }}browse?page={{page-1}}" aria-label="Previous">
+						{% endif %}
+						<span aria-hidden="true">&laquo;</span>
 					</a></li>
-				{% endfor %}
-				<li {{ 'class=disabled' if page == num_pages }}>
-					{% if page != num_pages %}
-						<a href="{{ gibs.application_url }}browse?page={{page+1}}" aria-label="Next">
-					{% endif %}
-						<span aria-hidden="true">&raquo;</span>
-					</a></li>
-			</ul>
-		</nav>
+					{% for i in range(1, num_pages+1) %}
+					<li {{ 'class=active' if page == i }}>
+						<a
+						{% if page != i %}
+							href="{{ gibs.application_url }}browse?page={{i}}"
+						{% endif %}
+						>
+							{{ i }}
+						</a></li>
+					{% endfor %}
+					<li {{ 'class=disabled' if page == num_pages }}>
+						{% if page != num_pages %}
+							<a href="{{ gibs.application_url }}browse?page={{page+1}}" aria-label="Next">
+						{% endif %}
+							<span aria-hidden="true">&raquo;</span>
+						</a></li>
+				</ul>
+			</nav>
 
 
+		</div>
+	</div>
+	</div>
+
+	<div class="hidden-xs hidden-sm col-md-3">
+		{% include "../snips/startups_sidebar.jinja2" %}
+	</div>
 	</div>
 </div>
 
-{% endblock left_focus %}
+{% endblock content %}

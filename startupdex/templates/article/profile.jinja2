@@ -3,41 +3,33 @@
 {{ article.name }} at
 {% endblock %}
 
-{% block left_focus %}
-<div class="well well-sm">
+{% block content %}
+<div class="container">
 	<div class="row">
-		<div class="col-xs-3">
-			{% include "../image/article.jinja2" %}
+		<div class="col-md-9">
+			<div class="well well-sm">
+				<div class="row">
+					<div class="col-xs-3">
+						{% include "../snips/image_article.jinja2" %}
+					</div>
+
+					<div class="col-xs-9">
+						<h3>{{ article.title }}</h3>
+						<p>{{ article.lead_text }}</p>
+						<p>{{ article.story }}</p>
+
+
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<div class="col-xs-9">
-			<h3>{{ article.title }}</h3>
-			<p>{{ article.story }}</p>
-
-
+		<div class="hidden-xs hidden-sm col-md-3">
+			{% include "../snips/startups_sidebar.jinja2" %}
 		</div>
 	</div>
 </div>
 
 
-<div class="feed well well-sm">
-	<h3>News Feed</h3>
-</div>
 
 
-
-<div class="row">
-	<div class="col-md-12">
-		State directory
-	</div>
-</div>
-<p>
-thaisojfe
-</p>
-<p>ident:		{{ ident }}</p>
-<p>
-	article.name: {{ article.name }}
-</p>
-
-
-{% endblock left_focus %}
+{% endblock content %}
