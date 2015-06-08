@@ -73,46 +73,33 @@ class FrontpageView(ViewWarlock):
                 'gibs': self.gibs,
                 }
 
-    @view_config(route_name='search', renderer='templates/search.jinja2')
+    @view_config(route_name='search', renderer='templates/search/search.jinja2')
     def search(self):
         params = self.request.params
-        #for item in params:
-            #print(item)
         search_terms = params["search_terms"]
+        #print(search_terms)
         if "page" in params:
             page = int(params["page"])
         else:
             page = 1
         #per_page = param["per_page"]
         per_page = 10
+        #print("number of results: " + str(rowcount))
+        #print("number of pages: " + str(num_pages))
+        #print("offset: " + str(offset))
 
-        #results = (FTSStartup
-                #.select(
-                    #FTSStartup,
-                    #FTSStartup.bm25(FTSStartup.content).alias('score'))
-                #.where(FTSStartup.match( search_terms ))
-                #.order_by(SQL('score').desc())
-                #)
-        num_pages = math.ceil(results.count() / per_page)
+        results = startup_search(search_terms)
+        rowcount = len(results)
+        num_pages = math.ceil(rowcount / per_page)
         offset = per_page * page - per_page
-        print("now the results")
-        print(results)
-        print("number of results: " + str(results.count()))
-        print("number of pages: " + str(num_pages))
-        print("offset: " + str(offset))
+
         results = results[offset:offset+per_page]
 
-        test = startup_search(search_terms)
-        print("=======================")
-        print("=======================")
-        print(test)
-        print("=======================")
+        print(type(results))
 
-
-
-        return {'data': 'test_data',
-                'gibs': self.gibs,
+        return {'gibs': self.gibs,
                 'results': results,
+                'rowcount': rowcount,
                 'num_pages': num_pages,
                 'search_terms': search_terms,
                 'page': page,

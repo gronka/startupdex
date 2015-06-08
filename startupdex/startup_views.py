@@ -138,11 +138,67 @@ class StartupView(ViewWarlock):
 
     @view_config(route_name='startup_browse', renderer='templates/startup/browse.jinja2')
     def startup_browse(self):
-        startups = DBSession.query(Startup).all()
+        request = self.request
+        params = request.params
 
-        return {'data': 'test_data',
-                'gibs': self.gibs,
+        if "page" in params:
+            page = int(params["page"])
+        else:
+            page = 1
+        #per_page = param["per_page"]
+        per_page = 10
+
+        startups = DBSession.query(Startup).limit(50).all()
+
+        rowcount = len(startups)
+        num_pages = math.ceil(rowcount / per_page)
+        offset = per_page * page - per_page
+
+        startups = startups[offset:offset+per_page]
+
+        return {'gibs': self.gibs,
                 'startups': startups,
+                'num_pages': num_pages,
+                'page': page,
+                'offset': offset,
+                'rowcount': rowcount,
+                }
+
+    @view_config(route_name='startups_by_state', renderer='templates/startup/sort_by_state.jinja2')
+    def startups_by_state(self):
+        request = self.request
+        params = request.params
+        state = request.matchdict['state']
+
+        if "page" in params:
+            page = int(params["page"])
+        else:
+            page = 1
+        #per_page = param["per_page"]
+        per_page = 10
+
+        #startups = DBSession.query(Startup).all()
+        #startups = DBSession.query(Startup).filter(Startup.state_province == )
+        startups = DBSession.query(Startup.id,
+                                   Startup.name,
+                                   Startup.short_info,
+                                   Startup.local_url,
+                                   Startup.logo_url,
+                                   ).filter(Startup.state_province.ilike("%{state}%"
+                                                                    .format(state=state))).all()
+        rowcount = len(startups)
+        num_pages = math.ceil(rowcount / per_page)
+        offset = per_page * page - per_page
+
+        startups = startups[offset:offset+per_page]
+
+        return {'gibs': self.gibs,
+                'startups': startups,
+                'state': state,
+                'num_pages': num_pages,
+                'page': page,
+                'offset': offset,
+                'rowcount': rowcount,
                 }
 
     @view_config(route_name='upload_logo', renderer='templates/startup/upload_logo.jinja2')
@@ -156,7 +212,7 @@ class StartupView(ViewWarlock):
             #TODO: implement write_basic_image() function
             image = request.params['logo']
             folder_group = str(int(math.ceil(startup.id / 10000.0) * 10000.0))
-            imagename = str(startupid) + '.jpg'
+            imagename = str(startupid) + '.png'
             logo_url = 'startups/logos/' + folder_group + '/' + imagename
             startup.logo_url = logo_url
             thumb_url = 'startups/thumbs/' + folder_group + '/' + imagename

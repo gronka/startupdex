@@ -36,6 +36,7 @@ CREATE TABLE users (
 	linkedin_url TEXT,
 	facebook_url TEXT,
 	twitter_url TEXT,
+	fts TSVECTOR,
 	PRIMARY KEY (id)
 );
 
@@ -44,7 +45,7 @@ CREATE TABLE users (
 psql -U taylor -d startupdex -c "
 CREATE TABLE passwords (
 	id SERIAL,
-	userid INTEGER UNIQUE NOT NULL,
+	userid INTEGER UNIQUE,
 	password TEXT NOT NULL,
 	salt1 TEXT NOT NULL,
 	salt2 TEXT NOT NULL,
@@ -238,30 +239,32 @@ CREATE TABLE fts_startups (
 
 ### FULL TEXT SEARCH ###
 psql -U taylor -d startupdex -c "
-CREATE TRIGGER tsvupdate BEFORE INSERT OR UPDATE ON fts_startups 
-FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger (
-tsv, 'pg_catalog.english', doc);
+#UPDATE startups SET tsv_name = to_tsvector(name);
+#UPDATE startups SET tsv_short_info_and_location = to_tsvector(short_info||' '||country||' '||state_province||' '||city||' '||street_address||' '||postal_code); 
+#UPDATE startups SET tsv_tags = to_tsvector(tags);
+#UPDATE startups SET tsv_about = to_tsvector(about);
 
-CREATE INDEX fts_idx ON fts_startups USING GIN (tsv);
+ALTER TABLE startups ADD COLUMN fts TSVECTOR;
+
+CREATE FUNCTION startups_fts_trigger() RETURNS trigger AS $$
+begin
+	new.fts :=
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.name,'')), 'A') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.short_info||' '||new.country||' '||new.state_province||' '||new.city||' '||new.street_address||' '||new.postal_code,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.tags,'')), 'C') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.about,'')), 'D');
+	return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON startups FOR EACH ROW EXECUTE PROCEDURE startups_fts_trigger();
+
+CREATE INDEX startups_fts_idx ON startups USING gin(fts);
 "
 
-### WORK IN PROGRESS ###
-CREATE INDEX fts_idx ON fts_startups
-USING gin(setweight(to_tsvector('english', name), 'A') ||
-	setweight(to_tsvector('english', short_info), 'B') ||
-	setweight(to_tsvector('english', about), 'C'));
-
-CREATE INDEX idx_fts_post ON fts_startups 
-USING gin(setweight(to_tsvector('english', name), 'A') || 
-           setweight(to_tsvector('english', short_info), 'B'));
-
-
+### FTS TESTING ###
 SELECT name FROM startups WHERE to_tsvector(short_info || ' ' || about) @@ to_tsquery('cloud');
-
-CREATE INDEX fts_idx ON startups USING gin(to_tsvector('english', about));
-CREATE INDEX fts_idx ON startups USING gin(to_tsvector(startups.language, about));
-
-
 
 psql -U taylor -d startupdex -c "
 SELECT id, name

@@ -221,7 +221,7 @@ class ArticleView(ViewWarlock):
         if 'form.submitted' in params:
             image = request.params['photo']
             folder_group = str(int(math.ceil(article.id / 10000.0) * 10000.0))
-            imagename = str(articleid) + '.jpg'
+            imagename = str(articleid) + '.png'
             photo_url = 'articles/photos/' + folder_group + '/' + imagename
             article.photo_url = photo_url
 

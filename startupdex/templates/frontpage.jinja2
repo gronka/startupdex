@@ -12,11 +12,15 @@
 <div class="well well-sm">
 	<div class="row">
 		<div class="col-xs-3">
-			{% include "image/startup.jinja2" %}
+			<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+				{% include "image/startup.jinja2" %}
+			</a>
 		</div>
 
 		<div class="col-xs-9">
-			<h3>{{ startup.name }}</h3>
+			<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+				<h3>{{ startup.name }}</h3>
+			</a>
 			<p>
 				{% if startup.city %}
 					{{ startup.city }}, 
@@ -85,12 +89,7 @@
 {% endfor %}
 
 
-<div class="row">
-	<div class="col-md-12">
-		State directory
-	</div>
-</div>
-
+{% include "search/state_directory.jinja2" %}
 
 {% endblock left_focus %}
 

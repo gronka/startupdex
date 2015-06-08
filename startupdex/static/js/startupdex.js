@@ -284,6 +284,11 @@ $(function() {
 				$('#save-changes').prop('disabled', false);
 				$('#cancel-changes').prop('disabled', false);
 			});
+			$(':input[type=password]').on("input", function(event){
+				$(event.target).css( "background-color", "#FFFFD5" );
+				$('#save-changes').prop('disabled', false);
+				$('#cancel-changes').prop('disabled', false);
+			});
 			$('textarea').on("input", function(event){
 				$(event.target).css( "background-color", "#FFFFD5" );
 				$('#save-changes').prop('disabled', false);

@@ -79,21 +79,36 @@ def login_user(login_params):
 
 def update_password(email, password):
     user = DBSession.query(User).filter(User.email == email).first()
-    salt1 = uuid.uuid4().hex
-    salt2 = user.email[1:7]
-    #combo = (salt2 + password + salt1)[0:32]
-    combo = salt2 + password + salt1
-    hashed_password = combo
-    for i in range(0, 413):
-        hashed_password = hashlib.sha512(hashed_password.encode()).hexdigest()
+    cur_password = DBSession.query(Password).filter(Password.userid == user.id).first()
+    if cur_password is None:
+        salt1 = uuid.uuid4().hex
+        salt2 = user.email[1:7]
+        #combo = (salt2 + password + salt1)[0:32]
+        combo = salt2 + password + salt1
+        hashed_password = combo
+        for i in range(0, 413):
+            hashed_password = hashlib.sha512(hashed_password.encode()).hexdigest()
 
-    password = Password(userid=user.id,
-                        salt1=salt1,
-                        salt2=salt2,
-                        password=hashed_password,
-                        version=1,
-                        )
-    DBSession.add(password)
+        password = Password(userid=user.id,
+                            salt1=salt1,
+                            salt2=salt2,
+                            password=hashed_password,
+                            version=1,
+                            )
+        DBSession.add(password)
+    else:
+        salt1 = uuid.uuid4().hex
+        salt2 = user.email[1:7]
+        #combo = (salt2 + password + salt1)[0:32]
+        combo = salt2 + password + salt1
+        hashed_password = combo
+        for i in range(0, 413):
+            hashed_password = hashlib.sha512(hashed_password.encode()).hexdigest()
+
+        cur_password.salt1 = salt1
+        cur_password.salt2 = salt2
+        cur_password.password = hashed_password
+
 
 
 def check_password(email, password):
@@ -110,9 +125,6 @@ def check_password(email, password):
         return True
     else:
         return False
-
-
-
 
 
 class UserView(ViewWarlock):
@@ -352,6 +364,25 @@ class UserView(ViewWarlock):
                 'user': self.current_user,
                 }
 
+    @view_config(route_name='modify_password', renderer='templates/user/modify_password.jinja2')
+    def modify_password(self):
+        request = self.request
+        params = request.params
+        if 'form.submitted' in params:
+            #user = DBSession.query(User.email).filter(User.id == self.current_user['id']).first()
+            if check_password(self.current_user['email'], params['password']):
+                if params['new_password'] != params['verify_password']:
+                    request.session.flash('Passwords do not match.', queue='errors')
+                    return {'gibs': self.gibs,
+                            'user': self.current_user,
+                            }
+                else:
+                    update_password(self.current_user['email'], params['new_password'])
+                    request.session.flash('Your password was udpated.', queue='successes')
+        return {'gibs': self.gibs,
+                'user': self.current_user,
+                }
+
     @view_config(route_name='upload_profile_photo')
     def upload_profile_photo(self):
         request = self.request
@@ -362,7 +393,7 @@ class UserView(ViewWarlock):
         if 'form.submitted' in params:
             image = request.params['photo']
             folder_group = str(int(math.ceil(user.id / 10000.0) * 10000.0))
-            imagename = str(user.id) + '.jpg'
+            imagename = str(user.id) + '.png'
             photo_url = 'users/photo/' + folder_group + '/' + imagename
             user.photo_url = photo_url
 

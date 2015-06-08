@@ -31,6 +31,8 @@ from .models import (
     rem_startup_has_category,
     )
 
+from .user_views import update_password
+
 from startupdex.view_warlock import ViewWarlock
 
 import json
@@ -70,6 +72,14 @@ class AdminView(ViewWarlock):
         # that list
         return {'gibs': self.gibs,
                 }
+
+    @view_config(name='admin_change_password.json', renderer='json')
+    def modify_password_save_changes(self):
+        request = self.request
+        jason = request.json_body
+        user = DBSession.query(User.email).filter(User.id == jason['userid']).first()
+        update_password(user.email, jason['password'])
+        return ("Success")
 
     @view_config(name='startup_search_by_name.json', renderer='json')
     def startup_search_by_name(self):
@@ -477,8 +487,8 @@ class AdminView(ViewWarlock):
                         add_startup_has_category(startupid=startup.id, categoryid=cat_check.id)
 
                     folder_group = str(int(math.ceil(int(startup.id) / 10000.0) * 10000.0))
-                    thumb_url = "startups/thumbs/" + folder_group+"/"+str(startup.id) + ".jpg"
-                    logo_url = "startups/logos/" + folder_group+"/"+str(startup.id) + ".jpg"
+                    thumb_url = "startups/thumbs/" + folder_group+"/"+str(startup.id) + ".png"
+                    logo_url = "startups/logos/" + folder_group+"/"+str(startup.id) + ".png"
 
                     print("++++++++++++")
                     print(ca['thumb_url'])
@@ -494,7 +504,7 @@ class AdminView(ViewWarlock):
             except KeyError:
                 print("+++++++++++++++++++++++++++++++")
                 print("+++++++++++++++++++++++++++++++")
-                log.debug("startup ID " + str(i) + " at angel.co returned a KeyError")
+                logger.debug("startup ID " + str(i) + " at angel.co returned a KeyError")
                 print("startup ID " + str(i) + " at angel.co returned a KeyError")
 
 
@@ -585,8 +595,8 @@ class AdminView(ViewWarlock):
             company_size = ca.company_size
 
             folder_group = str(int(math.ceil(i / 10000.0) * 10000.0))
-            thumb_url = "startups/thumbs/" + folder_group+"/"+str(i) + ".jpg"
-            logo_url = "startups/logos/" + folder_group+"/"+str(i) + ".jpg"
+            thumb_url = "startups/thumbs/" + folder_group+"/"+str(i) + ".png"
+            logo_url = "startups/logos/" + folder_group+"/"+str(i) + ".png"
 
             test_exists = DBSession.execute(
                 "SELECT * FROM startups WHERE id=:param",

@@ -50,7 +50,7 @@ Database - User administration at
 	{% if user.email %}
 		<div class="row bottom-buffer-12px">
 			<div class="col-md-2">
-				<img src="{{ gibs.images_url }}apple2.jpg" alt="apple2.jpg" class="img-rounded img-responsive browse-thumb" width="100%">
+				<img src="{{ gibs.images_url }}{{ user.photo_url }}" alt="{{ user.name }}" class="img-rounded img-responsive browse-thumb" width="100%">
 			</div>
 			<div class="col-md-10">
 
@@ -65,7 +65,6 @@ Database - User administration at
 							<td>fullname</td>
 							<td>phone</td>
 							<td>confirmed(T/F)</td>
-							<td>joined</td>
 							<td>status</td>
 							<td>location</td>
 							<td>country</td>
@@ -90,7 +89,6 @@ Database - User administration at
 							<td><input type="text" name="fullname" class="fullname" value="{{ user.fullname }}"/></td>
 							<td><input type="text" name="phone" class="phone" value="{{ user.phone }}"/></td>
 							<td><input type="text" name="confirmed" class="confirmed" value="{{ user.confirmed }}"/></td>
-							<td><input type="text" name="joined" class="joined" value="{{ user.joined }}"/></td>
 							<td><input type="text" name="status" class="status" value="{{ user.status }}"/></td>
 							<td><input type="text" name="location" class="location" value="{{ user.location }}"/></td>
 							<td><input type="text" name="country" class="country" value="{{ user.country }}"/></td>
@@ -107,6 +105,18 @@ Database - User administration at
 				
 				{#</form>#}
 				{#<input pattern=".{3,}" required title="3 characters minimum" />#}
+				<p>
+					Change password
+				</p>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="password" class="form-control password" type="text" placeholder="New Password">
+						<div class="input-group-btn">
+							<button class="btn btn-default admin-change-password"><i class="glyphicon glyphicon-check"></i></button>
+						</div>
+						<id hidden>{{ user.id }}</id>
+					</div>
+				</div>
 
 			</div>
 		</div>

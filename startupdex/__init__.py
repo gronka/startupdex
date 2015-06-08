@@ -56,9 +56,10 @@ def main(global_config, **settings):
     config.add_route('confirm_email', '/confirm_email/{token}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('startup_browse', '/browse')
     config.add_route('search_redirect', '/search_redirect')
     config.add_route('search', '/search')
-    config.add_route('startup_browse', '/browse/')
+    config.add_route('startups_by_state', '/s/{state}')
 
     # identifier => if int, search by id, if text, search by name
     config.add_route('create_startup', '/create_startup')
@@ -84,6 +85,7 @@ def main(global_config, **settings):
     config.add_route('loggedin_profile', '/profile')
     config.add_route('modify_profile', '/modify_profile')
     config.add_route('modify_billing', '/modify_billing')
+    config.add_route('modify_password', '/modify_password')
     config.add_route('manage_articles', '/manage/articles')
     config.add_route('manage_startups', '/manage/startups')
 

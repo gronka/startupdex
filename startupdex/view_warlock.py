@@ -1,6 +1,5 @@
 from pyramid.security import (
     authenticated_userid,
-    forget,
     )
 from pyramid.view import (
     notfound_view_config
@@ -15,6 +14,12 @@ from pyramid.httpexceptions import (
     HTTPFound,
     )
 
+from .models import (
+    Startup,
+    FrontpageStartup,
+)
+
+from random import shuffle
 
 class ViewWarlock(object):
     def __init__(self, context, request):
@@ -59,6 +64,10 @@ class ViewWarlock(object):
         # for anonymous users, send it from the browser and store it in the
         # cookie?
 
+        sidebar_startups = DBSession.query(Startup).join(FrontpageStartup).all()
+        shuffle(sidebar_startups)
+        sidebar_startups = sidebar_startups[:5]
+
         self.gibs = {'application_url': self.request.route_url('frontpage'),
                      'static_url': self.static_url,
                      'images_url': self.images_url,
@@ -66,6 +75,7 @@ class ViewWarlock(object):
                      'logged_in': self.logged_in,
                      'current_user_email': self.current_user['email'],
                      'privilege': self.privilege,
+                     'sidebar_startups': sidebar_startups,
                      }
 
     @notfound_view_config(append_slash=True)

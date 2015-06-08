@@ -10,6 +10,14 @@ from sqlalchemy import (
     and_,
     )
 
+from sqlalchemy.dialects.postgresql import (
+    array,
+    TSVECTOR,
+    )
+
+from sqlalchemy.dialects import postgresql
+from sqlalchemy import select, func
+
 from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,
@@ -112,12 +120,36 @@ def update_fts_startups(startup):
 
 
 def startup_search(text):
-    result = DBSession.execute("""WITH q AS (SELECT to_tsquery("{text}") AS query), ranked AS (
-        SELECT id, doc, ts_rank_cd(tsv, query) AS rank
-        FROM fts_startups, query WHERE q.query @@ tsv ORDER BY rank DESC LIMIT 10 )
-        SELECT id, ts_headline(doc, q.query) FROM ranked, q ORDER BY ranked DESC;""".format(text=text))
-    print(str(result))
-    return result
+    #result = DBSession.execute("""WITH q AS (SELECT to_tsquery("{text}") AS query), ranked AS (
+        #SELECT id, doc, ts_rank_cd(tsv, query) AS rank
+        #FROM fts_startups, query WHERE q.query @@ tsv ORDER BY rank DESC LIMIT 10 )
+        #SELECT id, ts_headline(doc, q.query) FROM ranked, q ORDER BY ranked DESC;""".format(text=text))
+    #print(str(result))
+    #result = DBSession.execute("SELECT * FROM startups WHERE fts @@ to_tquery(?)")
+    #result = DBSession.query(Startup).select([fts.match(text)])
+    print("==============================================================================")
+    print(text)
+    terms = "','".join(text.split(' '))
+    s = select([Startup.id,
+                Startup.name,
+                Startup.logo_url,
+                Startup.local_url,
+                Startup.short_info,
+                Startup.about
+                ]).where(
+        Startup.fts.match(terms)
+    )
+    results = DBSession.execute(s)
+    results = results.fetchall()
+
+    l = []
+    pos = 0
+    for row in results:
+        l.append({})
+        l[pos] = dict(row.items())
+        pos += 1
+
+    return l
 
 
 def name_to_local_url(name):
@@ -317,13 +349,13 @@ def get_images_from_angelco(index, thumb_url, logo_url):
         os.makedirs(fpath)
     try:
         #print(str(thumb_url))
-        f = open(fpath+str(index)+'.jpg', 'wb')
+        f = open(fpath+str(index)+'.png', 'wb')
     except ValueError:
         print("thumb_url is undefined for index " + str(index))
     f.write(requests.get(thumb_url).content)
     f.close()
     #reformat
-    file_path = fpath + str(index)+'.jpg'
+    file_path = fpath + str(index)+'.png'
     maxsize = 350, 350
     im = Image.open(file_path)
     im.thumbnail(maxsize, Image.ANTIALIAS)
@@ -338,13 +370,13 @@ def get_images_from_angelco(index, thumb_url, logo_url):
         os.makedirs(fpath)
     try:
         #print(str(logo_url))
-        f = open(fpath+str(index)+'.jpg', 'wb')
+        f = open(fpath+str(index)+'.png', 'wb')
     except ValueError:
         print("logo_url is undefined for index " + str(index))
     f.write(requests.get(logo_url).content)
     f.close()
     #reformat
-    file_path = fpath + str(index)+'.jpg'
+    file_path = fpath + str(index)+'.png'
     maxsize = 350, 350
     im = Image.open(file_path)
     im.thumbnail(maxsize, Image.ANTIALIAS)
@@ -431,6 +463,7 @@ class Startup(Base):
     angelco_status = Column(Text)
     company_size = Column(Text)
     company_status = Column(Integer)
+    fts = Column(TSVECTOR)
     language = Column(Text, default='english')
 
 
@@ -476,7 +509,7 @@ class AngelCoMirror(Base):
 class Password(Base):
     __tablename__ = "passwords"
     id = Column(Integer, primary_key=True)
-    userid = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
+    userid = Column(Integer, ForeignKey('users.id'), unique=True)
     password = Column(Text)
     salt1 = Column(Text)
     salt2 = Column(Text)

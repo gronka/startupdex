@@ -212,6 +212,30 @@ $(function() {
 			}
 		});
 	}
+	
+	function admin_change_password(el) {
+		var pr = $(el).parent().parent();
+		var userid = pr.find("id").html();
+		var password = pr.find(".password").val();
+		$.ajax({
+			url: '/admin_change_password.json',
+			data: JSON.stringify({
+				userid: userid,
+				password: password
+			}),
+			success: function(data) {
+				alert("Password was updated.");
+			}
+		});
+	}
+	$(".admin-change-password").click(function () {
+		var r = confirm("Are you sure you want to change this password?");
+		if (r == true) {
+			admin_change_password(this);
+		} else {
+			alert("Action canceled");
+		}
+	});
 
 	function pushToStartupdex(rangestart, rangei) {
 		$.ajax({
