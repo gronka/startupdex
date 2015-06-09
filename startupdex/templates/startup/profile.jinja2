@@ -9,16 +9,15 @@
 	<div class="col-md-9">
 		<div class="well well-sm">
 			<div class="row">
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 					{% include "../snips/image_startup.jinja2" %}
 				</div>
 
-				<div class="col-xs-9">
+				<div class="col-xs-10">
 					<h3>{{ startup.name }}</h3>
 					<p>
-						{% if startup.city %}
-							{{ startup.city }}, 
-						{% endif %}
+						{{ startup.city+', ' if startup.city }}
+						{{ startup.state_province+', ' if startup.state_province }}
 						{{ startup.country if startup.country }}
 					</p>
 					{% if startup.contact_email %}

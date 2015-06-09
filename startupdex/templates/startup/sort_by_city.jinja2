@@ -10,18 +10,18 @@ Browsing startups at
 		<div class="row">
 			<div class="col-md-12">
 					<h4>
-						Startups Sorted by State
+						Startups Sorted by City
 					</h4>
 			</div>
 		</div>
 
 	{% if rowcount == 0 %}
 		<p>
-			No results for the region "{{ state }}".
+			No results for the region "{{ city }}".
 		</p>
 	{% else %}
 		<p>
-			{{ num_results }} results for the region "{{ state }}".
+			{{ num_results }} results for the region "{{ city }}".
 		</p>
 	{% endif %}
 		{% for startup in startups %}
@@ -52,7 +52,7 @@ Browsing startups at
 					<ul class="pagination">
 						<li {{ 'class=disabled' if page == 1 }}>
 							{% if page != 1 %}
-								<a href="{{ gibs.application_url }}s/{{ state }}?page={{page-1}}" aria-label="Previous">
+								<a href="{{ gibs.application_url }}s/{{ city }}?page={{page-1}}" aria-label="Previous">
 							{% endif %}
 							<span aria-hidden="true">&laquo;</span>
 						</a></li>
@@ -60,7 +60,7 @@ Browsing startups at
 						<li {{ 'class=active' if page == i }}>
 							<a
 							{% if page != i %}
-								href="{{ gibs.application_url }}s/{{ state }}?page={{i}}"
+								href="{{ gibs.application_url }}s/{{ city }}?page={{i}}"
 							{% endif %}
 							>
 								{{ i }}
@@ -68,7 +68,7 @@ Browsing startups at
 						{% endfor %}
 						<li {{ 'class=disabled' if page == num_pages }}>
 							{% if page != num_pages %}
-								<a href="{{ gibs.application_url }}s/{{ state }}?page={{page+1}}" aria-label="Next">
+								<a href="{{ gibs.application_url }}s/{{ city }}?page={{page+1}}" aria-label="Next">
 							{% endif %}
 								<span aria-hidden="true">&raquo;</span>
 							</a></li>

@@ -233,18 +233,27 @@ CREATE FUNCTION startups_fts_trigger() RETURNS trigger AS $$
 begin
 	new.fts :=
 		setweight(to_tsvector('pg_catalog.english', coalesce(new.name,'')), 'A') ||
-		setweight(to_tsvector('pg_catalog.english', coalesce(new.short_info||' '||new.country||' '||new.state_province||' '||new.city||' '||new.street_address||' '||new.postal_code,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.short_info,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.country,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.state_province,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.city,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.street_address,'')), 'B') ||
+		setweight(to_tsvector('pg_catalog.english', coalesce(new.postal_code,'')), 'B') ||
 		setweight(to_tsvector('pg_catalog.english', coalesce(new.tags,'')), 'C') ||
 		setweight(to_tsvector('pg_catalog.english', coalesce(new.about,'')), 'D');
 	return new;
 end
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE TRIGGER startups_fts_trigger BEFORE INSERT OR UPDATE
 	ON startups FOR EACH ROW EXECUTE PROCEDURE startups_fts_trigger();
 
 CREATE INDEX startups_fts_idx ON startups USING gin(fts);
 "
+
+
+drop trigger if exists on startups;
+
 
 ### FTS TESTING ###
 SELECT name FROM startups WHERE to_tsvector(short_info || ' ' || about) @@ to_tsquery('cloud');

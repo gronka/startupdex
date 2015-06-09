@@ -2,6 +2,10 @@
 	width: 800px;
 }
 
+.right-focus {
+	margin-left: 10px;
+}
+
 h5.right-focus-heading {
 	padding-top: 0;
 	margin-top: 4px;
@@ -9,11 +13,13 @@ h5.right-focus-heading {
 h5.right-focus-subheading {
 	padding: 0;
 	margin: 0;
+	margin-left: 17px;
 }
 p.right-focus {
 	padding: 0;
 	padding-bottom: 12px;
 	margin: 0;
+	margin-left: 17px;
 	font-size: 12px;
 }
 
@@ -21,15 +27,6 @@ img.right-focus {
 	padding-right: 4px;
 }
 
-img.browse-thumb {
-	//padding-bottom: 10px;
-}
-
-browse-startup-heading {
-	/*display: inline;*/
-	/*margin: 0;*/
-	/*padding: 0;*/
-}
 
 .bottom-buffer-12px {
 	padding-bottom: 12px;
@@ -41,11 +38,6 @@ browse-startup-heading {
 
 .feed h3 {
 	margin-top: 4px;
-}
-
-.feed div {
-	//padding-top: 14px;
-	//background-color: #EEE;
 }
 
 label {
@@ -85,13 +77,6 @@ span.flash {
 }
 
 
-table.admin_update_user {
-	//table-layout: auto;
-	//width: 100%;
-}
-table.admin_update_user td {
-	//white-space: nowrap;
-}
 table.admin_update_user td input {
 	//white-space: nowrap;
 	width: 100px;
@@ -107,7 +92,7 @@ h3.settings_editable {
 }
 
 html {
-overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 .photo-preview {
@@ -168,24 +153,58 @@ overflow-y: scroll;
 	margin-bottom: 8px;
 }
 
+.frontpage-title-block {
+	margin: 18px 0 50px 0;
+}
+.frontpage-title {
+	margin: 10px 50px;
+	text-align: center;
+	font-size: 30px;
+}
 
-.header-startup-frontpage {
+.frontpage-flash {
+	background-color: #FFF; 
+	height: auto;
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	margin: 14px 0 0 0;
+}
+
+.frontpage-well {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #FAFFFF;
+	box-sizing: 0;
+}
+.frontpage-upper {
 	background-color: #F0FAFF; 
 	height: auto;
 	margin: 0 auto;
 	width: 100%;
 	position: relative;
-	padding: 80px 0;
+	padding: 20px 0 120px 0;
 }
 
-.header-startup-frontpage h3 {
+.frontpage-focus-image img {
+	margin: 15px 15px 15px 30px;
+}
+.frontpage-focus-location-block {
+	margin: 10px 20px;
+	text-align: right;
+}
+.frontpage-focus-location {
+	margin: 0;
+	text-align: right;
+}
+.header-startup-frontpage2 h3 {
 	margin: 0 0 70px 30px;
 	font-size: 30px;
 	font-weight: bold;
 	text-align: center;
 }
 
-.trending-startups-frontpage {
+.frontpage-trending-startups {
 	background-color: #FFF; 
 	height: auto;
 	margin: 0 auto;
@@ -193,6 +212,21 @@ overflow-y: scroll;
 	position: relative;
 	padding: 80px 0;
 }
+.frontpage-trending-startups-block {
+	margin: 10px;
+	text-align: center;
+}
+.frontpage-trending-startups-title {
+	margin: 30px;
+	margin-bottom: 60px;
+	text-align: center;
+	font-size: 30px;
+
+}
+
+
+
+
 .trending-startups-frontpage h3 {
 	margin: 40px;
 	margin-bottom: 50px;
@@ -200,6 +234,8 @@ overflow-y: scroll;
 	font-weight: bold;
 	text-align: center;
 }
+
+
 
 
 .state-directory {
@@ -229,9 +265,63 @@ overflow-y: scroll;
 
 
 
+//bootstrap  altercations
+.navbar {
+	margin-bottom: 0 !important;
+	color: red;
+}
+.navbar-default {
+	margin-bottom: 0 !important;
+	color: red;
+}
+.navbar-brand {
+	color: red;
+}
 
 
+#navbar-startupdex.navbar-default .navbar-header .navbar-brand {
+    color: rgba(133, 220, 255, 1);
+}
+#navbar-startupdex.navbar-default {
+    font-size: 16px;
+    background-color: rgba(99, 63, 32, 1);
+    border-width: 0px;
+    border-radius: 0px;
+}
+#navbar-startupdex.navbar-default .navbar-nav>li>a {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(99, 63, 32, 1);
+}
+#navbar-startupdex.navbar-default .navbar-nav>li>a:hover,
+#navbar-startupdex.navbar-default .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(133, 105, 81, 1);
+}
+#navbar-startupdex.navbar-default .navbar-nav>.active>a,
+#navbar-startupdex.navbar-default .navbar-nav>.active>a:hover,
+#navbar-startupdex.navbar-default .navbar-nav>.active>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(133, 87, 46, 1);
+}
+#navbar-startupdex.navbar-default .navbar-toggle {
+    border-color: #85572e;
+}
+#navbar-startupdex.navbar-default .navbar-toggle:hover,
+#navbar-startupdex.navbar-default .navbar-toggle:focus {
+    background-color: #85572e;
+}
+#navbar-startupdex.navbar-default .navbar-toggle .icon-bar {
+    background-color: #85572e;
+}
+#navbar-startupdex.navbar-default .navbar-toggle:hover .icon-bar,
+#navbar-startupdex.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #633f20;
+}
 
+
+.nav-tabs {
+	margin-top: 20px;
+}
 
 
 

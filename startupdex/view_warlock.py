@@ -54,6 +54,14 @@ class ViewWarlock(object):
                     self.privilege = "admin"
         #flashmsgs = request.session.pop_flash()
 
+        sidebar_startups = []
+        route_base = request.path.split('/')[1]
+        sidebar_routes = ['browse', 's', 'c', 'n', 'startup', 'search']
+        if route_base in sidebar_routes:
+            print("gotem")
+            sidebar_startups = DBSession.query(Startup).join(FrontpageStartup).all()
+            shuffle(sidebar_startups)
+            sidebar_startups = sidebar_startups[:5]
 
         application_url = self.request.route_url('frontpage')
         if application_url == 'http://127.0.0.1/':
@@ -63,10 +71,6 @@ class ViewWarlock(object):
         #TODO: store timezone offset in self.gibs
         # for anonymous users, send it from the browser and store it in the
         # cookie?
-
-        sidebar_startups = DBSession.query(Startup).join(FrontpageStartup).all()
-        shuffle(sidebar_startups)
-        sidebar_startups = sidebar_startups[:5]
 
         self.gibs = {'application_url': self.request.route_url('frontpage'),
                      'static_url': self.static_url,

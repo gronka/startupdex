@@ -140,6 +140,7 @@ class StartupView(ViewWarlock):
     def startup_browse(self):
         request = self.request
         params = request.params
+        _limit = 200
 
         if "page" in params:
             page = int(params["page"])
@@ -148,7 +149,7 @@ class StartupView(ViewWarlock):
         #per_page = param["per_page"]
         per_page = 10
 
-        startups = DBSession.query(Startup).limit(50).all()
+        startups = DBSession.query(Startup).limit(_limit).all()
 
         rowcount = len(startups)
         num_pages = math.ceil(rowcount / per_page)
@@ -156,12 +157,18 @@ class StartupView(ViewWarlock):
 
         startups = startups[offset:offset+per_page]
 
+        if rowcount == 200:
+            num_results = "200+"
+        else:
+            num_results = str(rowcount)
+
         return {'gibs': self.gibs,
                 'startups': startups,
                 'num_pages': num_pages,
                 'page': page,
                 'offset': offset,
                 'rowcount': rowcount,
+                'num_results': num_results,
                 }
 
     @view_config(route_name='startups_by_state', renderer='templates/startup/sort_by_state.jinja2')
@@ -169,6 +176,7 @@ class StartupView(ViewWarlock):
         request = self.request
         params = request.params
         state = request.matchdict['state']
+        _limit = 200
 
         if "page" in params:
             page = int(params["page"])
@@ -185,12 +193,17 @@ class StartupView(ViewWarlock):
                                    Startup.local_url,
                                    Startup.logo_url,
                                    ).filter(Startup.state_province.ilike("%{state}%"
-                                                                    .format(state=state))).all()
+                                                                    .format(state=state))).limit(_limit).all()
         rowcount = len(startups)
         num_pages = math.ceil(rowcount / per_page)
         offset = per_page * page - per_page
 
         startups = startups[offset:offset+per_page]
+
+        if rowcount == 200:
+            num_results = "200+"
+        else:
+            num_results = str(rowcount)
 
         return {'gibs': self.gibs,
                 'startups': startups,
@@ -199,6 +212,95 @@ class StartupView(ViewWarlock):
                 'page': page,
                 'offset': offset,
                 'rowcount': rowcount,
+                'num_results': num_results,
+                }
+
+    @view_config(route_name='startups_by_city', renderer='templates/startup/sort_by_city.jinja2')
+    def startups_by_city(self):
+        request = self.request
+        params = request.params
+        city = request.matchdict['city']
+        _limit = 200
+
+        if "page" in params:
+            page = int(params["page"])
+        else:
+            page = 1
+        #per_page = param["per_page"]
+        per_page = 10
+
+        #startups = DBSession.query(Startup).all()
+        #startups = DBSession.query(Startup).filter(Startup.state_province == )
+        startups = DBSession.query(Startup.id,
+                                   Startup.name,
+                                   Startup.short_info,
+                                   Startup.local_url,
+                                   Startup.logo_url,
+                                   ).filter(Startup.city.ilike("%{city}%"
+                                                                    .format(city=city))).limit(_limit).all()
+        rowcount = len(startups)
+        num_pages = math.ceil(rowcount / per_page)
+        offset = per_page * page - per_page
+
+        startups = startups[offset:offset+per_page]
+
+        if rowcount == 200:
+            num_results = "200+"
+        else:
+            num_results = str(rowcount)
+
+        return {'gibs': self.gibs,
+                'startups': startups,
+                'city': city,
+                'num_pages': num_pages,
+                'page': page,
+                'offset': offset,
+                'rowcount': rowcount,
+                'num_results': num_results,
+                }
+
+    @view_config(route_name='startups_by_country', renderer='templates/startup/sort_by_country.jinja2')
+    def startups_by_country(self):
+        request = self.request
+        params = request.params
+        country = request.matchdict['country']
+        _limit = 200
+
+        if "page" in params:
+            page = int(params["page"])
+        else:
+            page = 1
+        #per_page = param["per_page"]
+        per_page = 10
+
+        #startups = DBSession.query(Startup).all()
+        #startups = DBSession.query(Startup).filter(Startup.state_province == )
+        startups = DBSession.query(Startup.id,
+                                   Startup.name,
+                                   Startup.short_info,
+                                   Startup.local_url,
+                                   Startup.logo_url,
+                                   ).filter(Startup.country.ilike("%{country}%"
+                                                                    .format(country=country))).limit(_limit).all()
+        rowcount = len(startups)
+        num_pages = math.ceil(rowcount / per_page)
+        offset = per_page * page - per_page
+
+        startups = startups[offset:offset+per_page]
+
+        if rowcount == 200:
+            num_results = "200+"
+        else:
+            num_results = str(rowcount)
+
+        return {'gibs': self.gibs,
+                'startups': startups,
+                'country': country,
+                'num_pages': num_pages,
+                'page': page,
+                'offset': offset,
+                'rowcount': rowcount,
+                'num_results': num_results,
                 }
 
     @view_config(route_name='upload_logo', renderer='templates/startup/upload_logo.jinja2')
@@ -269,10 +371,11 @@ class StartupView(ViewWarlock):
             request.session.flash(e, queue='errors')
             return ("Fail, reload")
 
-        startup = DBSession.query(Startup).filter(Startup.local_url == startup_json['local_url']).first()
+        startup = DBSession.query(Startup.id).filter(Startup.local_url == startup_json['local_url']).first()
         if startup is not None:
-            request.session.flash("Startupdex Hyperlink is taken", queue='errors')
-            return ("Fail, reload")
+            if startup_json['startupid'] != str(startup.id):
+                request.session.flash("Startupdex Hyperlink is taken", queue='errors')
+                return ("Fail, reload")
         startup = DBSession.query(Startup).filter(Startup.id == startup_json['startupid']).first()
         for key, prop in deserialized.items():
             if prop == "None":

@@ -60,9 +60,11 @@ class FrontpageView(ViewWarlock):
         except Exception:
             focused_startup = {"name": "no startups listed"}
 
+        self.gibs['sidebar_startups'] = startups[6:11]
+
         return {'gibs': self.gibs,
-                'startups': startups[:6],
                 'startup': focused_startup,
+                'startups': startups[:6],
                 }
 
     @view_config(route_name='frontpage2', renderer='templates/frontpage2.jinja2')

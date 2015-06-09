@@ -61,6 +61,8 @@ def main(global_config, **settings):
     config.add_route('search_redirect', '/search_redirect')
     config.add_route('search', '/search')
     config.add_route('startups_by_state', '/s/{state}')
+    config.add_route('startups_by_city', '/c/{city}')
+    config.add_route('startups_by_country', '/n/{country}') # n for nation
 
     # identifier => if int, search by id, if text, search by name
     config.add_route('create_startup', '/create_startup')

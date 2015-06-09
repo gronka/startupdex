@@ -9,62 +9,102 @@
 
 
 {% block content %}
-<div class="container">
-	<div class="row">
-		<div class="col-md-9">
-		<div class="well well-sm">
-			<div class="row">
-				<div class="col-xs-3">
-					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-						{% include "snips/image_startup.jinja2" %}
-					</a>
-				</div>
+<section class="frontpage-upper" data-speed="2" data-type="background">
+	<div class="container">
+		<div class="row frontpage-title-block">
+				<h3 class="frontpage-title">Startupdex</h3>
+				<h3 class="frontpage-title">Networking for Startups</h3>
+		</div>
+		<div class="row">
+			<div class="col-md-9">
+				<div class="frontpage-well"> {# start well #}
+					<div class="row">
+						<div class="col-xs-3 frontpage-focus-image">
+								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+									{% include "snips/image_startup.jinja2" %}
+								</a>
+						</div>
+						<div class="col-xs-6">
+								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+									<h3>{{ startup.name }}</h3>
+								</a>
+								{% if startup.contact_email %}
+									<p>{{ startup.contact_email }}</p>
+								{% endif %}
+								{% if startup.short_info %}
+									<p>{{ startup.short_info[:500] }}
+									</p>
+								{% endif %}
+						</div>
+						<div class="col-xs-3">
+							<div class="frontpage-focus-location-block">
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}c/{{ startup.city }}">
+											{{ startup.city if startup.city }}
+										</a>
+									</p>
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}s/{{ startup.state_province }}">
+											{{ startup.state_province if startup.state_province }}
+										</a>
+									</p>
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}n/{{ startup.country }}">
+											{{ startup.country if startup.country }}
+										</a>
+									</p>
+							</div>
+						</div>
 
-				<div class="col-xs-9">
-					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-						<h3>{{ startup.name }}</h3>
-					</a>
-					<p>
-						{% if startup.city %}
-							{{ startup.city }}, 
-						{% endif %}
-						{{ startup.country if startup.country }}
-					</p>
-					{% if startup.contact_email %}
-						<p>{{ startup.contact_email }}</p>
-					{% endif %}
-					{% if startup.about %}
-						<p>{{ startup.about }}</p>
-					{% endif %}
+					</div>
+					<div class="row">
+
+						<div class="col-xs-8">
+										{#{{ startup.city+', ' if startup.city }}#}
+										{#{{ startup.state_province+', ' if startup.state_province }}#}
+										{#{{ startup.country if startup.country }}#}
 
 
+						</div>
+					</div>
+
+				</div> {# well closing #}
+				<div class="row frontpage-trending-startups-block">
+					<div class="row">
+						<h3 class="frontpage-trending-startups-title">Trending Startups</h3>
+					</div>
+					{% for startup_row in startups | batch(6) %}
+						<div class="row">
+							{% for startup in startup_row %}
+								<div class="col-xs-2 col-lg-2" data-sr>
+									<div>
+										<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+											{% include "snips/image_startup.jinja2" %}
+										</a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						<div class="row text-center">
+							{% for startup in startup_row %}
+								<div class="col-xs-2 col-lg-2 text-center" data-sr>
+									<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+										<h4>{{ startup.name }}</h4>
+									</a>
+								</div>
+							{% endfor %}
+						</div>
+					{% endfor %}
 				</div>
 			</div>
 
-		</div>
-		<div class="row">
-			<h3 class="margin-top-0px margin-bottom-0px">Trending Startups</h3>
-		</div>
-		{% for startup_row in startups | batch(6) %}
-		<div class="row">
-			{% for startup in startup_row %}
-			<div class="col-xs-2" data-sr>
-				<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-					{% include "snips/image_startup.jinja2" %}
-					<h4 class="text-center">{{ startup.name }}</h4>
-				</a>
+
+			<div class="hidden-xs hidden-sm col-md-3">
+				{% include "snips/startups_sidebar.jinja2" %}
 			</div>
-			{% endfor %}
-		</div>
-		{% endfor %}
-		</div>
-
-
-		<div class="hidden-xs hidden-sm col-md-3">
-			{% include "snips/startups_sidebar.jinja2" %}
 		</div>
 	</div>
-</div>
+</section>
 
 
 

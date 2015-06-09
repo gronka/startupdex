@@ -86,7 +86,7 @@ class AdminView(ViewWarlock):
         request = self.request
         josh = request.json_body
 
-        if len(josh['startup_search_by_name']) <= 1:
+        if len(josh['startup_search_by_name']) <= 0:
             return ""
 
         results = DBSession.query(Startup).filter(Startup.name.ilike("%{name}%"
