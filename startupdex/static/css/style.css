@@ -90,6 +90,14 @@ h3.settings_editable {
 	display: inline;
 	margin-right: 35px;
 }
+.subhead-manage {
+	margin-left: 20px;
+	margin-bottom: 30px;
+}
+.well-manage {
+	padding: 20px;
+}
+
 
 html {
 	overflow-y: scroll;
@@ -140,8 +148,14 @@ html {
 .padding-top-0px {
 	padding-top: 0px;
 }
-.margin-bottom-0px {
+.margin-bottom-20px {
 	margin-bottom: 20px;
+}
+.margin-bottom-30px {
+	margin-bottom: 30px;
+}
+.margin-bottom-40px {
+	margin-bottom: 40px;
 }
 .margin-bottom-12px {
 	margin-bottom: 12px;
@@ -157,7 +171,7 @@ html {
 	margin: 18px 0 50px 0;
 }
 .frontpage-title {
-	margin: 10px 50px;
+	margin: 20px 50px;
 	text-align: center;
 	font-size: 30px;
 }
@@ -272,10 +286,7 @@ html {
 }
 .navbar-default {
 	margin-bottom: 0 !important;
-	color: red;
-}
-.navbar-brand {
-	color: red;
+	background-color: red;
 }
 
 
@@ -320,9 +331,11 @@ html {
 
 
 .nav-tabs {
-	margin-top: 20px;
+	margin-top: 40px;
 }
-
+.header-spacer {
+	margin-top: 34px;
+}
 
 
 

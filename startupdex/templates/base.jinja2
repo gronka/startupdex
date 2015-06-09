@@ -90,50 +90,52 @@
 	</div>
 
 
-	<section class="frontpage-flash" data-speed="2" data-type="background">
-		<div class="container">
-		{% for message in request.session.pop_flash(queue='successes') %}
-			<div class="row">
-				<div class="col-xs-12 text-center">
-					<span class="flash label label-success">
-						{{ message }}
-					</span>
+	{% if request.session.peek_flash() %}
+		<section class="frontpage-flash" data-speed="2" data-type="background">
+			<div class="container">
+			{% for message in request.session.pop_flash(queue='successes') %}
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<span class="flash label label-success">
+							{{ message }}
+						</span>
+					</div>
 				</div>
-			</div>
-			<br />
-		{% endfor %}
-		{% for message in request.session.pop_flash(queue='notifications') %}
-			<div class="row">
-				<div class="col-xs-12 text-center">
-					<span class="flash label label-primary">
-						{{ message }}
-					</span>
+				<br />
+			{% endfor %}
+			{% for message in request.session.pop_flash(queue='notifications') %}
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<span class="flash label label-primary">
+							{{ message }}
+						</span>
+					</div>
 				</div>
-			</div>
-			<br />
-		{% endfor %}
-		{% for message in request.session.pop_flash(queue='warnings') %}
-			<div class="row">
-				<div class="col-xs-12 text-center">
-					<span class="flash label label-warning">
-						{{ message }}
-					</span>
+				<br />
+			{% endfor %}
+			{% for message in request.session.pop_flash(queue='warnings') %}
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<span class="flash label label-warning">
+							{{ message }}
+						</span>
+					</div>
 				</div>
-			</div>
-			<br />
-		{% endfor %}
-		{% for message in request.session.pop_flash(queue='errors') %}
-			<div class="row">
-				<div class="col-xs-12 text-center">
-					<span class="flash label label-danger">
-						{{ message }}
-					</span>
+				<br />
+			{% endfor %}
+			{% for message in request.session.pop_flash(queue='errors') %}
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<span class="flash label label-danger">
+							{{ message }}
+						</span>
+					</div>
 				</div>
+				<br />
+			{% endfor %}
 			</div>
-			<br />
-		{% endfor %}
-		</div>
-	</section>
+		</section>
+	{% endif %}
 
 	{% block content %}{% endblock content %}
 

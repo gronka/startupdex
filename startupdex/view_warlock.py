@@ -65,7 +65,8 @@ class ViewWarlock(object):
 
         application_url = self.request.route_url('frontpage')
         if application_url == 'http://127.0.0.1/':
-            request.session.flash("Local server", queue='warnings')
+            #request.session.flash("Local server", queue='warnings')
+            pass
 
 
         #TODO: store timezone offset in self.gibs

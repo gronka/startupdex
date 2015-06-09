@@ -3,7 +3,6 @@
 Settings at
 {% endblock %}
 
-
 {% block content %}
 
 <div class="container">
@@ -23,8 +22,8 @@ Settings at
 			You currently have no articles.
 		</p>
 		{% else %}
-			<div class="feed well well-sm">
-				<h3>Your Listed articles</h3>
+			<div class="well well-sm well-manage">
+				<h3 class="subhead-manage">Your Listed articles</h3>
 				{% for article_row in articles | batch(6) %}
 				<div class="row">
 					{% for article in article_row %}

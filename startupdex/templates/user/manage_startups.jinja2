@@ -3,9 +3,7 @@
 Settings at
 {% endblock %}
 
-
 {% block content %}
-
 
 <div class="container">
 <div class="row">
@@ -25,8 +23,8 @@ Settings at
 			You currently have no startups.
 		</p>
 		{% else %}
-			<div class="feed well well-sm">
-				<h3>Your Listed Startups</h3>
+			<div class="well well-sm well-manage">
+				<h3 class="subhead-manage">Your Listed Startups</h3>
 				{% for startup_row in startups | batch(6) %}
 				<div class="row">
 					{% for startup in startup_row %}
