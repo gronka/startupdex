@@ -8,6 +8,8 @@ from pyramid.httpexceptions import (
     #HTTPNotFound,
     )
 
+from pyramid.response import FileResponse
+
 #from sqlalchemy.exc import DBAPIError
 from sqlalchemy import (
     desc,
@@ -32,6 +34,7 @@ from startupdex.view_warlock import ViewWarlock
 import json
 import requests
 import math
+import os
 from random import shuffle
 from datetime import datetime
 
@@ -240,3 +243,9 @@ class FrontpageView(ViewWarlock):
 
         return {'gibs': self.gibs,
                 }
+
+    @view_config(route_name='favicon')
+    def favicon_view(self):
+        here = os.path.dirname('/var/www/startupdex/images/')
+        icon = os.path.join(here, 'blank-favicon.ico')
+        return FileResponse(icon, request=self.request)

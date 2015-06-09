@@ -50,6 +50,9 @@ def main(global_config, **settings):
     config.add_route('blog_action', '/blog/{action}',
                      factory='startupdex.security.EntryFactory')
 
+
+    config.add_route('favicon', '/favicon.ico')
+
     config.add_route('frontpage', '/')
     config.add_route('frontpage2', '/frontpage2')
     config.add_route('contact_us', '/contact_us')
