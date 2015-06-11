@@ -138,6 +138,7 @@ $(function() {
 			success: function(data) {
 				//$('#angelco-results').html("sweet results")";
 				document.getElementById('angelco-results').innerHTML = "sweet results";
+				alert("pull completed");
 			}
 		});
 	}
