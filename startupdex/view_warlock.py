@@ -58,7 +58,6 @@ class ViewWarlock(object):
         route_base = request.path.split('/')[1]
         sidebar_routes = ['browse', 's', 'c', 'n', 'startup', 'search']
         if route_base in sidebar_routes:
-            print("gotem")
             sidebar_startups = DBSession.query(Startup).join(FrontpageStartup).all()
             shuffle(sidebar_startups)
             sidebar_startups = sidebar_startups[:5]

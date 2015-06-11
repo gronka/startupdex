@@ -175,7 +175,7 @@ class StartupView(ViewWarlock):
     def startups_by_state(self):
         request = self.request
         params = request.params
-        state = request.matchdict['state']
+        state = request.matchdict['state'].replace("_", " ")
         _limit = 200
 
         if "page" in params:
@@ -192,8 +192,7 @@ class StartupView(ViewWarlock):
                                    Startup.short_info,
                                    Startup.local_url,
                                    Startup.logo_url,
-                                   ).filter(Startup.state_province.ilike("%{state}%"
-                                                                    .format(state=state))).limit(_limit).all()
+                                   ).filter(Startup.state_province == state).limit(_limit).all()
         rowcount = len(startups)
         num_pages = math.ceil(rowcount / per_page)
         offset = per_page * page - per_page
@@ -220,6 +219,7 @@ class StartupView(ViewWarlock):
         request = self.request
         params = request.params
         city = request.matchdict['city']
+        city = request.matchdict['city'].replace("_", " ")
         _limit = 200
 
         if "page" in params:
@@ -236,8 +236,7 @@ class StartupView(ViewWarlock):
                                    Startup.short_info,
                                    Startup.local_url,
                                    Startup.logo_url,
-                                   ).filter(Startup.city.ilike("%{city}%"
-                                                                    .format(city=city))).limit(_limit).all()
+                                   ).filter(Startup.city == city).limit(_limit).all()
         rowcount = len(startups)
         num_pages = math.ceil(rowcount / per_page)
         offset = per_page * page - per_page
@@ -264,6 +263,7 @@ class StartupView(ViewWarlock):
         request = self.request
         params = request.params
         country = request.matchdict['country']
+        country = request.matchdict['country'].replace("_", " ")
         _limit = 200
 
         if "page" in params:
@@ -280,8 +280,7 @@ class StartupView(ViewWarlock):
                                    Startup.short_info,
                                    Startup.local_url,
                                    Startup.logo_url,
-                                   ).filter(Startup.country.ilike("%{country}%"
-                                                                    .format(country=country))).limit(_limit).all()
+                                   ).filter(Startup.country == country).limit(_limit).all()
         rowcount = len(startups)
         num_pages = math.ceil(rowcount / per_page)
         offset = per_page * page - per_page

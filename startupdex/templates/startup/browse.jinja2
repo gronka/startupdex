@@ -8,33 +8,51 @@ Browsing startups at
 	<div class="row">
 		<div class="header-spacer"></div>
 	<div class="col-sm-9">
-	<div class="row">
-		<div class="col-md-12">
-				<h3 class="margin-bottom-40px">
-					Browsing startups at StartupDex
-				</h3>
+
+		<div class="row">
+			<div class="col-md-12">
+					<h3 class="margin-bottom-40px">
+						Browsing startups at StartupDex
+					</h3>
+			</div>
 		</div>
-	</div>
 
 	{% for startup in startups %}
-		<div class="row margin-bottom-12px">
-			<div class="col-xs-2">
-					<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-						{% include "../snips/image_startup.jinja2" %}
-					</a>
-			</div>
-						<div class="col-xs-10">
-							<h5 class="browse-startup-heading">
+					<div class="row">
+						<div class="col-xs-3 frontpage-focus-image">
 								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
-									{{ startup.name }}
+									{% include "../snips/image_startup.jinja2" %}
 								</a>
-							</h5>
-
-				<p>
-					{{ startup.short_info[:300] }}
-				</p>
-			</div>
-		</div>
+						</div>
+						<div class="col-xs-6">
+								<a href="{{ gibs.application_url }}startup/{{ startup.local_url }}">
+									<h3>{{ startup.name }}</h3>
+								</a>
+								{% if startup.short_info %}
+									<p>{{ startup.short_info[:500] }}
+									</p>
+								{% endif %}
+						</div>
+						<div class="col-xs-3">
+							<div class="frontpage-focus-location-block">
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}c/{{ startup.city }}">
+											{{ startup.city if startup.city }}
+										</a>
+									</p>
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}s/{{ startup.state_province }}">
+											{{ startup.state_province if startup.state_province }}
+										</a>
+									</p>
+									<p class="frontpage-focus-location">
+										<a href="{{ gibs.application_url }}n/{{ startup.country }}">
+											{{ startup.country if startup.country }}
+										</a>
+									</p>
+							</div>
+						</div>
+					</div>
 
 	{% endfor %}
 
