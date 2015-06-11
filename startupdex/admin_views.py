@@ -371,39 +371,75 @@ class AdminView(ViewWarlock):
                     name = ca['name'].replace('/', '')
 
                     ### Convert date strings to datetimes ###
-                    ca_string = ca['created_at'].split('-')
-                    year = ca_string[0]
-                    month = ca_string[1]
-                    ca_string = ca_string[2].split('T')
-                    day = ca_string[0]
-                    ca_string = ca_string[1].split(':')
-                    hour = ca_string[0]
-                    minute = ca_string[1]
-                    ca_string = ca_string[2].split('Z')
-                    second = ca_string[0]
-                    created_at = datetime.datetime(year=int(year),
-                                                   month=int(month),
-                                                   day=int(day),
-                                                   hour=int(hour),
-                                                   minute=int(minute),
-                                                   second=int(second))
+                    print("=======================")
+                    print(ca['created_at'])
+                    print(ca['updated_at'])
+                    launch_date = None
+                    if ca['created_at'] == '':
+                        created_at = datetime.datetime(year=2015,
+                                                    month=1,
+                                                    day=1)
+                    else:
+                        ca_string = ca['created_at'].split('-')
+                        year = ca_string[0]
+                        month = ca_string[1]
+                        ca_string = ca_string[2].split('T')
+                        day = ca_string[0]
+                        ca_string = ca_string[1].split(':')
+                        hour = ca_string[0]
+                        minute = ca_string[1]
+                        ca_string = ca_string[2].split('Z')
+                        second = ca_string[0]
+                        created_at = datetime.datetime(year=int(year),
+                                                    month=int(month),
+                                                    day=int(day),
+                                                    hour=int(hour),
+                                                    minute=int(minute),
+                                                    second=int(second))
 
-                    ua_string = ca['created_at'].split('-')
-                    year = ua_string[0]
-                    month = ua_string[1]
-                    ua_string = ua_string[2].split('T')
-                    day = ua_string[0]
-                    ua_string = ua_string[1].split(':')
-                    hour = ua_string[0]
-                    minute = ua_string[1]
-                    ua_string = ua_string[2].split('Z')
-                    second = ua_string[0]
-                    updated_at = datetime.datetime(year=int(year),
-                                                   month=int(month),
-                                                   day=int(day),
-                                                   hour=int(hour),
-                                                   minute=int(minute),
-                                                   second=int(second))
+                    if ca['updated_at'] == '':
+                        updated_at = datetime.datetime(year=2015,
+                                                    month=1,
+                                                    day=1)
+                    else:
+                        ua_string = ca['updated_at'].split('-')
+                        year = ua_string[0]
+                        month = ua_string[1]
+                        ua_string = ua_string[2].split('T')
+                        day = ua_string[0]
+                        ua_string = ua_string[1].split(':')
+                        hour = ua_string[0]
+                        minute = ua_string[1]
+                        ua_string = ua_string[2].split('Z')
+                        second = ua_string[0]
+                        updated_at = datetime.datetime(year=int(year),
+                                                    month=int(month),
+                                                    day=int(day),
+                                                    hour=int(hour),
+                                                    minute=int(minute),
+                                                    second=int(second))
+
+                    if ca['launch_date'] == '':
+                        launch_date = datetime.datetime(year=2015,
+                                                    month=1,
+                                                    day=1)
+                    else:
+                        ua_string = ca['launch_date'].split('-')
+                        year = ua_string[0]
+                        month = ua_string[1]
+                        ua_string = ua_string[2].split('T')
+                        day = ua_string[0]
+                        ua_string = ua_string[1].split(':')
+                        hour = ua_string[0]
+                        minute = ua_string[1]
+                        ua_string = ua_string[2].split('Z')
+                        second = ua_string[0]
+                        launch_date = datetime.datetime(year=int(year),
+                                                    month=int(month),
+                                                    day=int(day),
+                                                    hour=int(hour),
+                                                    minute=int(minute),
+                                                    second=int(second))
 
                     ### try to avoid blank fields ###
                     about = ca['product_desc']
@@ -456,8 +492,11 @@ class AdminView(ViewWarlock):
                     DBSession.add(user_has_startup)
 
                     ### Fix angelcomirror data if necessary ###
+                    print(updated_at)
+                    print(created_at)
                     ca['updated_at'] = updated_at
                     ca['created_at'] = created_at
+                    ca['launch_date'] = launch_date
                     new_angelco_mirror = AngelCoMirror(**query_dict)
                     # We don't need to commit since we already have
                     # angelcomirror.id

@@ -490,8 +490,8 @@ class AngelCoMirror(Base):
     company_url = Column(Text)
     company_size = Column(Text)
     company_type = Column(Text)  # json list
-    created_at = Column(Text)
-    updated_at = Column(Text)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
     twitter_url = Column(Text)
     facebook_url = Column(Text)
     linkedin_url = Column(Text)
@@ -502,7 +502,7 @@ class AngelCoMirror(Base):
     locations = Column(Text)  # json list
     status = Column(Text)  # json object
     screenshots = Column(Text)  # json list
-    launch_date = Column(Text)
+    launch_date = Column(DateTime, default=datetime.datetime.utcnow)
     fundraising = Column(Text)
 
 
